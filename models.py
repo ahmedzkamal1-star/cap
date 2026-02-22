@@ -42,7 +42,7 @@ class User(UserMixin, db.Model):
     post_views = db.relationship('PostView', backref='user', cascade="all, delete-orphan")
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password, method='scrypt')
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

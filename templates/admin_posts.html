@@ -56,13 +56,13 @@
                     <td>
                         <div style="display: flex; gap: 10px; font-size: 13px;">
                             <span title="إعجابات"><i class="fas fa-heart"
-                                    style="color: #ef4444; margin-left: 3px;"></i>{{ post.likes.count() }}</span>
+                                    style="color: #ef4444; margin-left: 3px;"></i>{{ post.likes|length }}</span>
                             <span title="مشاهدات"><i class="fas fa-eye" style="color: #667eea; margin-left: 3px;"></i>{{
-                                post.views.count() }}</span>
+                                post.views|length }}</span>
                         </div>
                         <div
                             style="font-size: 10px; color: #94a3b8; margin-top: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            {% if post.likes.count() > 0 %}
+                            {% if post.likes|length > 0 %}
                             بواسطة: {{ post.likes|map(attribute='user')|map(attribute='full_name')|join(', ') }}
                             {% endif %}
                         </div>

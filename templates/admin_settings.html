@@ -49,6 +49,32 @@
                 للنظام مؤقتاً.</p>
         </div>
 
+        <!-- Security & Recovery -->
+        <div class="settings-group" style="margin: 20px 0; border: 1px solid #fee2e2; background: #fffafb;">
+            <h3 style="color: #ef4444;">🛡️ الأمان واستعادة الحساب</h3>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">إعدادت حماية حساب المسؤول واسترجاعه عند
+                ضياع الباسورد.</p>
+
+            <div class="form-field-v2">
+                <label>كلمة مرور الأدمن الجديدة (اتركها فارغة لعدم التغيير)</label>
+                <input type="password" name="admin_password" placeholder="********">
+            </div>
+
+            <div class="form-field-v2">
+                <label>كود الأمان الماستر (Master Key)</label>
+                <input type="text" name="master_key" value="{{ current_user.master_key }}" required>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 5px;">* هذا الكود يسمح لك بتغيير الباسورد من
+                    الرابط الخارجي للطوارئ.</p>
+            </div>
+
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
+                <a href="{{ url_for('main.secure_reset') }}" target="_blank"
+                    style="font-size: 13px; color: #6366f1; text-decoration: none; font-weight: 700;">
+                    🔗 معاينة رابط استعادة الحساب للطوارئ
+                </a>
+            </div>
+        </div>
+
         <!-- Technical Support Quick Link -->
         <div class="settings-group" style="margin: 20px 0;">
             <h3>📢 الدعم الفني</h3>
@@ -58,7 +84,8 @@
                 style="flex-direction: row; padding: 12px 18px; gap: 15px; width: auto; justify-content: flex-start; border-radius: 15px; background: #f8fafc; border: 1px solid #e2e8f0;">
                 <div class="menu-icon-v2"
                     style="margin-bottom: 0; width: 40px; height: 40px; font-size: 18px; color: #ec4899; box-shadow: none; background: white;">
-                    <i class="fas fa-envelope-open-text"></i></div>
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
                 <span style="font-size: 14px; color: #1e293b;">عرض رسائل الطلاب
                     {% if unread_count > 0 %}
                     <span

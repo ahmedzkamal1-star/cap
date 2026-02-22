@@ -628,6 +628,18 @@ def admin_settings():
         settings.allow_registration = 'allow_registration' in request.form
         settings.maintenance_mode = 'maintenance_mode' in request.form
         
+        # Security Updates for Admin
+        new_pass = request.form.get('admin_password')
+        new_master = request.form.get('master_key')
+        
+        if new_pass:
+            current_user.set_password(new_pass)
+            flash('تم تحديث كلمة مرور الأدمن بنجاح.', 'success')
+            
+        if new_master:
+            current_user.master_key = new_master
+            flash('تم تحديث كود الأمان بنجاح.', 'success')
+            
         db.session.commit()
         flash('تم تحديث إعدادات النظام بنجاح!', 'success')
         return redirect(url_for('main.admin_settings'))

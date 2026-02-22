@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }} طالب - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <h2>👤 {{ action }} طالب{% if action == 'Edit' %} - {{ student.code }}{% endif %}</h2>
+    <form method="POST">
+        {% if action == 'Add' %}
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">الكود الجامعي</label>
+            <input type="text" name="code" required
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        {% endif %}
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">الاسم بالكامل</label>
+            <input type="text" name="full_name" value="{{ student.full_name if student else '' }}" required
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">كلمة المرور {% if action == 'Edit' %}(اتركها فارغة إذا
+                لم ترد التغيير){% endif %}</label>
+            <input type="password" name="password" {% if action=='Add' %}required{% endif %}
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">البريد الإلكتروني</label>
+            <input type="email" name="email" value="{{ student.email if student else '' }}"
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">رقم الهاتف</label>
+            <input type="text" name="phone" value="{{ student.phone if student else '' }}"
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">القسم</label>
+            <input type="text" name="department" value="{{ student.department if student else '' }}"
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">السنة الدراسية</label>
+            <input type="text" name="year" value="{{ student.year if student else '' }}"
+                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem;">نوع المستخدم (الصلاحية)</label>
+            <select name="role" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="student" {% if student and student.role=='student' %}selected{% endif %}>طالب (Student)
+                </option>
+                <option value="admin" {% if student and student.role=='admin' %}selected{% endif %}>مشرف (Admin)
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;">
+            💾 حفظ البيانات
+        </button>
+        <a href="{{ url_for('main.admin_students') }}"
+            style="display: block; text-align: center; margin-top: 1rem; color: #666; text-decoration: none;">
+            ← رجوع إلى قائمة الطلاب
+        </a>
+    </form>
+</div>
+{% endblock %}

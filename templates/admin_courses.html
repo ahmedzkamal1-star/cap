@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة المواد - Al-dahih{% endblock %}
+
+{% block content %}
+
+<div class="main-container-v2 animate-fade-in">
+    <div class="section-header-v2" style="margin-top: 10px;">
+        <h3><i class="fas fa-book" style="color: #667eea; margin-left: 8px;"></i>إدارة المواد</h3>
+        <a href="{{ url_for('main.admin_add_course') }}" class="back-btn-v2"
+            style="width: auto; padding: 0 15px; font-size: 13px; background: var(--primary-color); color: white;">
+            <i class="fas fa-plus" style="margin-left: 5px;"></i> إضافة مادة
+        </a>
+    </div>
+
+    <div class="grid" style="margin-top: 20px;">
+        {% for course in courses %}
+        <div class="stat-card-v2" style="padding: 20px; border-right: 4px solid #667eea;">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                    <h3 style="font-size: 1.1rem; color: #1e293b; margin-bottom: 5px;">{{ course.name }}</h3>
+                    <span class="status-badge" style="background: #eff6ff; color: #3b82f6;">{{ course.code }}</span>
+                </div>
+                <div class="stat-icon-dahih" style="margin-bottom: 0;">
+                    <i class="fas fa-book-open"></i>
+                </div>
+            </div>
+
+            <p style="color: #64748b; font-size: 13px; margin: 12px 0; line-height: 1.5;">{{ course.description[:80]
+                }}...</p>
+            <div style="font-size: 12px; color: #1e293b; margin-bottom: 15px;">
+                <i class="fas fa-user-tie" style="margin-left: 5px; color: #667eea;"></i>
+                <strong>المدرس:</strong> {{ course.instructor }}
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <a href="{{ url_for('main.admin_edit_course', course_id=course.id) }}" class="header-action-btn"
+                    style="flex: 1; background: #eff6ff;" title="تعديل">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ url_for('main.admin_course_content', course_id=course.id) }}" class="header-action-btn"
+                    style="flex: 1; background: #f0fdf4; color: #166534;" title="المحتوى">
+                    <i class="fas fa-folder-open"></i>
+                </a>
+                <a href="{{ url_for('main.course_details', course_id=course.id) }}" class="header-action-btn"
+                    style="flex: 1; background: #f5f7fb;" title="عرض">
+                    <i class="fas fa-eye"></i>
+                </a>
+                <form action="{{ url_for('main.admin_delete_course', course_id=course.id) }}" method="POST"
+                    style="flex: 1;" onsubmit="return confirm('هل أنت متأكد من حذف هذه المادة؟');">
+                    <button type="submit" class="header-action-btn"
+                        style="width: 100%; border: none; background: #fef2f2; color: #ef4444; cursor: pointer;"
+                        title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div
+            style="grid-column: 1 / -1; text-align: center; padding: 40px; background: white; border-radius: 20px; border: 1px solid #e2e8f0;">
+            <i class="fas fa-book-dead"
+                style="font-size: 40px; color: #94a3b8; margin-bottom: 15px; display: block;"></i>
+            <p style="color: #64748b;">لا توجد مواد متاحة حالياً.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

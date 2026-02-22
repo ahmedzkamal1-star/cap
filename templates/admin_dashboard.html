@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Al-dahih{% endblock %}
+
+{% block content %}
+
+<div class="main-container-v2 animate-fade-in">
+    <!-- Dahih Premium Header/Stats -->
+    <div class="stats-grid-v2">
+        <div class="stat-card-v2" style="border-right: 4px solid #667eea;">
+            <div class="stat-icon-dahih">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-label-v2">إجمالي الطلاب</div>
+            <div class="stat-value-v2">{{ students_count }}</div>
+            <div class="stat-badge-dahih">+3 اليوم</div>
+        </div>
+        <div class="stat-card-v2" style="border-right: 4px solid #f59e0b;">
+            <div class="stat-icon-dahih" style="background: #fffbeb;">
+                <i class="fas fa-clock" style="color: #f59e0b;"></i>
+            </div>
+            <div class="stat-label-v2">بانتظار المراجعة</div>
+            <div class="stat-value-v2">12</div>
+            <div class="stat-badge-dahih" style="color: #f59e0b;">+3 اليوم</div>
+        </div>
+    </div>
+
+    <!-- Quick Search -->
+    <div class="search-container" style="padding: 0 0 20px 0;">
+        <div class="search-box-v2">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="ابحث عن طالب، مادة، رسالة...">
+            <i class="fas fa-sliders-h" style="color: #667eea;"></i>
+        </div>
+    </div>
+
+    <!-- 3-Column Menu Grid -->
+    <div class="section-header-v2">
+        <h3><i class="fas fa-bookmark" style="color: #667eea; margin-left: 8px;"></i>القائمة المرجعية</h3>
+    </div>
+
+    <div class="menu-grid-v2">
+        <a href="{{ url_for('main.admin_students') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-user-graduate"></i></div>
+            <span>الطلاب</span>
+        </a>
+        <a href="{{ url_for('main.admin_pending_users') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-file-signature"></i></div>
+            <span>الطلبات</span>
+        </a>
+        <a href="{{ url_for('main.admin_posts') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-newspaper"></i></div>
+            <span>المنشورات</span>
+        </a>
+        <a href="{{ url_for('main.admin_courses') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-book"></i></div>
+            <span>المواد</span>
+        </a>
+        <a href="{{ url_for('main.admin_messages') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-envelope"></i></div>
+            <span>الرسائل</span>
+        </a>
+        <a href="{{ url_for('main.admin_settings') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-cog"></i></div>
+            <span>الإعدادات</span>
+        </a>
+        <a href="{{ url_for('main.dashboard') }}" class="menu-item-v2">
+            <div class="menu-icon-v2"><i class="fas fa-home"></i></div>
+            <span>الرئيسية</span>
+        </a>
+    </div>
+
+    <!-- Recent Registration Requests -->
+    <div class="section-header-v2" style="margin-top: 10px;">
+        <h3><i class="fas fa-user-clock" style="color: #667eea; margin-left: 8px;"></i>طلبات التسجيل الحديثة</h3>
+        <a href="{{ url_for('main.admin_pending_users') }}" style="color: #667eea; font-size: 13px;">عرض الكل</a>
+    </div>
+
+    <div class="requests-list-dahih">
+        <!-- Mock data for demonstration, matching user's HTML -->
+        <a href="{{ url_for('main.admin_pending_users') }}" class="request-item-dahih">
+            <div class="student-avatar-dahih">أ</div>
+            <div class="student-info-dahih">
+                <div class="student-name-dahih">أحمد محمد عبدالله</div>
+                <div class="student-meta-dahih">هندسة حاسوب • 12/02/2026</div>
+            </div>
+            <div class="status-dahih">
+                <i class="fas fa-hourglass-half"></i>
+                <span>قيد المراجعة</span>
+            </div>
+        </a>
+
+        <a href="{{ url_for('main.admin_pending_users') }}" class="request-item-dahih">
+            <div class="student-avatar-dahih">س</div>
+            <div class="student-info-dahih">
+                <div class="student-name-dahih">سارة خالد أحمد</div>
+                <div class="student-meta-dahih">طب بشري • 12/02/2026</div>
+            </div>
+            <div class="status-dahih">
+                <i class="fas fa-hourglass-half"></i>
+                <span>قيد المراجعة</span>
+            </div>
+        </a>
+
+        <a href="{{ url_for('main.admin_students') }}" class="request-item-dahih">
+            <div class="student-avatar-dahih">م</div>
+            <div class="student-info-dahih">
+                <div class="student-name-dahih">محمود عباس</div>
+                <div class="student-meta-dahih">تجارة • 11/02/2026</div>
+            </div>
+            <div class="status-dahih" style="background: #d1fae5; color: #065f46;">
+                <i class="fas fa-check-circle"></i>
+                <span>مقبول</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Recent Messages Section -->
+    <div class="messages-preview-dahih">
+        <div class="section-header-v2" style="padding: 0; margin-bottom: 15px;">
+            <h3><i class="fas fa-comments" style="color: #667eea; margin-left: 8px;"></i>آخر الرسائل</h3>
+        </div>
+
+        <a href="{{ url_for('main.admin_messages') }}" class="message-item-dahih">
+            <div class="message-icon-dahih">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="message-content-dahih">
+                <div class="message-sender-dahih">أحمد محمد</div>
+                <div class="message-text-dahih">استفسار عن جدول المواد</div>
+            </div>
+            <div class="message-time-dahih">منذ 5 د</div>
+        </a>
+
+        <a href="{{ url_for('main.admin_messages') }}" class="message-item-dahih">
+            <div class="message-icon-dahih">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="message-content-dahih">
+                <div class="message-sender-dahih">سارة خالد</div>
+                <div class="message-text-dahih">طلب تأجيل الدفعة</div>
+            </div>
+            <div class="message-time-dahih">منذ 15 د</div>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

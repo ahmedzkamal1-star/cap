@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}إضافة درس - {{ course.name }} - Al-dahih{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <h2>📚 إضافة درس جديد</h2>
+        <h4 style="color: #666; margin-top: 0;">{{ course.name }} ({{ course.code }})</h4>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">عنوان الدرس</label>
+                <input type="text" id="title" name="title" required placeholder="مثال: مقدمة في...">
+            </div>
+
+            <div class="form-group">
+                <label for="content">محتوى نصي (اختياري)</label>
+                <textarea id="content" name="content" rows="4"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="pdf_file">تحميل ملف PDF (اختياري)</label>
+                <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" style="padding: 0.5rem 0;">
+                <p style="font-size: 0.8rem; color: #666; margin-top: 0.3rem;">يقبل ملفات PDF فقط.</p>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" style="flex: 1;">حفظ الدرس</button>
+                <a href="{{ url_for('main.admin_course_content', course_id=course.id) }}"
+                    style="flex: 1; text-align: center; background-color: #6c757d; color: white; padding: 0.8rem; text-decoration: none; border-radius: 4px;">إلغاء</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

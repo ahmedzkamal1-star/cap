@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الطلاب - Al-dahih{% endblock %}
+
+{% block content %}
+
+<div class="main-container-v2 animate-fade-in">
+    <div class="section-header-v2" style="margin-top: 10px;">
+        <h3><i class="fas fa-user-graduate" style="color: #667eea; margin-left: 8px;"></i>إدارة الطلاب</h3>
+        <a href="{{ url_for('main.admin_add_student') }}" class="back-btn-v2"
+            style="width: auto; padding: 0 15px; font-size: 13px; background: var(--primary-color); color: white;">
+            <i class="fas fa-plus" style="margin-left: 5px;"></i> إضافة طالب
+        </a>
+    </div>
+
+    <!-- Student List in Table/List Hybrid -->
+    <div class="table-container-v2 animate-fade-in" style="margin: 20px 0; border: none; box-shadow: none;">
+        <table class="modern-table-v2">
+            <thead>
+                <tr>
+                    <th>الكود</th>
+                    <th>الاسم الكامل</th>
+                    <th style="text-align: center;">الأفعال</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td style="font-weight: 700; color: #667eea;">#{{ student.code }}</td>
+                    <td style="font-weight: 600;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div class="student-avatar-dahih"
+                                style="width: 35px; height: 35px; font-size: 14px; border-radius: 10px;">{{
+                                student.full_name[0] }}</div>
+                            {{ student.full_name }}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <a href="{{ url_for('main.admin_edit_student', user_id=student.id) }}"
+                                class="header-action-btn"
+                                style="width: 35px; height: 35px; font-size: 15px; background: #eff6ff;" title="تعديل">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ url_for('main.admin_delete_student', user_id=student.id) }}" method="POST"
+                                onsubmit="return confirm('هل أنت متأكد من حذف هذا الطالب؟');">
+                                <button type="submit" class="header-action-btn"
+                                    style="width: 35px; height: 35px; font-size: 15px; background: #fef2f2; color: #ef4444; border: none; cursor: pointer;"
+                                    title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 60px; color: #94a3b8;">
+                        <i class="fas fa-users-slash" style="font-size: 40px; margin-bottom: 15px; display: block;"></i>
+                        لا يوجد طلاب مسجلين حالياً.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="animate-fade-in"
+        style="padding: 15px; background: #f8fafc; border-radius: 15px; border: 1px dashed #e2e8f0;">
+        <p style="font-size: 12px; color: #64748b; text-align: center; margin: 0;">
+            <i class="fas fa-shield-alt" style="margin-left: 5px; color: #667eea;"></i>
+            تم إزالة خيارات الحذف الجماعي كإجراء أمان بناءً على طلبك.
+        </p>
+    </div>
+</div>
+
+{% endblock %}

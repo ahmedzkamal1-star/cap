@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل حساب جديد - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 2rem auto;">
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">📝 إنشاء حساب جديد</h2>
+        <form method="POST">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">الكود الجامعي</label>
+                <input type="text" name="code" required placeholder="مثال: 2023001"
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">الاسم الكامل</label>
+                <input type="text" name="full_name" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">كلمة المرور</label>
+                <input type="password" name="password" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem;">القسم</label>
+                    <input type="text" name="department" placeholder="CS, IT, ..."
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem;">السنة الدراسية</label>
+                    <input type="text" name="year" placeholder="1, 2, ..."
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">رقم الهاتف</label>
+                <input type="text" name="phone"
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: bold;">
+                إنشاء حساب
+            </button>
+
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <span>لديك حساب بالفعل؟</span>
+                <a href="{{ url_for('main.login') }}"
+                    style="color: #2196F3; text-decoration: none; font-weight: bold;">تسجيل الدخول</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}عرض الملف - Al-dahih{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; margin-bottom: 1rem;">
+    <h3 style="margin: 0; color: var(--primary-color);">🔒 عرض آمن للملف</h3>
+    <p style="font-size: 0.9rem; color: #666; margin: 5px 0 0 0;">ممنوع النسخ، التصوير، أو الطباعة لحماية حقوق المحتوى.
+    </p>
+</div>
+
+<div class="card pdf-viewer-container"
+    style="position: relative; overflow: hidden; padding: 0; border-radius: var(--border-radius-lg); background: #525659; min-height: 80vh;">
+    <!-- Anti-Screenshot Overlay -->
+    <div id="protection-overlay"
+        style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 100; pointer-events: none; background: rgba(255,255,255,0.01);">
+    </div>
+
+    <div id="pdf-viewer-wrapper" style="overflow-y: auto; height: 80vh; padding: 20px 0;">
+        <canvas id="pdf-canvas"
+            style="display: block; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.3); max-width: 100%;"></canvas>
+    </div>
+
+    <!-- Controls -->
+    <div class="pdf-controls"
+        style="position: sticky; bottom: 0; background: var(--glass-bg); backdrop-filter: blur(10px); padding: 10px; display: flex; justify-content: center; gap: 20px; align-items: center; z-index: 101; border-top: 1px solid var(--glass-border);">
+        <button onclick="changePage(-1)" class="btn" style="padding: 5px 15px; font-size: 0.8rem;">السابق</button>
+        <span id="page-info" style="font-weight: bold; color: var(--primary-color);">صفحة <span id="page-num">1</span>
+            من <span id="page-count">?</span></span>
+        <button onclick="changePage(1)" class="btn" style="padding: 5px 15px; font-size: 0.8rem;">التالي</button>
+    </div>
+</div>
+
+<style>
+    /* Disable printing */
+    @media print {
+        body {
+            display: none !important;
+        }
+    }
+
+    /* Prevent selection */
+    body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    #pdf-viewer-wrapper::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #pdf-viewer-wrapper::-webkit-scrollbar-thumb {
+        background: var(--accent-color);
+        border-radius: 10px;
+    }
+</style>
+
+<!-- PDF.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+<script>
+    const url = "{{ url_for('static', filename='uploads/' + filename) }}";
+
+    // Set pdf.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+    let pdfDoc = null,
+        pageNum = 1,
+        pageIsRendering = false,
+        pageNumIsPending = null;
+
+    const getQualityScale = () => {
+        const dpr = window.devicePixelRatio || 1;
+        return 2.0 * dpr; // Increased base scale + DPR for extreme clarity
+    };
+
+    const canvas = document.getElementById('pdf-canvas'),
+        ctx = canvas.getContext('2d', { alpha: false }); // Optimization
+
+    // Render the page
+    const renderPage = num => {
+        pageIsRendering = true;
+        const currentScale = getQualityScale();
+
+        // Get page
+        pdfDoc.getPage(num).then(page => {
+            const viewport = page.getViewport({ scale: currentScale });
+
+            // Set canvas dimensions matched to the high-res viewport
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Use CSS to scale the canvas back down to fit the screen
+            canvas.style.width = '100%';
+            canvas.style.height = 'auto';
+
+            const renderCtx = {
+                canvasContext: ctx,
+                viewport,
+                intent: 'display'
+            };
+
+            page.render(renderCtx).promise.then(() => {
+                pageIsRendering = false;
+
+                // Draw Watermark
+                drawWatermark(currentScale);
+
+                if (pageNumIsPending !== null) {
+                    renderPage(pageNumIsPending);
+                    pageNumIsPending = null;
+                }
+            });
+
+            // Output current page
+            document.getElementById('page-num').textContent = num;
+        });
+    };
+
+    const drawWatermark = (currentScale) => {
+        const studentName = "{{ current_user.full_name }}";
+        const studentCode = "{{ current_user.code }}";
+        const watermarkText = `${studentName} - ${studentCode}`;
+
+        ctx.save();
+        // Adjust font size based on scale to keep it consistent
+        const fontSize = 25 * (currentScale / 2.5);
+        ctx.font = `bold ${fontSize}px Cairo`;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        const stepX = 350 * (currentScale / 2.5);
+        const stepY = 250 * (currentScale / 2.5);
+
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(-45 * Math.PI / 180);
+        ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+        for (let y = -canvas.height; y < canvas.height * 2; y += stepY) {
+            for (let x = -canvas.width; x < canvas.width * 2; x += stepX) {
+                ctx.fillText(watermarkText, x, y);
+            }
+        }
+
+        ctx.restore();
+    };
+
+    // Check for pages rendering
+    const queueRenderPage = num => {
+        if (pageIsRendering) {
+            pageNumIsPending = num;
+        } else {
+            renderPage(num);
+        }
+    };
+
+    // Show Prev Page
+    const changePage = offset => {
+        if (pageNum + offset <= 0 || pageNum + offset > pdfDoc.numPages) {
+            return;
+        }
+        pageNum += offset;
+        queueRenderPage(pageNum);
+    };
+
+    // Get Document
+    pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
+        pdfDoc = pdfDoc_;
+        document.getElementById('page-count').textContent = pdfDoc.numPages;
+        renderPage(pageNum);
+    }).catch(err => {
+        console.error('Error loading PDF:', err);
+        alert('لا يمكن تحميل الملف حالياً أو أن الرابط غير صحيح.');
+    });
+
+    /** SECURITY MEASURES **/
+
+    // Disable Right Click
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Disable Shortcuts (Control + S, P, C, U, F12)
+    document.onkeydown = function (e) {
+        if (
+            (e.ctrlKey && (e.keyCode === 83 || e.keyCode === 80 || e.keyCode === 67 || e.keyCode === 85)) ||
+            e.keyCode === 123
+        ) {
+            alert('❌ تم تعطيل هذا الإجراء لحماية حقوق المحتوى.');
+            return false;
+        }
+    };
+
+    // Detect PrintScreen (Partial protection)
+    document.addEventListener('keyup', (e) => {
+        if (e.key == 'PrintScreen') {
+            navigator.clipboard.writeText('');
+            alert('📸 تصوير الشاشة ممنوع!');
+        }
+    });
+</script>
+{% endblock %}

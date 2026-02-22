@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.name }} - Al-dahih{% endblock %}
+
+{% block content %}
+<div class="main-container-v2 animate-fade-in">
+    <!-- Hero Banner for Course -->
+    <div class="hero-banner-v2"
+        style="background: var(--grad-main); color: white; padding: 40px 20px; border-radius: 25px; text-align: center; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(118, 75, 162, 0.3);">
+        <h1 style="font-size: 1.8rem; font-weight: 900; margin: 0;">{{ course.name }}</h1>
+        <p style="opacity: 0.9; margin-top: 10px;">كود المادة: {{ course.code }} | المدرس: {{ course.instructor }}</p>
+    </div>
+
+    <!-- Stats for Course -->
+    <div class="stats-grid-v2" style="margin-bottom: 25px;">
+        <div class="stat-card-v2" style="border-right: 4px solid #10b981;">
+            <div class="stat-icon-dahih" style="background: #ecfdf5;">
+                <i class="fas fa-book-open" style="color: #10b981;"></i>
+            </div>
+            <div class="stat-label-v2">الدروس</div>
+            <div class="stat-value-v2">{{ course.lessons|length }}</div>
+        </div>
+        <div class="stat-card-v2" style="border-right: 4px solid #f59e0b;">
+            <div class="stat-icon-dahih" style="background: #fffbeb;">
+                <i class="fas fa-file-alt" style="color: #f59e0b;"></i>
+            </div>
+            <div class="stat-label-v2">الامتحانات</div>
+            <div class="stat-value-v2">{{ course.exams|length }}</div>
+        </div>
+    </div>
+
+    <!-- Tabs Content -->
+    <div class="section-header-v2">
+        <h3><i class="fas fa-layer-group" style="color: #667eea; margin-left: 8px;"></i>محتوى المادة</h3>
+    </div>
+
+    <div class="card"
+        style="padding: 0; border-radius: 25px; overflow: hidden; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <div style="display: flex; background: #f8fafc;">
+            <button class="tab-button-v2 active" onclick="openTab(event, 'Lessons')">
+                <i class="fas fa-book"></i> <span>الدروس</span>
+            </button>
+            <button class="tab-button-v2" onclick="openTab(event, 'Exams')">
+                <i class="fas fa-vial"></i> <span>الامتحانات</span>
+            </button>
+        </div>
+
+        <!-- Lessons Tab -->
+        <div id="Lessons" class="tab-content-v2" style="display: block; padding: 25px;">
+            {% if course.lessons %}
+            <div class="lecture-list-v2">
+                {% for lesson in course.lessons %}
+                <div class="lecture-item-v2 animate-fade-in" style="animation-delay: {{ loop.index0 * 0.1 }}s">
+                    <div class="lecture-info">
+                        <div class="lecture-num">0{{ loop.index }}</div>
+                        <div class="lecture-text">
+                            <h4>{{ lesson.title }}</h4>
+                            <p>{{ lesson.content[:100] }}...</p>
+                        </div>
+                    </div>
+                    {% if lesson.pdf_filename %}
+                    <a href="{{ url_for('main.view_pdf', filename=lesson.pdf_filename) }}" class="pomo-btn-main"
+                        style="padding: 10px 20px; font-size: 0.85rem; text-decoration: none;">
+                        <i class="fas fa-file-pdf"></i> فتح المحاضرة
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #666; padding: 20px;">لا توجد دروس متاحة حالياً.</p>
+            {% endif %}
+        </div>
+
+        <!-- Exams Tab -->
+        <div id="Exams" class="tab-content-v2" style="display: none; padding: 25px;">
+            {% if course.exams %}
+            <div class="lecture-list-v2">
+                {% for exam in course.exams %}
+                <div class="lecture-item-v2">
+                    <div class="lecture-info">
+                        <div class="lecture-num" style="background: #fee2e2; color: #ef4444;">E</div>
+                        <div class="lecture-text">
+                            <h4>{{ exam.title }}</h4>
+                            <p>{{ exam.questions[:100] }}...</p>
+                        </div>
+                    </div>
+                    <button class="pomo-btn-alt" style="padding: 10px 20px; font-size: 0.85rem;">
+                        <i class="fas fa-play"></i> ابدأ الاختبار
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #666; padding: 20px;">لا توجد امتحانات متاحة حالياً.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .tab-button-v2 {
+        flex: 1;
+        padding: 20px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-weight: 700;
+        color: #64748b;
+        transition: 0.3s;
+    }
+
+    .tab-button-v2 i {
+        font-size: 1.1rem;
+    }
+
+    .tab-button-v2.active {
+        background: white;
+        color: #667eea;
+        border-top: 3px solid #667eea;
+    }
+
+    .lecture-item-v2 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background: #fff;
+        border: 1px solid #f1f5f9;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        transition: 0.3s;
+    }
+
+    .lecture-item-v2:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .lecture-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .lecture-num {
+        width: 45px;
+        height: 45px;
+        background: #e0f2fe;
+        color: #0ea5e9;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+    }
+
+    .lecture-text h4 {
+        margin: 0;
+        color: #1e293b;
+        font-size: 1rem;
+    }
+
+    .lecture-text p {
+        margin: 2px 0 0 0;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+</style>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content-v2");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-button-v2");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+{% endblock %}

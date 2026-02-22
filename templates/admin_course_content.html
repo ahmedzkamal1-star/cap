@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة محتوى {{ course.name }} - Al-dahih{% endblock %}
+
+{% block content %}
+
+<div class="main-container-v2 animate-fade-in">
+    <div class="section-header-v2" style="margin-top: 10px;">
+        <div>
+            <h3 style="margin-bottom: 5px;"><i class="fas fa-folder-open"
+                    style="color: #667eea; margin-left: 8px;"></i>محتوى مادة: {{ course.name }}</h3>
+            <span class="status-badge" style="background: #eff6ff; color: #3b82f6; font-size: 11px;">{{ course.code
+                }}</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="{{ url_for('main.admin_add_lesson', course_id=course.id) }}" class="back-btn-v2"
+                style="width: auto; padding: 0 15px; font-size: 13px; background: #10b981; color: white;">
+                <i class="fas fa-plus" style="margin-left: 5px;"></i> إضافة درس
+            </a>
+            <a href="{{ url_for('main.admin_add_exam', course_id=course.id) }}" class="back-btn-v2"
+                style="width: auto; padding: 0 15px; font-size: 13px; background: #6366f1; color: white;">
+                <i class="fas fa-file-signature" style="margin-left: 5px;"></i> إضافة امتحان
+            </a>
+        </div>
+    </div>
+
+    <!-- Lessons Section -->
+    <div class="settings-group" style="margin-top: 25px; padding: 20px;">
+        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <i class="fas fa-book-reader" style="color: #10b981;"></i> الدروس المرفوعة
+        </h3>
+
+        <div class="table-container-v2" style="border: none; box-shadow: none; margin: 0;">
+            <table class="modern-table-v2">
+                <thead>
+                    <tr>
+                        <th>العنوان</th>
+                        <th>الملفات</th>
+                        <th style="text-align: center;">الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lesson in course.lessons %}
+                    <tr>
+                        <td style="font-weight: 600; color: #1e293b;">{{ lesson.title }}</td>
+                        <td>
+                            {% if lesson.pdf_filename %}
+                            <span class="status-badge" style="background: #f0fdf4; color: #166534; font-size: 11px;">
+                                <i class="fas fa-file-pdf" style="margin-left: 5px;"></i>ملف PDF جاهز
+                            </span>
+                            {% else %}
+                            <span style="color: #94a3b8; font-size: 12px;">لا توجد مرفقات</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center;">
+                                <form action="{{ url_for('main.admin_delete_lesson', lesson_id=lesson.id) }}"
+                                    method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الدرس؟')">
+                                    <button type="submit" class="header-action-btn"
+                                        style="width: 35px; height: 35px; background: #fef2f2; color: #ef4444; border: none; cursor: pointer;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد دروس مضافة
+                            لهذه المادة حالياً.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Exams Section -->
+    <div class="settings-group" style="margin-top: 25px; padding: 20px;">
+        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <i class="fas fa-spell-check" style="color: #6366f1;"></i> الامتحانات المنشورة
+        </h3>
+
+        <div class="table-container-v2" style="border: none; box-shadow: none; margin: 0;">
+            <table class="modern-table-v2">
+                <thead>
+                    <tr>
+                        <th>عنوان الامتحان</th>
+                        <th>اسم المادة</th>
+                        <th style="text-align: center;">الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in course.exams %}
+                    <tr>
+                        <td style="font-weight: 600; color: #1e293b;">{{ exam.title }}</td>
+                        <td style="color: #64748b; font-size: 13px;">{{ course.name }}</td>
+                        <td>
+                            <div style="display: flex; justify-content: center;">
+                                <form action="{{ url_for('main.admin_delete_exam', exam_id=exam.id) }}" method="POST"
+                                    onsubmit="return confirm('هل أنت متأكد من حذف هذا الامتحان؟')">
+                                    <button type="submit" class="header-action-btn"
+                                        style="width: 35px; height: 35px; background: #fef2f2; color: #ef4444; border: none; cursor: pointer;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد امتحانات
+                            مضافة لهذه المادة حالياً.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('main.admin_courses') }}" class="back-link"
+            style="text-decoration: none; color: #64748b; font-size: 14px;">
+            <i class="fas fa-arrow-right" style="margin-left: 8px;"></i> العودة لقائمة المواد
+        </a>
+    </div>
+</div>
+
+{% endblock %}

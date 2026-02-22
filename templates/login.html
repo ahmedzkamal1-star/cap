@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل الدخول - Al-dahih{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 4rem auto;">
+    <div class="card">
+        <div style="text-align: center; margin-bottom: 1rem;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="width: 80px;">
+        </div>
+        <h2 style="text-align: center;">تسجيل الدخول</h2>
+        <form method="POST" action="{{ url_for('main.login') }}">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">الكود الجامعي</label>
+                <input type="text" name="code" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">كلمة المرور</label>
+                <input type="password" name="password" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <button type="submit"
+                style="width: 100%; background-color: #2196F3; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold;">
+                دخول
+            </button>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <span>ليس لديك حساب؟</span>
+                <a href="{{ url_for('main.register') }}"
+                    style="color: #2196F3; text-decoration: none; font-weight: bold;">إنشاء حساب جديد</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

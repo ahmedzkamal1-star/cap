@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}الأصدقاء - Al-dahih{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>👥 الأصدقاء</h2>
+    <p>تواصل مع زملائك في الدراسة.</p>
+
+    <form method="POST" style="display: flex; gap: 10px; align-items: flex-end; max-width: 500px;">
+        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+            <label for="friend_code">إضافة صديق جديد (الكود الجامعي)</label>
+            <input type="text" id="friend_code" name="friend_code" placeholder="أدخل كود الطالب" required>
+        </div>
+        <button type="submit">إضافة</button>
+    </form>
+</div>
+
+<div class="grid">
+    {% for friend in friends %}
+    <div class="course-card" style="text-align: center;">
+        <div style="font-size: 3rem;">👤</div>
+        <h3>{{ friend.full_name }}</h3>
+        <p class="badge">{{ friend.code }}</p>
+        <p>{{ friend.department }} - السنة {{ friend.year }}</p>
+        <button style="background-color: var(--secondary-color); margin-top: 10px;">راسله الآن</button>
+    </div>
+    {% else %}
+    <p>ليس لديك أصدقاء بعد. ابدأ بإضافة زملائك!</p>
+    {% endfor %}
+</div>
+{% endblock %}

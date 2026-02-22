@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}الرئيسية - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; border-bottom: 4px solid var(--primary-color);">
+    <h1 style="color: var(--primary-color); margin-bottom: 5px;">{{ settings.system_name }}</h1>
+    <p style="opacity: 0.8;">مرحباً بك في ساحة المشاركة الطلابية</p>
+</div>
+
+{% for post in posts %}
+<div class="card post-card" id="post-{{ post.id }}" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+    {% if post.image_filename %}
+    <img src="{{ url_for('static', filename='uploads/' + post.image_filename) }}" alt="Post Image"
+        style="width: 100%; height: auto; max-height: 500px; object-fit: cover;">
+    {% endif %}
+
+    <div style="padding: 1.5rem;">
+        <div class="post-header"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0; color: var(--primary-color);">{{ post.title }}</h3>
+            <span class="badge"
+                style="background-color: var(--light-blue); color: var(--primary-color); font-size: 0.8rem;">
+                {{ post.timestamp.strftime('%Y-%m-%d %H:%M') }}
+            </span>
+        </div>
+
+        <div class="post-content" style="line-height: 1.6; white-space: pre-wrap; margin-bottom: 1.5rem;">
+            {{ post.content }}
+        </div>
+
+        <div class="post-footer"
+            style="padding-top: 1rem; border-top: 1px solid #f1f5f9; display: flex; gap: 1.5rem; align-items: center;">
+            {% if current_user.is_authenticated and current_user.role == 'student' %}
+            <button
+                class="like-btn {% if current_user.id in post.likes|map(attribute='user_id')|list %}active{% endif %}"
+                onclick="toggleLike({{ post.id }})"
+                style="background: none; border: 1px solid {% if current_user.id in post.likes|map(attribute='user_id')|list %}var(--danger){% else %}#e2e8f0{% endif %}; 
+                           color: {% if current_user.id in post.likes|map(attribute='user_id')|list %}var(--danger){% else %}#64748b{% endif %}; 
+                           padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-family: inherit; font-size: 0.9rem;">
+                ❤️ <span class="like-count" style="margin-right: 4px;">{{ post.likes.count() }}</span> إعجاب
+            </button>
+            {% else %}
+            <span style="color: #64748b; font-weight: 600;">❤️ {{ post.likes.count() }} إعجاب</span>
+            {% endif %}
+
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">👁️ {{ post.views.count() }}
+                مشاهدة</span>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card" style="text-align: center; padding: 3rem;">
+    <p style="font-size: 1.2rem; color: #666;">لا توجد منشورات حالياً.</p>
+</div>
+{% endfor %}
+
+<script>
+    function toggleLike(postId) {
+        const btn = document.querySelector(`#post-${postId} .like-btn`);
+        const countSpan = btn.querySelector('.like-count');
+
+        fetch(`/like_post/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked') {
+                    btn.style.color = 'var(--danger)';
+                    btn.style.borderColor = 'var(--danger)';
+                    btn.classList.add('active');
+                } else {
+                    btn.style.color = '#64748b';
+                    btn.style.borderColor = '#e2e8f0';
+                    btn.classList.remove('active');
+                }
+                countSpan.innerText = data.count;
+            })
+            .catch(err => console.error('Error toggling like:', err));
+    }
+</script>
+{% endblock %}

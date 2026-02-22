@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}سجل النشاطات - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📜 سجل نشاطات النظام</h2>
+    <p>آخر 100 عملية تمت في النظام</p>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>الوقت</th>
+                    <th>المستخدم</th>
+                    <th>العملية</th>
+                    <th>التفاصيل</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td style="white-space: nowrap;">{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>
+                        {% if log.user %}
+                        {{ log.user.full_name }} ({{ log.user.code }})
+                        {% else %}
+                        <span style="color: #999;">نظام</span>
+                        {% endif %}
+                    </td>
+                    <td><span class="badge badge-info">{{ log.action }}</span></td>
+                    <td>{{ log.details }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center;">لا توجد سجلات حالياً.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

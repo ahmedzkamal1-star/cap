@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-container-v2"
+    style="background: white; padding: 40px; border-radius: 30px; margin-top: 50px; box-shadow: 0 15px 50px rgba(0,0,0,0.05); text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 20px;">🛡️</div>
+    <h2 style="font-weight: 800; color: #1e293b; margin-bottom: 10px;">إعادة تعيين كلمة المرور فائق الأمان</h2>
+    <p style="color: #64748b; margin-bottom: 30px;">يرجى إدخال الكود الجامعي وكود الأمان (Master Key) لتغيير كلمة مرورك.
+    </p>
+
+    <form method="POST">
+        <div style="margin-bottom: 20px; text-align: right;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 700;">الكود الجامعي</label>
+            <input type="text" name="code" required
+                style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc;">
+        </div>
+
+        <div style="margin-bottom: 20px; text-align: right;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 700;">كود الأمان (Riko00ooAa#)</label>
+            <input type="password" name="master_key" required
+                style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc;">
+        </div>
+
+        <div style="margin-bottom: 30px; text-align: right;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 700;">كلمة المرور الجديدة</label>
+            <input type="password" name="new_password" required
+                style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc;">
+        </div>
+
+        <button type="submit" class="pomo-btn-main"
+            style="width: 100%; padding: 18px; font-size: 1.1rem; border-radius: 15px;">
+            تغيير كلمة المرور الآن ✨
+        </button>
+    </form>
+</div>
+{% endblock %}

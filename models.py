@@ -16,6 +16,9 @@ class User(UserMixin, db.Model):
     is_approved = db.Column(db.Boolean, default=False)
     last_seen = db.Column(db.DateTime)
     
+    # Master key for secure password resets
+    master_key = db.Column(db.String(100), nullable=True)
+    
     # Relationships
     enrollments = db.relationship('Enrollment', backref='student', lazy=True, cascade="all, delete-orphan")
     

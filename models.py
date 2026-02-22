@@ -19,6 +19,9 @@ class User(UserMixin, db.Model):
     # Master key for secure password resets
     master_key = db.Column(db.String(100), nullable=True)
     
+    # Master key for secure password resets
+    master_key = db.Column(db.String(100), nullable=True)
+    
     # Relationships
     enrollments = db.relationship('Enrollment', backref='student', lazy=True, cascade="all, delete-orphan")
     
@@ -45,7 +48,7 @@ class User(UserMixin, db.Model):
     post_views = db.relationship('PostView', backref='user', cascade="all, delete-orphan")
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password, method='scrypt')
+        self.password_hash = generate_password_hash(password, method='pbkdf2:sha256')
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

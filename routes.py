@@ -156,6 +156,24 @@ def secure_reset():
             
     return render_template('secure_reset.html')
 
+@main.route('/admin/secure-reset', methods=['GET', 'POST'])
+def secure_reset():
+    if request.method == 'POST':
+        user_code = request.form.get('code')
+        m_key = request.form.get('master_key')
+        new_pass = request.form.get('new_password')
+        
+        user = User.query.filter_by(code=user_code).first()
+        if user and user.master_key == m_key:
+            user.set_password(new_pass)
+            db.session.commit()
+            flash('تم تغيير كلمة المرور بنجاح باستخدام كود الأمان.', 'success')
+            return redirect(url_for('main.login'))
+        else:
+            flash('كود المستخدم أو كود الأمان غير صحيح.', 'danger')
+            
+    return render_template('secure_reset.html')
+
 @main.route('/enroll/<int:course_id>')
 @login_required
 def enroll(course_id):

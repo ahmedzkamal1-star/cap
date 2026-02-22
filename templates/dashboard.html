@@ -69,9 +69,33 @@
     {% else %}
     <div style="padding: 30px; text-align: center; color: #64748b;">
         <p>لم تسجل في أي مواد بعد. ✨</p>
-        <a href="{{ url_for('main.index') }}"
+        <a href="#available-courses"
             style="color: var(--primary-color); text-decoration: none; font-weight: 700; font-size: 14px; margin-top: 10px; display: block;">تصفح
             المواد المتاحة</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Available Courses Section -->
+<div class="section-header-v2 animate-fade-in" id="available-courses" style="animation-delay: 0.5s;">
+    <h3>🌐 مواد متاحة للتسجيل</h3>
+</div>
+<div class="list-card-v2 animate-fade-in" style="animation-delay: 0.6s; margin-bottom: 30px;">
+    {% if available_courses %}
+    {% for course in available_courses %}
+    <div class="list-item-v2">
+        <div class="item-avatar-v2" style="background: #e0f2fe; color: #0ea5e9;">{{ course.name[0] }}</div>
+        <div class="item-info-v2">
+            <div class="item-title-v2">{{ course.name }}</div>
+            <div class="item-subtitle-v2">{{ course.instructor }}</div>
+        </div>
+        <a href="{{ url_for('main.enroll', course_id=course.id) }}" class="pomo-btn-main"
+            style="padding: 8px 15px; font-size: 12px; text-decoration: none;">تحميل / انضمام</a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div style="padding: 30px; text-align: center; color: #64748b;">
+        <p>لا توجد مواد جديدة حالياً.</p>
     </div>
     {% endif %}
 </div>

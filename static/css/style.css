@@ -40,6 +40,69 @@ body {
     text-align: right;
     min-height: 100vh;
     transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Global Mesh Background */
+.mesh-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(80px);
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+[data-theme='dark'] .mesh-background {
+    opacity: 0.3;
+}
+
+.mesh-blob {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--p-primary), var(--p-secondary));
+    animation: float-mesh 20s infinite alternate;
+}
+
+.blob-1 {
+    width: 600px;
+    height: 600px;
+    top: -100px;
+    right: -100px;
+    background: #818cf8;
+}
+
+.blob-2 {
+    width: 500px;
+    height: 500px;
+    bottom: -50px;
+    left: -100px;
+    background: #c084fc;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    width: 400px;
+    height: 400px;
+    top: 40%;
+    left: 30%;
+    background: #f472b6;
+    animation-delay: -10s;
+}
+
+@keyframes float-mesh {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(50px, 100px) scale(1.1);
+    }
 }
 
 /* Layout */

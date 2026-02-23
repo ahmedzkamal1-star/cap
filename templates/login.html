@@ -3,155 +3,63 @@
 {% block title %}تسجيل الدخول - Al-dahih{% endblock %}
 
 {% block content %}
-<div class="premium-login-context">
-    <!-- Animated Mesh Background -->
-    <div class="mesh-background">
-        <div class="mesh-blob blob-1"></div>
-        <div class="mesh-blob blob-2"></div>
-        <div class="mesh-blob blob-3"></div>
-    </div>
+<div class="login-wrapper animate-slide-up">
+    <div class="login-glass-card-v3">
+        <div class="login-brand">
+            <div class="logo-box">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            </div>
+            <h2>أهلاً بك يا دحيح!</h2>
+            <p>سجل دخولك لتستكمل رحلة التفوق</p>
+        </div>
 
-    <div class="login-wrapper animate-slide-up">
-        <div class="login-glass-card-v3">
-            <div class="login-brand">
-                <div class="logo-box">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        <form method="POST" action="{{ url_for('main.login') }}" class="modern-form">
+            <div class="form-group-v3">
+                <label>الكود الجامعي</label>
+                <div class="input-focus-group">
+                    <i class="fas fa-fingerprint"></i>
+                    <input type="text" name="code" placeholder="أدخل كود الطالب" required autofocus>
                 </div>
-                <h2>أهلاً بك يا دحيح!</h2>
-                <p>سجل دخولك لتستكمل رحلة التفوق</p>
             </div>
 
-            <form method="POST" action="{{ url_for('main.login') }}" class="modern-form">
-                <div class="form-group-v3">
-                    <label>الكود الجامعي</label>
-                    <div class="input-focus-group">
-                        <i class="fas fa-fingerprint"></i>
-                        <input type="text" name="code" placeholder="أدخل كود الطالب" required autofocus>
-                    </div>
+            <div class="form-group-v3">
+                <label>كلمة المرور</label>
+                <div class="input-focus-group">
+                    <i class="fas fa-shield-alt"></i>
+                    <input type="password" name="password" placeholder="••••••••" required>
                 </div>
+            </div>
 
-                <div class="form-group-v3">
-                    <label>كلمة المرور</label>
-                    <div class="input-focus-group">
-                        <i class="fas fa-shield-alt"></i>
-                        <input type="password" name="password" placeholder="••••••••" required>
-                    </div>
+            <div class="form-actions-v3">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">تذكرني</label>
                 </div>
+                <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
+            </div>
 
-                <div class="form-actions-v3">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">تذكرني</label>
-                    </div>
-                    <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
-                </div>
+            <button type="submit" class="premium-btn">
+                <span>دخول المنصة</span>
+                <i class="fas fa-rocket"></i>
+            </button>
 
-                <button type="submit" class="premium-btn">
-                    <span>دخول المنصة</span>
-                    <i class="fas fa-rocket"></i>
-                </button>
+            <div class="register-hint">
+                ليس لديك حساب؟ <a href="{{ url_for('main.register') }}">انضم إلينا الآن</a>
+            </div>
+        </form>
+    </div>
 
-                <div class="register-hint">
-                    ليس لديك حساب؟ <a href="{{ url_for('main.register') }}">انضم إلينا الآن</a>
-                </div>
-            </form>
-        </div>
-
-        <!-- Bottom Decoration -->
-        <div class="login-footer-tags">
-            <span>حقوق المحتوى محفوظة © 2026</span>
-            <span>•</span>
-            <span>منصة الدحيح التعليمية</span>
-        </div>
+    <!-- Bottom Decoration -->
+    <div class="login-footer-tags">
+        <span>حقوق المحتوى محفوظة © 2026</span>
+        <span>•</span>
+        <span>منصة الدحيح التعليمية</span>
     </div>
 </div>
 
 <style>
-    :root {
-        --p-primary: #6366f1;
-        --p-secondary: #a855f7;
-        --p-accent: #ec4899;
-        --p-glass: rgba(255, 255, 255, 0.7);
-        --p-border: rgba(255, 255, 255, 0.3);
-    }
-
-    .premium-login-context {
-        min-height: calc(100vh - 80px);
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-        background: #f8fafc;
-        padding: 20px;
-    }
-
-    /* Mesh Background Animation */
-    .mesh-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        filter: blur(80px);
-        opacity: 0.6;
-    }
-
-    .mesh-blob {
-        position: absolute;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--p-primary), var(--p-secondary));
-        animation: float-mesh 20s infinite alternate;
-    }
-
-    .blob-1 {
-        width: 500px;
-        height: 500px;
-        top: -100px;
-        right: -100px;
-        background: #818cf8;
-    }
-
-    .blob-2 {
-        width: 400px;
-        height: 400px;
-        bottom: -50px;
-        left: -100px;
-        background: #c084fc;
-        animation-delay: -5s;
-    }
-
-    .blob-3 {
-        width: 300px;
-        height: 300px;
-        top: 40%;
-        left: 30%;
-        background: #f472b6;
-        animation-delay: -10s;
-    }
-
-    @keyframes float-mesh {
-        0% {
-            transform: translate(0, 0) scale(1);
-        }
-
-        100% {
-            transform: translate(50px, 100px) scale(1.2);
-        }
-    }
-
-    /* Login Card */
-    .login-wrapper {
-        width: 100%;
-        max-width: 480px;
-        z-index: 10;
-        position: relative;
-    }
-
     .login-glass-card-v3 {
-        background: var(--p-glass);
+        background: var(--p-glass-bg);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--p-border);

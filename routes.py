@@ -404,9 +404,12 @@ def admin_edit_student(user_id):
         old_role = student.role
         new_role = request.form.get('role')
         if new_role:
+            if student.role != new_role:
+                log_activity("تغيير صلاحية", f"تم تغيير دور {student.full_name} من {student.role} إلى {new_role}")
             student.role = new_role
-            if old_role != new_role:
-                log_activity("تغيير صلاحية", f"تم تغيير دور {student.full_name} من {old_role} إلى {new_role}")
+            # Hierarchy fix: if promoted to admin and doesn't have a creator, set current admin as creator
+            if new_role == 'admin' and not student.created_by_id:
+                student.created_by_id = current_user.id
         
         # Update password only if provided
         new_password = request.form.get('password')

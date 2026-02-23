@@ -20,9 +20,11 @@
     <meta name="theme-color" content="#6366f1">
 
     <script>
-        // Dark Mode Initialization
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        // Dark Mode Initialization (Run before body to prevent flash)
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
 
         // Anti-copy & Security
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -36,7 +38,7 @@
 
 <body>
     <!-- Premium Global Background -->
-    <div class="premium-bg-decorator">
+    <div class="mesh-background">
         <div class="mesh-blob blob-1"></div>
         <div class="mesh-blob blob-2"></div>
         <div class="mesh-blob blob-3"></div>

@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <title>{% block title %}{{ settings.system_name }}{% endblock %}</title>
-    <!-- Google Fonts: Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Cairo & Outfit for English numbers/accents -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/student_fix.css') }}?v=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.0">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
 
     <!-- PWA -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#0ea5e9">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#6366f1">
+
     <script>
+        // Dark Mode Initialization
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
         // Anti-copy & Security
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.addEventListener('keydown', function (e) {
@@ -29,43 +31,35 @@
                 e.preventDefault();
             }
         });
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/static/sw.js')
-                    .then(reg => console.log('Service Worker registered!'))
-                    .catch(err => console.log('Service Worker registration failed: ', err));
-            });
-        }
     </script>
 </head>
 
 <body>
-
-
+    <!-- Premium Global Background -->
+    <div class="premium-bg-decorator">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
+    </div>
 
     <div class="app-viewport">
-        <!-- Pomodoro FAB (Hidden if causing issues) -->
-        <button class="pomodoro-fab-v2" onclick="togglePomodoro()" title="مؤقت المذاكرة" style="display: none;">
-            <i class="fas fa-stopwatch"></i>
-        </button>
-
         <!-- Modern Header -->
-        <header class="header" style="z-index: 5000; position: sticky; top: 0; background: white;">
+        <header class="header card"
+            style="margin: 10px 15px; padding: 12px 20px; border-radius: 20px; position: sticky; top: 10px; z-index: 5000;">
             <div class="user-info-section">
-                <!-- Fluid Back Button - Only for sub-pages -->
                 {% if request.endpoint not in ['main.dashboard', 'main.login', 'main.register'] %}
-                <a href="javascript:history.back()" class="back-btn-v2" title="رجوع">
+                <a href="javascript:history.back()" class="header-action-btn"
+                    style="margin-left: 10px; background: transparent;">
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 {% endif %}
 
-                <a href="{{ url_for('main.profile') if current_user.is_authenticated else '#' }}" class="avatar-initial"
-                    style="text-decoration: none; color: inherit;">
+                <a href="{{ url_for('main.profile') if current_user.is_authenticated else '#' }}"
+                    class="avatar-initial">
                     {% if current_user.is_authenticated %}
                     {{ current_user.full_name[0] }}
                     {% else %}
-                    ?
+                    <i class="fas fa-user"></i>
                     {% endif %}
                 </a>
                 <div class="user-text-box">
@@ -86,14 +80,16 @@
                 </div>
             </div>
 
-            <div class="header-actions">
+            <div class="header-actions" style="display: flex; gap: 10px;">
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleTheme()" class="header-action-btn" id="theme-toggle" title="تبديل الوضع">
+                    <i class="fas fa-moon"></i>
+                </button>
+
                 {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.logout') }}" class="header-action-btn" title="خروج">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
-                {% else %}
-                <a href="{{ url_for('main.login') }}" class="header-action-btn">
-                    <i class="fas fa-sign-in-alt"></i>
+                <a href="{{ url_for('main.logout') }}" class="header-action-btn" title="خروج"
+                    style="color: var(--danger);">
+                    <i class="fas fa-power-off"></i>
                 </a>
                 {% endif %}
             </div>
@@ -101,12 +97,14 @@
 
         <!-- Main Content Area -->
         <main class="app-content-minimal">
-            <div class="flash-messages" style="padding: 10px 20px 0;">
+            <div class="flash-messages" style="padding: 0 20px;">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 {% for category, message in messages %}
-                <div class="alert alert-{{ category }} animate-fade-in"
-                    style="border-radius: 15px; margin-bottom: 10px; font-size: 0.9rem;">
+                <div class="alert alert-{{ category }} animate-fade-in card"
+                    style="padding: 12px 20px; margin-bottom: 10px;">
+                    <i class="fas {{ 'fa-check-circle' if category == 'success' else 'fa-exclamation-circle' }}"
+                        style="margin-left: 10px;"></i>
                     {{ message }}
                 </div>
                 {% endfor %}
@@ -114,30 +112,31 @@
                 {% endwith %}
             </div>
 
-            {% block content %}{% endblock %}
-
-            <div class="bottom-spacer-v2"></div>
+            <div style="padding-bottom: 100px;">
+                {% block content %}{% endblock %}
+            </div>
         </main>
 
-        <!-- Persistent Bottom Navigation -->
+        <!-- Reorganized Bottom Navigation -->
         {% if current_user.is_authenticated %}
-        <nav class="bottom-nav-v2">
-            <a href="{{ url_for('main.dashboard') }}" class="nav-link-v2 active">
+        <nav class="bottom-nav-v2 card"
+            style="position: fixed; bottom: 15px; left: 15px; right: 15px; margin: 0; padding: 10px; border-radius: 24px; display: flex; justify-content: space-around; backdrop-filter: blur(25px); border: 1px solid var(--p-border);">
+            <a href="{{ url_for('main.dashboard') }}" class="nav-link-v2">
                 <i class="fas fa-home"></i>
                 <span>الرئيسية</span>
             </a>
 
             {% if current_user.role|lower == 'admin' %}
             <a href="{{ url_for('main.admin_pending_users') }}" class="nav-link-v2">
-                <i class="fas fa-user-plus"></i>
+                <i class="fas fa-clock"></i>
                 <span>الطلبات</span>
             </a>
             <a href="{{ url_for('main.admin_students') }}" class="nav-link-v2">
-                <i class="fas fa-users-cog"></i>
+                <i class="fas fa-user-graduate"></i>
                 <span>الطلاب</span>
             </a>
             <a href="{{ url_for('main.admin_settings') }}" class="nav-link-v2">
-                <i class="fas fa-cog"></i>
+                <i class="fas fa-sliders-h"></i>
                 <span>الإعدادات</span>
             </a>
             {% else %}
@@ -146,12 +145,12 @@
                 <span>الأخبار</span>
             </a>
             <a href="{{ url_for('main.friends') }}" class="nav-link-v2">
-                <i class="fas fa-user-friends"></i>
+                <i class="fas fa-users"></i>
                 <span>الزملاء</span>
             </a>
-            <a href="{{ url_for('main.admin_chat') }}" class="nav-link-v2">
-                <i class="fas fa-comment-dots"></i>
-                <span>الدعم</span>
+            <a href="{{ url_for('main.profile') }}" class="nav-link-v2">
+                <i class="fas fa-user-circle"></i>
+                <span>حسابي</span>
             </a>
             {% endif %}
         </nav>
@@ -160,63 +159,35 @@
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script>
-        // Set active state in bottom nav based on current URL
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const target = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', target);
+            localStorage.setItem('theme', target);
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const icon = document.querySelector('#theme-toggle i');
+            if (current === 'dark') {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+        updateThemeIcon();
+
+        // Navigation Active State
         const currentPath = window.location.pathname;
         document.querySelectorAll('.nav-link-v2').forEach(item => {
             if (item.getAttribute('href') === currentPath) {
-                document.querySelectorAll('.nav-link-v2').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
+                item.style.color = 'var(--p-primary)';
+                item.style.transform = 'scale(1.1)';
             }
         });
-
-        // Pomodoro Logic
-        let pomoInterval;
-        let pomoTime = 25 * 60;
-        let isPomoRunning = false;
-
-        function updatePomoDisplay() {
-            let m = Math.floor(pomoTime / 60);
-            let s = pomoTime % 60;
-            document.getElementById('pomoTimeDisplay').innerText = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
-        }
-
-        function togglePomodoro() {
-            const t = document.getElementById('pomodoroTimer');
-            t.classList.toggle('active');
-        }
-
-        function startPomodoro() {
-            const btn = document.getElementById('pomoStartBtn');
-            if (isPomoRunning) {
-                clearInterval(pomoInterval);
-                btn.innerText = 'استكمال';
-                isPomoRunning = false;
-            } else {
-                pomoInterval = setInterval(() => {
-                    if (pomoTime > 0) {
-                        pomoTime--;
-                        updatePomoDisplay();
-                    } else {
-                        clearInterval(pomoInterval);
-                        alert("وقت الراحة! أحسنت.");
-                        resetPomodoro();
-                    }
-                }, 1000);
-                btn.innerText = 'إيقاف';
-                isPomoRunning = true;
-            }
-        }
-
-        function resetPomodoro() {
-            clearInterval(pomoInterval);
-            pomoTime = 25 * 60;
-            isPomoRunning = false;
-            document.getElementById('pomoStartBtn').innerText = 'ابدأ';
-            updatePomoDisplay();
-        }
     </script>
 </body>
-
-
 
 </html>

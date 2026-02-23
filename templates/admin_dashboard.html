@@ -4,147 +4,98 @@
 
 {% block content %}
 
-<div class="main-container-v2 animate-fade-in">
+<div class="main-container-v2 animate-fade-in" style="padding: 0 15px;">
     <!-- Dahih Premium Header/Stats -->
-    <div class="stats-grid-v2">
-        <div class="stat-card-v2" style="border-right: 4px solid #667eea;">
-            <div class="stat-icon-dahih">
-                <i class="fas fa-users"></i>
+    <div class="stats-grid-v2"
+        style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px;">
+        <div class="card stat-card-v2"
+            style="border-right: 4px solid var(--p-primary); display: flex; align-items: center; gap: 15px;">
+            <div class="stat-icon-dahih" style="background: rgba(99, 102, 241, 0.1); color: var(--p-primary);"><i
+                    class="fas fa-users"></i></div>
+            <div>
+                <div class="stat-label-v2" style="font-size: 0.85rem; opacity: 0.8;">إجمالي الطلاب</div>
+                <div class="stat-value-v2" style="font-size: 1.5rem; font-weight: 900;">{{ students_count }}</div>
             </div>
-            <div class="stat-label-v2">إجمالي الطلاب</div>
-            <div class="stat-value-v2">{{ students_count }}</div>
-            <div class="stat-badge-dahih">+3 اليوم</div>
         </div>
-        <div class="stat-card-v2" style="border-right: 4px solid #f59e0b;">
-            <div class="stat-icon-dahih" style="background: #fffbeb;">
-                <i class="fas fa-clock" style="color: #f59e0b;"></i>
+        <div class="card stat-card-v2"
+            style="border-right: 4px solid #f59e0b; display: flex; align-items: center; gap: 15px;">
+            <div class="stat-icon-dahih" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i
+                    class="fas fa-clock"></i></div>
+            <div>
+                <div class="stat-label-v2" style="font-size: 0.85rem; opacity: 0.8;">بانتظار المراجعة</div>
+                <div class="stat-value-v2" style="font-size: 1.5rem; font-weight: 900;">12</div>
             </div>
-            <div class="stat-label-v2">بانتظار المراجعة</div>
-            <div class="stat-value-v2">12</div>
-            <div class="stat-badge-dahih" style="color: #f59e0b;">+3 اليوم</div>
         </div>
     </div>
 
     <!-- Quick Search -->
     <div class="search-container" style="padding: 0 0 20px 0;">
-        <div class="search-box-v2">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="ابحث عن طالب، مادة، رسالة...">
-            <i class="fas fa-sliders-h" style="color: #667eea;"></i>
+        <div class="card search-box-v2"
+            style="display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-radius: 18px;">
+            <i class="fas fa-search" style="color: var(--p-text-muted);"></i>
+            <input type="text" placeholder="ابحث عن طالب، مادة، رسالة..."
+                style="border: none; background: transparent; flex: 1; outline: none; color: var(--p-text);">
+            <i class="fas fa-sliders-h" style="color: var(--p-primary);"></i>
         </div>
     </div>
 
-    <!-- 3-Column Menu Grid -->
-    <div class="section-header-v2">
-        <h3><i class="fas fa-bookmark" style="color: #667eea; margin-left: 8px;"></i>القائمة المرجعية</h3>
+    <!-- 3-Column Menu Grid (REDUCED) -->
+    <div class="section-header-v2" style="margin-right: 5px;">
+        <h3><i class="fas fa-bookmark" style="color: var(--p-primary); margin-left: 8px;"></i>إدارة المنصة</h3>
     </div>
 
-    <div class="menu-grid-v2">
-        <a href="{{ url_for('main.admin_moderators') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-user-shield"></i></div>
-            <span>المشرفين</span>
+    <div class="menu-grid-v2"
+        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
+        <a href="{{ url_for('main.admin_moderators') }}" class="card menu-item-v2"
+            style="text-align: center; padding: 15px; text-decoration: none;">
+            <div class="menu-icon-v2" style="color: var(--p-accent); margin-bottom: 8px; font-size: 1.5rem;"><i
+                    class="fas fa-user-shield"></i></div>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">المشرفين</span>
         </a>
-        <a href="{{ url_for('main.admin_students') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-user-graduate"></i></div>
-            <span>الطلاب</span>
+        <a href="{{ url_for('main.admin_posts') }}" class="card menu-item-v2"
+            style="text-align: center; padding: 15px; text-decoration: none;">
+            <div class="menu-icon-v2" style="color: var(--p-primary); margin-bottom: 8px; font-size: 1.5rem;"><i
+                    class="fas fa-newspaper"></i></div>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">المنشورات</span>
         </a>
-        <a href="{{ url_for('main.admin_pending_users') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-file-signature"></i></div>
-            <span>الطلبات</span>
+        <a href="{{ url_for('main.admin_courses') }}" class="card menu-item-v2"
+            style="text-align: center; padding: 15px; text-decoration: none;">
+            <div class="menu-icon-v2" style="color: #10b981; margin-bottom: 8px; font-size: 1.5rem;"><i
+                    class="fas fa-book"></i></div>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">المواد</span>
         </a>
-        <a href="{{ url_for('main.admin_posts') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-newspaper"></i></div>
-            <span>المنشورات</span>
-        </a>
-        <a href="{{ url_for('main.admin_courses') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-book"></i></div>
-            <span>المواد</span>
-        </a>
-        <a href="{{ url_for('main.admin_messages') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-envelope"></i></div>
-            <span>الرسائل</span>
-        </a>
-        <a href="{{ url_for('main.admin_settings') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-cog"></i></div>
-            <span>الإعدادات</span>
-        </a>
-        <a href="{{ url_for('main.dashboard') }}" class="menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-home"></i></div>
-            <span>الرئيسية</span>
+        <a href="{{ url_for('main.admin_messages') }}" class="card menu-item-v2"
+            style="text-align: center; padding: 15px; text-decoration: none;">
+            <div class="menu-icon-v2" style="color: #f59e0b; margin-bottom: 8px; font-size: 1.5rem;"><i
+                    class="fas fa-envelope"></i></div>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الرسائل</span>
         </a>
     </div>
 
     <!-- Recent Registration Requests -->
-    <div class="section-header-v2" style="margin-top: 10px;">
-        <h3><i class="fas fa-user-clock" style="color: #667eea; margin-left: 8px;"></i>طلبات التسجيل الحديثة</h3>
-        <a href="{{ url_for('main.admin_pending_users') }}" style="color: #667eea; font-size: 13px;">عرض الكل</a>
+    <div class="section-header-v2"
+        style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center; margin-right: 5px;">
+        <h3><i class="fas fa-user-clock" style="color: var(--p-primary); margin-left: 8px;"></i>طلبات حديثة</h3>
+        <a href="{{ url_for('main.admin_pending_users') }}"
+            style="color: var(--p-primary); font-size: 13px; text-decoration: none; font-weight: 700;">عرض الكل</a>
     </div>
 
     <div class="requests-list-dahih">
-        <!-- Mock data for demonstration, matching user's HTML -->
-        <a href="{{ url_for('main.admin_pending_users') }}" class="request-item-dahih">
-            <div class="student-avatar-dahih">أ</div>
-            <div class="student-info-dahih">
-                <div class="student-name-dahih">أحمد محمد عبدالله</div>
-                <div class="student-meta-dahih">هندسة حاسوب • 12/02/2026</div>
+        <a href="{{ url_for('main.admin_pending_users') }}" class="card request-item-dahih"
+            style="display: flex; align-items: center; gap: 15px; padding: 15px; margin-bottom: 12px; text-decoration: none;">
+            <div class="student-avatar-dahih"
+                style="width: 45px; height: 45px; background: var(--grad-main); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900;">
+                أ</div>
+            <div class="student-info-dahih" style="flex: 1;">
+                <div class="student-name-dahih" style="font-weight: 700; color: var(--p-text);">أحمد محمد عبدالله</div>
+                <div class="student-meta-dahih" style="font-size: 0.75rem; color: var(--p-text-muted);">هندسة حاسوب •
+                    12/02/2026</div>
             </div>
-            <div class="status-dahih">
-                <i class="fas fa-hourglass-half"></i>
-                <span>قيد المراجعة</span>
+            <div class="status-dahih"
+                style="font-size: 0.7rem; background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 5px 10px; border-radius: 8px;">
+                <i class="fas fa-hourglass-half" style="margin-left: 5px;"></i>
+                <span>مراجعة</span>
             </div>
-        </a>
-
-        <a href="{{ url_for('main.admin_pending_users') }}" class="request-item-dahih">
-            <div class="student-avatar-dahih">س</div>
-            <div class="student-info-dahih">
-                <div class="student-name-dahih">سارة خالد أحمد</div>
-                <div class="student-meta-dahih">طب بشري • 12/02/2026</div>
-            </div>
-            <div class="status-dahih">
-                <i class="fas fa-hourglass-half"></i>
-                <span>قيد المراجعة</span>
-            </div>
-        </a>
-
-        <a href="{{ url_for('main.admin_students') }}" class="request-item-dahih">
-            <div class="student-avatar-dahih">م</div>
-            <div class="student-info-dahih">
-                <div class="student-name-dahih">محمود عباس</div>
-                <div class="student-meta-dahih">تجارة • 11/02/2026</div>
-            </div>
-            <div class="status-dahih" style="background: #d1fae5; color: #065f46;">
-                <i class="fas fa-check-circle"></i>
-                <span>مقبول</span>
-            </div>
-        </a>
-    </div>
-
-    <!-- Recent Messages Section -->
-    <div class="messages-preview-dahih">
-        <div class="section-header-v2" style="padding: 0; margin-bottom: 15px;">
-            <h3><i class="fas fa-comments" style="color: #667eea; margin-left: 8px;"></i>آخر الرسائل</h3>
-        </div>
-
-        <a href="{{ url_for('main.admin_messages') }}" class="message-item-dahih">
-            <div class="message-icon-dahih">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="message-content-dahih">
-                <div class="message-sender-dahih">أحمد محمد</div>
-                <div class="message-text-dahih">استفسار عن جدول المواد</div>
-            </div>
-            <div class="message-time-dahih">منذ 5 د</div>
-        </a>
-
-        <a href="{{ url_for('main.admin_messages') }}" class="message-item-dahih">
-            <div class="message-icon-dahih">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="message-content-dahih">
-                <div class="message-sender-dahih">سارة خالد</div>
-                <div class="message-text-dahih">طلب تأجيل الدفعة</div>
-            </div>
-            <div class="message-time-dahih">منذ 15 د</div>
         </a>
     </div>
 </div>

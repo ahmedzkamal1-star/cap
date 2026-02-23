@@ -4,58 +4,66 @@
 
 {% block content %}
 
-<div class="main-container-v2 animate-fade-in">
-    <div class="section-header-v2" style="margin-top: 10px;">
-        <h3><i class="fas fa-user-clock" style="color: #667eea; margin-left: 8px;"></i>طلبات التسجيل المعلقة</h3>
+<div class="main-container-v2 animate-fade-in" style="padding: 0 15px;">
+    <div class="section-header-v2" style="margin-top: 10px; margin-right: 5px;">
+        <h3><i class="fas fa-user-clock" style="color: var(--p-primary); margin-left: 8px;"></i>طلبات التسجيل المعلقة
+        </h3>
     </div>
-    <p style="color: #64748b; font-size: 14px; margin: 0 0 20px 0; padding: 0 5px;">هؤلاء الطلاب يحتاجون لموافقتك
-        ليتمكنوا من تسجيل الدخول للنظام.</p>
+    <p style="color: var(--p-text-muted); font-size: 14px; margin: 0 5px 20px 0;">هؤلاء الطلاب يحتاجون لموافقتك ليتمكنوا
+        من تسجيل الدخول للنظام.</p>
 
-    <div class="table-container-v2 animate-fade-in" style="margin: 0; border: none; box-shadow: none;">
-        <table class="modern-table-v2">
-            <thead>
-                <tr>
-                    <th>الطالب</th>
-                    <th>الكود</th>
-                    <th>القسم / السنة</th>
-                    <th style="text-align: center;">الإجراء</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>
-                        <div style="font-weight: 700; color: #1e293b;">{{ user.full_name }}</div>
-                        <div style="font-size: 11px; color: #94a3b8;"><i class="fas fa-phone-alt"
-                                style="margin-left: 4px;"></i>{{ user.phone }}</div>
-                    </td>
-                    <td style="font-weight: 700; color: #667eea;">#{{ user.code }}</td>
-                    <td>
-                        <div style="font-size: 13px; color: #1e293b; font-weight: 600;">{{ user.department }}</div>
-                        <div style="font-size: 11px; color: #64748b;">{{ user.year }}</div>
-                    </td>
-                    <td>
-                        <div style="display: flex; justify-content: center;">
+    <div class="card animate-fade-in" style="padding: 0; overflow: hidden; border-radius: 20px;">
+        <div class="table-container-v2" style="margin: 0; border: none; box-shadow: none;">
+            <table class="modern-table-v2" style="width: 100%; border-collapse: collapse;">
+                <thead style="background: rgba(99, 102, 241, 0.05);">
+                    <tr>
+                        <th style="padding: 15px; text-align: right; color: var(--p-primary); font-weight: 700;">الطالب
+                        </th>
+                        <th style="padding: 15px; text-align: right; color: var(--p-primary); font-weight: 700;">الكود
+                        </th>
+                        <th style="padding: 15px; text-align: right; color: var(--p-primary); font-weight: 700;">القسم /
+                            السنة</th>
+                        <th style="padding: 15px; text-align: center; color: var(--p-primary); font-weight: 700;">
+                            الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr style="border-top: 1px solid var(--p-border);">
+                        <td style="padding: 15px;">
+                            <div style="font-weight: 700; color: var(--p-text);">{{ user.full_name }}</div>
+                            <div style="font-size: 11px; color: var(--p-text-muted);"><i class="fas fa-phone-alt"
+                                    style="margin-left: 4px;"></i>{{ user.phone }}</div>
+                        </td>
+                        <td style="padding: 15px; font-weight: 900; color: var(--p-primary); font-family: 'Outfit';">#{{
+                            user.code }}</td>
+                        <td style="padding: 15px;">
+                            <div style="font-size: 13px; color: var(--p-text); font-weight: 600;">{{ user.department }}
+                            </div>
+                            <div style="font-size: 11px; color: var(--p-text-muted);">{{ user.year }}</div>
+                        </td>
+                        <td style="padding: 15px; text-align: center;">
                             <form action="{{ url_for('main.admin_approve_user', user_id=user.id) }}" method="POST">
-                                <button type="submit" class="header-action-btn"
-                                    style="width: auto; padding: 0 15px; font-size: 13px; background: #f0fdf4; color: #166534; border: none; cursor: pointer; height: 35px; border-radius: 10px;">
+                                <button type="submit" class="premium-btn"
+                                    style="padding: 8px 15px; font-size: 12px; border-radius: 12px; background: var(--grad-main); box-shadow: none;">
                                     <i class="fas fa-check-circle" style="margin-left: 6px;"></i> موافقة
                                 </button>
                             </form>
-                        </div>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4" style="text-align: center; padding: 60px; color: #94a3b8;">
-                        <i class="fas fa-user-check"
-                            style="font-size: 40px; margin-bottom: 15px; display: block; color: #10b981;"></i>
-                        لا توجد طلبات معلقة حالياً. جميع الطلاب مسجلون!
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 60px;">
+                            <i class="fas fa-user-check"
+                                style="font-size: 40px; margin-bottom: 15px; display: block; color: var(--p-primary); opacity: 0.3;"></i>
+                            <span style="color: var(--p-text-muted);">لا توجد طلبات معلقة حالياً. جميع الطلاب
+                                مسجلون!</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

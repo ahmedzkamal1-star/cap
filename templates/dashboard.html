@@ -4,103 +4,110 @@
 
 {% block content %}
 
-
 <!-- Student Stats Grid -->
-<div class="stats-grid-v2 animate-fade-in">
-    <div class="stat-card-v2">
-        <div class="stat-icon-v2"><i class="fas fa-graduation-cap"></i></div>
-        <div class="stat-label-v2">موادي المسجلة</div>
-        <div class="stat-value-v2">{{ enrollments|length }}</div>
+<div class="stats-grid-v2 animate-fade-in" style="margin-bottom: 25px;">
+    <div class="card stat-card-v2"
+        style="border-right: 4px solid var(--p-primary); display: flex; align-items: center; gap: 15px;">
+        <div class="stat-icon-v2" style="background: rgba(99, 102, 241, 0.1); color: var(--p-primary);"><i
+                class="fas fa-graduation-cap"></i></div>
+        <div>
+            <div class="stat-label-v2" style="font-size: 0.85rem; opacity: 0.8;">موادي المسجلة</div>
+            <div class="stat-value-v2" style="font-size: 1.5rem; font-weight: 900;">{{ enrollments|length }}</div>
+        </div>
     </div>
-    <div class="stat-card-v2">
-        <div class="stat-icon-v2" style="background: #fffbeb; color: #f59e0b;"><i class="fas fa-star"></i></div>
-        <div class="stat-label-v2">نقاطي الحالية</div>
-        <div class="stat-value-v2">120</div>
+    <div class="card stat-card-v2"
+        style="border-right: 4px solid var(--p-secondary); display: flex; align-items: center; gap: 15px;">
+        <div class="stat-icon-v2" style="background: rgba(168, 85, 247, 0.1); color: var(--p-secondary);"><i
+                class="fas fa-star"></i></div>
+        <div>
+            <div class="stat-label-v2" style="font-size: 0.85rem; opacity: 0.8;">نقاطي الحالية</div>
+            <div class="stat-value-v2" style="font-size: 1.5rem; font-weight: 900;">120</div>
+        </div>
     </div>
 </div>
 
-<!-- Student services Menu Grid -->
-<div class="section-header-v2 animate-fade-in" style="animation-delay: 0.1s;">
-    <h3>🚀 خدماتي الجامعية</h3>
+<!-- Student services Menu Grid (REDUCED) -->
+<div class="section-header-v2 animate-fade-in" style="animation-delay: 0.1s; margin-right: 20px;">
+    <h3>🚀 خدمات سريعة</h3>
 </div>
-<div class="menu-grid-v2 animate-fade-in" style="animation-delay: 0.2s;">
-    <a href="{{ url_for('main.index') }}" class="menu-item-v2">
-        <div class="menu-icon-v2"><i class="fas fa-newspaper"></i></div>
-        <span>الأخبار</span>
+<div class="menu-grid-v2 animate-fade-in"
+    style="animation-delay: 0.2s; padding: 0 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+    <a href="#my-courses" class="card menu-item-v2" style="text-align: center; padding: 15px; text-decoration: none;">
+        <div class="menu-icon-v2" style="color: var(--p-primary); margin-bottom: 8px; font-size: 1.5rem;"><i
+                class="fas fa-book-open"></i></div>
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الدروس</span>
     </a>
-    <a href="#my-courses" class="menu-item-v2">
-        <div class="menu-icon-v2" style="color: #10b981;"><i class="fas fa-book-open"></i></div>
-        <span>الدروس</span>
+    <a href="{{ url_for('main.admin_chat') }}" class="card menu-item-v2"
+        style="text-align: center; padding: 15px; text-decoration: none;">
+        <div class="menu-icon-v2" style="color: var(--p-accent); margin-bottom: 8px; font-size: 1.5rem;"><i
+                class="fas fa-headset"></i></div>
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الدعم</span>
     </a>
-    <a href="{{ url_for('main.friends') }}" class="menu-item-v2">
-        <div class="menu-icon-v2" style="color: #6366f1;"><i class="fas fa-users"></i></div>
-        <span>الزملاء</span>
-    </a>
-    <a href="{{ url_for('main.admin_chat') }}" class="menu-item-v2">
-        <div class="menu-icon-v2" style="color: #ec4899;"><i class="fas fa-headset"></i></div>
-        <span>الدعم</span>
-    </a>
-    <a href="#" class="menu-item-v2">
-        <div class="menu-icon-v2" style="color: #f59e0b;"><i class="fas fa-calendar-check"></i></div>
-        <span>الجدول</span>
-    </a>
-    <a href="{{ url_for('main.profile') }}" class="menu-item-v2">
-        <div class="menu-icon-v2" style="color: #64748b;"><i class="fas fa-user-circle"></i></div>
-        <span>حسابي</span>
+    <a href="#" class="card menu-item-v2" style="text-align: center; padding: 15px; text-decoration: none;">
+        <div class="menu-icon-v2" style="color: #f59e0b; margin-bottom: 8px; font-size: 1.5rem;"><i
+                class="fas fa-calendar-check"></i></div>
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الجدول</span>
     </a>
 </div>
 
 <!-- My Courses Section -->
-<div class="section-header-v2 animate-fade-in" id="my-courses" style="animation-delay: 0.3s;">
+<div class="section-header-v2 animate-fade-in" id="my-courses"
+    style="animation-delay: 0.3s; margin-right: 20px; margin-top: 30px;">
     <h3>📚 استكمال المذاكرة</h3>
 </div>
-<div class="list-card-v2 animate-fade-in" style="animation-delay: 0.4s; margin-bottom: 30px;">
+<div class="animate-fade-in" style="animation-delay: 0.4s; padding: 0 15px;">
     {% if enrollments %}
     {% for enrollment in enrollments %}
-    <a href="{{ url_for('main.course_details', course_id=enrollment.course.id) }}" class="list-item-v2">
-        <div class="item-avatar-v2">{{ enrollment.course.name[0] }}</div>
-        <div class="item-info-v2">
-            <div class="item-title-v2">{{ enrollment.course.name }}</div>
-            <div class="item-subtitle-v2">{{ enrollment.course.instructor }}</div>
+    <a href="{{ url_for('main.course_details', course_id=enrollment.course.id) }}" class="card list-item-v2"
+        style="display: flex; align-items: center; text-decoration: none; padding: 15px; margin-bottom: 12px; gap: 15px;">
+        <div class="item-avatar-v2"
+            style="width: 50px; height: 50px; background: var(--grad-main); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900;">
+            {{ enrollment.course.name[0] }}</div>
+        <div class="item-info-v2" style="flex: 1;">
+            <div class="item-title-v2" style="font-weight: 700; color: var(--p-text);">{{ enrollment.course.name }}
+            </div>
+            <div class="item-subtitle-v2" style="font-size: 0.8rem; color: var(--p-text-muted);">{{
+                enrollment.course.instructor }}</div>
         </div>
-        <i class="fas fa-chevron-left" style="color: #cbd5e1; font-size: 0.8rem;"></i>
+        <i class="fas fa-chevron-left" style="color: var(--p-text-muted); opacity: 0.5;"></i>
     </a>
     {% endfor %}
     {% else %}
-    <div style="padding: 30px; text-align: center; color: #64748b;">
-        <p>لم تسجل في أي مواد بعد. ✨</p>
-        <a href="#available-courses"
-            style="color: var(--primary-color); text-decoration: none; font-weight: 700; font-size: 14px; margin-top: 10px; display: block;">تصفح
+    <div class="card" style="padding: 30px; text-align: center;">
+        <p style="color: var(--p-text-muted);">لم تسجل في أي مواد بعد. ✨</p>
+        <a href="#available-courses" style="color: var(--p-primary); text-decoration: none; font-weight: 700;">تصفح
             المواد المتاحة</a>
     </div>
     {% endif %}
 </div>
 
 <!-- Available Courses Section -->
-<div class="section-header-v2 animate-fade-in" id="available-courses" style="animation-delay: 0.5s;">
+<div class="section-header-v2 animate-fade-in" id="available-courses"
+    style="animation-delay: 0.5s; margin-right: 20px; margin-top: 30px;">
     <h3>🌐 مواد متاحة للتسجيل</h3>
 </div>
-<div class="list-card-v2 animate-fade-in" style="animation-delay: 0.6s; margin-bottom: 30px;">
+<div class="animate-fade-in" style="animation-delay: 0.6s; padding: 0 15px;">
     {% if available_courses %}
     {% for course in available_courses %}
-    <div class="list-item-v2">
-        <div class="item-avatar-v2" style="background: #e0f2fe; color: #0ea5e9;">{{ course.name[0] }}</div>
-        <div class="item-info-v2">
-            <div class="item-title-v2">{{ course.name }}</div>
-            <div class="item-subtitle-v2">{{ course.instructor }}</div>
+    <div class="card list-item-v2"
+        style="display: flex; align-items: center; padding: 15px; margin-bottom: 12px; gap: 15px;">
+        <div class="item-avatar-v2"
+            style="width: 50px; height: 50px; background: rgba(99, 102, 241, 0.1); color: var(--p-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900;">
+            {{ course.name[0] }}</div>
+        <div class="item-info-v2" style="flex: 1;">
+            <div class="item-title-v2" style="font-weight: 700; color: var(--p-text);">{{ course.name }}</div>
+            <div class="item-subtitle-v2" style="font-size: 0.8rem; color: var(--p-text-muted);">{{ course.instructor }}
+            </div>
         </div>
-        <a href="{{ url_for('main.enroll', course_id=course.id) }}" class="pomo-btn-main"
-            style="padding: 8px 15px; font-size: 12px; text-decoration: none;">تحميل / انضمام</a>
+        <a href="{{ url_for('main.enroll', course_id=course.id) }}" class="premium-btn"
+            style="padding: 10px 15px; font-size: 0.8rem; border-radius: 12px; box-shadow: none;">انضمام</a>
     </div>
     {% endfor %}
     {% else %}
-    <div style="padding: 30px; text-align: center; color: #64748b;">
-        <p>لا توجد مواد جديدة حالياً.</p>
+    <div class="card" style="padding: 30px; text-align: center;">
+        <p style="color: var(--p-text-muted);">لا توجد مواد جديدة حالياً.</p>
     </div>
     {% endif %}
 </div>
-
-
-
 
 {% endblock %}

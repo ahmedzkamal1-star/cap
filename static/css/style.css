@@ -1,47 +1,45 @@
-/* Base Styles */
+/* Base Styles & Premium Design System */
 :root {
-    --primary-color: #0ea5e9;
-    /* Cyan 600 */
-    --secondary-color: #0284c7;
-    /* Sky 700 */
-    --accent-color: #7dd3fc;
-    /* Sky 300 */
-    --light-blue: #e0f2fe;
-    /* Sky 100 */
-    --background-color: #f8fafc;
-    --text-color: #0f172a;
-    --white: #ffffff;
-    --danger: #ef4444;
-    --success: #10b981;
-    --sidebar-width: 280px;
-    --header-height: 70px;
-    --border-radius-lg: 24px;
-    --border-radius-md: 16px;
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    /* Light Mode Palette (Default) */
+    --p-primary: #6366f1;
+    --p-secondary: #a855f7;
+    --p-accent: #ec4899;
+    --p-bg: #f8fafc;
+    --p-card-bg: rgba(255, 255, 255, 0.7);
+    --p-text: #1e293b;
+    --p-text-muted: #64748b;
+    --p-border: rgba(255, 255, 255, 0.3);
+    --p-glass-blur: 20px;
 
-    /* Dahih v2 Gradients */
-    --grad-blue: linear-gradient(135deg, #2193b0, #6dd5ed);
-    --grad-green: linear-gradient(135deg, #11998e, #38ef7d);
-    --grad-orange: linear-gradient(135deg, #f12711, #f5af19);
-    --grad-red: linear-gradient(135deg, #cb2d3e, #ef473a);
-    --grad-gray: linear-gradient(135deg, #2c3e50, #3498db);
-    --grad-main: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --grad-main: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --shadow-premium: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+
+    /* Legacy compatibility */
+    --primary-color: var(--p-primary);
+    --secondary-color: var(--p-secondary);
+    --background-color: var(--p-bg);
+}
+
+/* Dark Mode Palette Overlay */
+[data-theme='dark'] {
+    --p-bg: #0f172a;
+    --p-card-bg: rgba(30, 41, 59, 0.7);
+    --p-text: #f8fafc;
+    --p-text-muted: #94a3b8;
+    --p-border: rgba(255, 255, 255, 0.05);
+    --p-glass-blur: 25px;
 }
 
 body {
     font-family: 'Cairo', sans-serif;
-    background-color: #f0f2f5;
-    background-image:
-        radial-gradient(at 0% 0%, rgba(102, 126, 234, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(118, 75, 162, 0.15) 0px, transparent 50%);
-    background-attachment: fixed;
-    color: var(--text-color);
+    background-color: var(--p-bg);
+    color: var(--p-text);
     margin: 0;
     padding: 0;
     direction: rtl;
     text-align: right;
     min-height: 100vh;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Layout */
@@ -158,14 +156,80 @@ body {
     box-sizing: border-box;
 }
 
-/* Cards */
-.card {
-    background: var(--white);
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid #f1f5f9;
+/* Glass Cards */
+.card,
+.p-card {
+    background: var(--p-card-bg);
+    backdrop-filter: blur(var(--p-glass-blur));
+    -webkit-backdrop-filter: blur(var(--p-glass-blur));
+    border-radius: 28px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--p-border);
+    box-shadow: var(--shadow-premium);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.12);
+}
+
+/* Global Mesh Background Decorator */
+.premium-bg-decorator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0.4;
+    filter: blur(100px);
+}
+
+.mesh-blob {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--p-primary);
+    animation: float-slow 30s infinite alternate;
+}
+
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    background: var(--p-primary);
+}
+
+.blob-2 {
+    bottom: -10%;
+    right: -10%;
+    background: var(--p-secondary);
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    top: 40%;
+    left: 30%;
+    background: var(--p-accent);
+    animation-delay: -10s;
+}
+
+[data-theme='dark'] .premium-bg-decorator {
+    opacity: 0.2;
+}
+
+@keyframes float-slow {
+    0% {
+        transform: translate(-10%, -10%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(30%, 30%) rotate(180deg);
+    }
 }
 
 .card h2,

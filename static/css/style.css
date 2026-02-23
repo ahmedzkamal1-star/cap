@@ -1,21 +1,30 @@
 /* Base Styles & Premium Design System */
 :root {
-    /* Premium Blue Palette (Vibrant & Solid) */
-    --p-primary: #2563eb;
-    --p-secondary: #3b82f6;
-    --p-accent: #0ea5e9;
-    --p-bg: #f1f5f9;
-    /* Solid base */
-    --p-card-bg: #ffffff;
-    /* Solid White cards for better contrast */
-    --p-glass-bg: rgba(255, 255, 255, 0.9);
-    --p-text: #0f172a;
-    --p-text-muted: #64748b;
-    --p-border: #e2e8f0;
-    --p-glass-blur: 10px;
+    /* User's Sky Blue Design System */
+    --bg-sky-light: #e6f7ff;
+    --bg-sky-soft: #b8e2f2;
+    --bg-sky-gradient: linear-gradient(135deg, #a8e0ff 0%, #7ec8e0 50%, #6bb9d0 100%);
+    --bg-sky-modern: #d4f1f9;
 
-    --grad-main: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-    --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --sky-primary: #00a8cc;
+    --sky-secondary: #7ed6df;
+    --sky-accent: #22a6b3;
+    --sky-light: #c7ecee;
+
+    /* Mapping to Global Design System (v18.0) */
+    --p-primary: var(--sky-primary);
+    --p-secondary: var(--sky-secondary);
+    --p-accent: var(--sky-accent);
+    --p-bg: var(--bg-sky-modern);
+    --p-card-bg: rgba(255, 255, 255, 0.9);
+    --p-glass-bg: rgba(255, 255, 255, 0.4);
+    --p-text: #0b1d2e;
+    --p-text-muted: #576d82;
+    --p-border: rgba(255, 255, 255, 0.6);
+    --p-glass-blur: 12px;
+
+    --grad-main: var(--bg-sky-gradient);
+    --shadow-premium: 0 8px 32px rgba(0, 168, 204, 0.2);
 
     --sidebar-width: 0px !important;
     --header-height: 80px;
@@ -38,10 +47,14 @@ html {
     background-color: var(--p-bg);
 }
 
+html {
+    background: var(--bg-sky-gradient);
+    min-height: 100vh;
+}
+
 body {
     font-family: 'Cairo', sans-serif;
     background-color: transparent !important;
-    /* Allow mesh to show through */
     color: var(--p-text);
     margin: 0 !important;
     padding: 0 !important;
@@ -64,14 +77,23 @@ body {
     left: 0;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: -10 !important;
-    /* Put at absolute bottom */
-    filter: blur(80px);
-    /* Slightly less blur */
-    opacity: 0.8 !important;
-    /* Higher opacity */
+    z-index: -50 !important;
+    /* Below content but above html bg */
+    filter: blur(60px);
+    opacity: 1 !important;
+    /* Full visibility */
     pointer-events: none;
     transition: opacity 0.5s ease;
+}
+
+.mesh-blob {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sky-primary), var(--sky-secondary));
+    opacity: 0.5;
+    animation: float-mesh 15s infinite alternate;
 }
 
 [data-theme='dark'] .mesh-background {
@@ -877,7 +899,8 @@ body {
 .header-actions {
     display: flex !important;
     flex-direction: row !important;
-    /* ABSOLUTE ROW */
+    /* FORCE ROW */
+    flex-wrap: nowrap !important;
     align-items: center !important;
     justify-content: flex-end !important;
     gap: 12px !important;

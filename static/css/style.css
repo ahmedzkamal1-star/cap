@@ -70,10 +70,12 @@ body {
     left: 0;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 0 !important;
-    /* Put mesh ON TOP of html bg but BELOW content */
-    filter: blur(100px);
-    opacity: 0.6;
+    z-index: -10 !important;
+    /* Put at absolute bottom */
+    filter: blur(80px);
+    /* Slightly less blur */
+    opacity: 0.8 !important;
+    /* Higher opacity */
     pointer-events: none;
     transition: opacity 0.5s ease;
 }
@@ -880,24 +882,31 @@ body {
 
 .header-actions {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
+    justify-content: flex-end !important;
     gap: 12px !important;
+    margin-right: auto !important;
+    /* Push to the opposite side if needed */
 }
 
 .header-action-btn {
     background: var(--p-glass-bg);
     border: 1px solid var(--p-border);
-    width: 44px;
-    height: 44px;
+    width: 44px !important;
+    height: 44px !important;
     border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     color: var(--p-primary);
     text-decoration: none;
-    font-size: 19px;
+    font-size: 20px;
+    /* Slightly larger icons */
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    /* Subtle shadow on button */
 }
 
 .header-action-btn:hover {

@@ -207,7 +207,7 @@ body {
 /* Main Content */
 .main-content {
     flex: 1;
-    margin-right: calc(var(--sidebar-width) + 20px);
+    margin-right: 0;
     display: flex;
     flex-direction: column;
     min-width: 0;
@@ -216,17 +216,17 @@ body {
 /* Header */
 .top-header {
     height: var(--header-height);
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--p-card-bg);
+    backdrop-filter: blur(var(--p-glass-blur));
+    -webkit-backdrop-filter: blur(var(--p-glass-blur));
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
-    margin: 10px 20px 0 20px;
+    padding: 0 1.5rem;
+    margin: 10px 15px 0 15px;
     border-radius: var(--border-radius-md);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--p-border);
+    box-shadow: var(--shadow-premium);
 }
 
 .user-info {

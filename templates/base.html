@@ -12,7 +12,7 @@
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=8.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=9.0">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
 
     <!-- PWA -->
@@ -46,12 +46,10 @@
 
     <div class="app-viewport">
         <!-- Modern Header -->
-        <header class="header card"
-            style="margin: 10px 15px; padding: 12px 20px; border-radius: 20px; position: sticky; top: 10px; z-index: 5000;">
+        <header class="header card">
             <div class="user-info-section">
                 {% if request.endpoint not in ['main.dashboard', 'main.login', 'main.register'] %}
-                <a href="javascript:history.back()" class="header-action-btn"
-                    style="margin-left: 10px; background: transparent;">
+                <a href="javascript:history.back()" class="header-action-btn back-btn-v2">
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 {% endif %}
@@ -82,15 +80,14 @@
                 </div>
             </div>
 
-            <div class="header-actions" style="display: flex; gap: 10px;">
+            <div class="header-actions">
                 <!-- Dark Mode Toggle -->
                 <button onclick="toggleTheme()" class="header-action-btn" id="theme-toggle" title="تبديل الوضع">
                     <i class="fas fa-moon"></i>
                 </button>
 
                 {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.logout') }}" class="header-action-btn" title="خروج"
-                    style="color: var(--danger);">
+                <a href="{{ url_for('main.logout') }}" class="header-action-btn logout-btn-v2" title="خروج">
                     <i class="fas fa-power-off"></i>
                 </a>
                 {% else %}
@@ -107,10 +104,8 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 {% for category, message in messages %}
-                <div class="alert alert-{{ category }} animate-fade-in card"
-                    style="padding: 12px 20px; margin-bottom: 10px;">
-                    <i class="fas {{ 'fa-check-circle' if category == 'success' else 'fa-exclamation-circle' }}"
-                        style="margin-left: 10px;"></i>
+                <div class="alert alert-{{ category }} animate-fade-in card">
+                    <i class="fas {{ 'fa-check-circle' if category == 'success' else 'fa-exclamation-circle' }}"></i>
                     {{ message }}
                 </div>
                 {% endfor %}
@@ -125,8 +120,7 @@
 
         <!-- Reorganized Bottom Navigation -->
         {% if current_user.is_authenticated %}
-        <nav class="bottom-nav-v2 card"
-            style="position: fixed; bottom: 15px; left: 15px; right: 15px; margin: 0; padding: 10px; border-radius: 24px; display: flex; justify-content: space-around; backdrop-filter: blur(25px); border: 1px solid var(--p-border);">
+        <nav class="bottom-nav-v2 card">
             <a href="{{ url_for('main.dashboard') }}" class="nav-link-v2">
                 <i class="fas fa-home"></i>
                 <span>الرئيسية</span>

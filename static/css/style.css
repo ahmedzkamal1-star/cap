@@ -15,8 +15,8 @@
     --grad-main: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
     --shadow-premium: 0 20px 40px -12px rgba(37, 99, 235, 0.12);
 
-    /* Sidebar Variables — Set to 0 to prevent layout gaps */
-    --sidebar-width: 0px;
+    /* Sidebar Variables — ABSOLUTELY 0 to prevent layout gaps */
+    --sidebar-width: 0px !important;
     --header-height: 70px;
     --white: #ffffff;
     --danger: #ef4444;
@@ -135,11 +135,13 @@ body {
     position: relative;
     min-height: 100vh;
     width: 100% !important;
-    max-width: 100vw !important;
+    max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden !important;
     z-index: 10 !important;
+    display: flex;
+    flex-direction: column;
     /* Content above mesh */
 }
 
@@ -251,9 +253,9 @@ body {
 
 .content-body {
     padding: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
+    max-width: none !important;
+    margin: 0 !important;
+    width: 100% !important;
     box-sizing: border-box;
 }
 
@@ -1269,8 +1271,10 @@ body {
     border-radius: 30px;
     padding: 20px;
     box-shadow: var(--shadow-premium);
-    margin: 10px;
+    margin: 15px !important;
     border: 1px solid var(--p-border);
+    width: auto !important;
+    max-width: none !important;
 }
 
 .stat-icon-dahih {

@@ -27,6 +27,12 @@ def log_activity(action, details=None):
         db.session.commit()
 
 @main.route('/')
+def splash():
+    # If the user is already logged in, we might skip the splash, 
+    # but usually splash is for the landing brand experience.
+    return render_template('splash.html')
+
+@main.route('/home')
 def index():
     from models import HomePost, PostView
     posts = HomePost.query.order_by(HomePost.timestamp.desc()).all()

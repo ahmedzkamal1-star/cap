@@ -1,0 +1,116 @@
+/* static/css/splash.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #a8e0ff 0%, #7ec8e0 50%, #6bb9d0 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.splash-container {
+    text-align: center;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 35px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    max-width: 90%;
+    width: 420px;
+}
+
+.logo-container {
+    margin-bottom: 2rem;
+    animation: fadeInDown 1s ease;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 10px 20px rgba(0, 168, 204, 0.4));
+}
+
+.site-name {
+    color: white;
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 1rem;
+}
+
+/* تصميم مؤشر التحميل */
+.loader {
+    width: 55px;
+    height: 55px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+    margin: 2.5rem auto;
+}
+
+.loading-text {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    opacity: 0.95;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* تأثيرات الحركة */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 480px) {
+    .logo {
+        width: 120px;
+    }
+
+    .site-name {
+        font-size: 1.6rem;
+    }
+
+    .splash-container {
+        padding: 2rem 1.5rem;
+    }
+}

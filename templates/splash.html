@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحباً بكم - منصة الدحيح</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/splash.css') }}?v=19.0">
+</head>
+
+<body>
+    <div class="splash-container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار الموقع" class="logo">
+            <h1 class="site-name">منصة الدحيح</h1>
+        </div>
+        <div class="loader"></div>
+        <p class="loading-text">يتم تجهيز المنصة الرقمية...</p>
+    </div>
+
+    <script>
+        // بعد 3 ثوانٍ، انتقل إلى صفحة تسجيل الدخول
+        setTimeout(function () {
+            window.location.href = "{{ url_for('main.login') }}";
+        }, 3000);
+    </script>
+</body>
+
+</html>

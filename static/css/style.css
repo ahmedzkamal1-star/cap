@@ -878,20 +878,26 @@ body {
     color: var(--p-text-muted);
 }
 
+.header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
 .header-action-btn {
     background: var(--p-glass-bg);
     border: 1px solid var(--p-border);
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--p-primary);
     text-decoration: none;
-    font-size: 18px;
+    font-size: 19px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-action-btn:hover {

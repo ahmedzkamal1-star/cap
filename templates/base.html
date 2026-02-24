@@ -105,7 +105,7 @@
             {% endif %}
 
             <div style="margin-top: auto; padding-top: 2rem;">
-                <a href="{{ url_for('main.logout') }}" class="nav-item" style="color: #ef4444;">
+                <a href="{{ url_for('main.logout') }}" class="premium-logout-v2">
                     <i class="fas fa-power-off"></i> <span>خروج</span>
                 </a>
             </div>
@@ -147,7 +147,14 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Floating Dark Mode Toggle (Desktop only or adjusted) -->
+    <!-- Floating Navigation Actions -->
+    {% if current_user.is_authenticated and request.endpoint not in ['main.login', 'main.register', 'main.splash'] %}
+    <button class="premium-back-v2" onclick="history.length > 1 ? history.back() : window.location.href='/dashboard'"
+        title="رجوع">
+        <i class="fas fa-arrow-right"></i>
+    </button>
+    {% endif %}
+
     <button class="dark-mode-toggle" title="تبديل الوضع">
         <i class="fas fa-moon"></i>
     </button>

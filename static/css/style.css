@@ -206,6 +206,119 @@
     }
 }
 
+/* ===== Extraordinary Navigation (v34.0) ===== */
+
+/* Premium Logout Button */
+.premium-logout-v2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 25px;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    color: white !important;
+    border-radius: 20px;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 1rem;
+}
+
+.premium-logout-v2:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(239, 68, 68, 0.5);
+    letter-spacing: 1px;
+}
+
+.premium-logout-v2 i {
+    font-size: 1.2rem;
+    animation: logoutPulse 2s infinite;
+}
+
+@keyframes logoutPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Premium Back Button */
+.premium-back-v2 {
+    position: fixed;
+    bottom: 30px;
+    left: 105px;
+    /* Next to theme toggle */
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    color: var(--sky-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 3000;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: backSlideIn 0.6s ease-out forwards;
+}
+
+.premium-back-v2:hover {
+    transform: translateX(-8px) rotate(-10deg);
+    background: var(--sky-primary);
+    color: white;
+    box-shadow: 0 15px 30px var(--shadow-color);
+}
+
+@keyframes backSlideIn {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Gold Mode Adaptations for Nav */
+[data-theme='gold'] .premium-logout-v2 {
+    background: linear-gradient(135deg, #b8860b 0%, #ef4444 100%);
+    box-shadow: 0 10px 20px rgba(184, 134, 11, 0.4);
+    border-color: rgba(212, 175, 55, 0.4);
+}
+
+[data-theme='gold'] .premium-back-v2 {
+    border-color: rgba(212, 175, 55, 0.5);
+    color: var(--sky-primary);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+}
+
+/* Responsive Overrides */
+@media (max-width: 1200px) {
+    .premium-back-v2 {
+        bottom: 110px;
+        left: 100px;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;

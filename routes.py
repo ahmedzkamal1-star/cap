@@ -558,12 +558,12 @@ def admin_add_lesson(course_id):
         if 'pdf_file' in request.files:
             file = request.files['pdf_file']
             if file and file.filename != '' and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
                 import uuid
-                filename = f"{uuid.uuid4().hex}_{filename}"
+                # Get extension from original filename before secure_filename strips Arabic
+                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'pdf'
+                filename = f"{uuid.uuid4().hex}.{ext}"
                 file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
                 pdf_filename = filename
-                print(f"Debug: PDF saved as {filename}")
 
         new_lesson = Lesson(course_id=course.id, title=title, content=content, pdf_filename=pdf_filename)
         db.session.add(new_lesson)
@@ -748,16 +748,14 @@ def uploaded_file(filename):
     # Determine proper content type
     mime_type, _ = mimetypes.guess_type(filename)
     if not mime_type:
-        mime_type = 'application/octet-stream'
-    
-    # Strip UUID prefix to get clean filename for download
-    # Files are saved as: uuid_originalname.ext
-    parts = filename.split('_', 1)
-    clean_name = parts[1] if len(parts) > 1 else filename
+        if filename.lower().endswith('.pdf') or filename.lower().endswith('pdf'):
+            mime_type = 'application/pdf'
+        else:
+            mime_type = 'application/octet-stream'
     
     response = send_from_directory(directory, filename)
     response.headers["Content-Type"] = mime_type
-    response.headers["Content-Disposition"] = f"inline; filename=\"{clean_name}\""
+    response.headers["Content-Disposition"] = f"inline; filename=\"{filename}\""
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Cache-Control"] = "public, max-age=3600"
     return response
@@ -879,8 +877,8 @@ def admin_posts():
             file = request.files['image_file']
             if file and file.filename != '':
                 import uuid
-                filename = secure_filename(file.filename)
-                filename = f"{uuid.uuid4().hex}_{filename}"
+                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
+                filename = f"{uuid.uuid4().hex}.{ext}"
                 file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
                 image_filename = filename
         
@@ -889,8 +887,8 @@ def admin_posts():
             file = request.files['pdf_file']
             if file and file.filename != '':
                 import uuid
-                filename = secure_filename(file.filename)
-                filename = f"{uuid.uuid4().hex}_{filename}"
+                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'pdf'
+                filename = f"{uuid.uuid4().hex}.{ext}"
                 file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
                 pdf_filename = filename
         

@@ -2,6 +2,8 @@
 
 {% block title %}لوحة التحكم - Al-dahih{% endblock %}
 
+{% block content %}
+
 <!-- Student Welcome Section -->
 <div class="card animate-fade-in"
     style="border-right: 5px solid var(--sky-primary); margin-bottom: 2rem; padding: 2rem; display: flex; align-items: center; gap: 20px; background: var(--grad-light);">
@@ -11,7 +13,7 @@
     <div>
         <h2 style="margin: 0; color: var(--text-primary); font-weight: 900;">
             أهلاً بك يا {% if current_user.gender == 'female' %}دحيحة{% else %}دحيح{% endif %} {{
-            current_user.full_name.split()[0] }}
+            current_user.full_name.split()[0] if current_user.full_name else 'المجتهد' }}
         </h2>
         <p style="margin: 5px 0 0 0; opacity: 0.8; font-weight: 600;">جاهز لاستكمال رحلة النجاح اليوم؟</p>
     </div>

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الجداول - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div class="main-container-v2 animate-fade-in">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-calendar-alt" style="margin-left: 10px; color: var(--sky-primary);"></i> إدارة الجداول
+            الدراسية</h3>
+    </div>
+
+    <!-- Create Schedule Form -->
+    <div class="card" style="border-right: 5px solid var(--sky-primary); padding: 25px; margin-bottom: 30px;">
+        <h3 style="color: var(--sky-primary); margin-bottom: 1.5rem;">📅 إضافة جدول جديد</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-field-v2">
+                <label>عنوان الجدول</label>
+                <input type="text" name="title" required placeholder="مثلاً: جدول المحاضرات الأسبوعي"
+                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+            </div>
+            <div class="form-field-v2">
+                <label>وصف الجدول (محتوى الخبر)</label>
+                <textarea name="content" rows="4" placeholder="اكتب تفاصيل الجدول هنا..."
+                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); outline: none;"></textarea>
+            </div>
+            <div class="form-field-v2">
+                <label><i class="fas fa-file-upload" style="margin-left: 5px;"></i>ملف الجدول (صورة أو PDF)</label>
+                <input type="file" name="file" required accept=".pdf,image/*"
+                    style="width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+            </div>
+            <button type="submit" class="premium-btn" style="width: 100%; justify-content: center; margin-top: 10px;">
+                <i class="fas fa-plus-circle" style="margin-left: 10px;"></i> إضافة الجدول الآن
+            </button>
+        </form>
+    </div>
+
+    <!-- Existing Schedules List -->
+    <div class="section-header-v2">
+        <h3><i class="fas fa-list" style="margin-left: 10px; color: var(--sky-primary);"></i> الجداول الحالية</h3>
+    </div>
+
+    <div class="table-container-v2">
+        <table class="modern-table-v2">
+            <thead>
+                <tr>
+                    <th>العنوان والتاريخ</th>
+                    <th>الملف</th>
+                    <th style="text-align: center;">الإجراء</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sch in schedules %}
+                <tr>
+                    <td>
+                        <div style="font-weight: 700;">{{ sch.title }}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">{{ sch.timestamp.strftime('%Y-%m-%d') }}</div>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('static', filename='uploads/' + sch.filename) }}" target="_blank"
+                            style="color: var(--sky-primary); font-weight: 600; text-decoration: none;">
+                            <i class="fas fa-external-link-alt" style="margin-left: 5px;"></i> عرض الملف
+                        </a>
+                    </td>
+                    <td>
+                        <div style="display: flex; justify-content: center;">
+                            <form action="{{ url_for('main.admin_delete_schedule', sch_id=sch.id) }}" method="POST"
+                                onsubmit="return confirm('هل أنت متأكد من حذف هذا الجدول؟')">
+                                <button type="submit" class="header-action-btn"
+                                    style="background: #fee2e2; color: #ef4444; border: none; width: 35px; height: 35px; border-radius: 10px; cursor: pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 40px; opacity: 0.6;">لا توجد جداول مضافة حالياً.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

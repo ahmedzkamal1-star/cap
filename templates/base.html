@@ -94,6 +94,10 @@
                 class="nav-item {{ 'active' if request.endpoint == 'main.friends' }}">
                 <i class="fas fa-users"></i> <span>الزملاء</span>
             </a>
+            <a href="{{ url_for('main.schedules') }}"
+                class="nav-item {{ 'active' if request.endpoint == 'main.schedules' }}">
+                <i class="fas fa-calendar-alt"></i> <span>الجدول الدراسى</span>
+            </a>
             <a href="{{ url_for('main.profile') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.profile' }}">
                 <i class="fas fa-fingerprint"></i> <span>ملفي</span>
@@ -167,6 +171,11 @@
             class="mobile-nav-item {{ 'active' if request.endpoint == 'main.friends' }}">
             <i class="fas fa-users"></i>
             <span>الزملاء</span>
+        </a>
+        <a href="{{ url_for('main.schedules') }}"
+            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.schedules' }}">
+            <i class="fas fa-calendar-alt"></i>
+            <span>الجدول</span>
         </a>
         <a href="{{ url_for('main.profile') }}"
             class="mobile-nav-item {{ 'active' if request.endpoint == 'main.profile' }}">

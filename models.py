@@ -151,3 +151,10 @@ class PostView(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('home_post.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Schedule(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text)
+    filename = db.Column(db.String(255)) # Image or PDF
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)

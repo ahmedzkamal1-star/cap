@@ -34,12 +34,18 @@ def fix_database():
         except sqlite3.OperationalError:
             pass # Already exists
 
-        # 1.2 Add missing columns to 'system_settings' table
+        # 1.2 Schedule System Update (v25.0)
+        # Create Schedule table if it doesn't exist
         try:
-            cursor.execute("ALTER TABLE system_settings ADD COLUMN schedule_filename TEXT")
-            print("Successfully added 'schedule_filename' column to 'system_settings' table.")
-        except sqlite3.OperationalError:
-            pass # Already exists
+            cursor.execute('''CREATE TABLE IF NOT EXISTS schedule 
+                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                              title TEXT NOT NULL, 
+                              content TEXT, 
+                              filename TEXT, 
+                              timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
+            print("Successfully created/verified 'schedule' table.")
+        except sqlite3.OperationalError as e:
+            print(f"Error creating schedule table: {e}")
 
         # 2. Ensure SystemSettings entry
         try:

@@ -3,7 +3,7 @@ import os
 from werkzeug.utils import secure_filename
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_from_directory
 from flask_login import login_user, logout_user, login_required, current_user
-from models import User, Course, Enrollment, Friend, Lesson, Exam, SystemSettings, Message, ActivityLog, HomePost, ExamResult, db
+from models import User, Course, Enrollment, Friend, Lesson, Exam, SystemSettings, Message, ActivityLog, HomePost, ExamResult, Schedule, db
 import json
 import random
 
@@ -880,3 +880,48 @@ def admin_delete_post(post_id):
     db.session.commit()
     flash('تم حذف المنشور.', 'info')
     return redirect(url_for('main.admin_posts'))
+
+@main.route('/admin/schedules', methods=['GET', 'POST'])
+@login_required
+def admin_schedules():
+    if current_user.role != 'admin':
+        return redirect(url_for('main.dashboard'))
+    
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        
+        filename = None
+        if 'file' in request.files:
+            file = request.files['file']
+            if file and file.filename != '':
+                import uuid
+                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else ''
+                filename = f"sch_{uuid.uuid4().hex[:8]}.{ext}"
+                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        
+        new_sch = Schedule(title=title, content=content, filename=filename)
+        db.session.add(new_sch)
+        db.session.commit()
+        flash('تم إضافة الجدول بنجاح.', 'success')
+        return redirect(url_for('main.admin_schedules'))
+
+    schedules = Schedule.query.order_by(Schedule.timestamp.desc()).all()
+    return render_template('admin_schedules.html', schedules=schedules)
+
+@main.route('/admin/schedule/<int:sch_id>/delete', methods=['POST'])
+@login_required
+def admin_delete_schedule(sch_id):
+    if current_user.role != 'admin':
+        return redirect(url_for('main.dashboard'))
+    sch = Schedule.query.get_or_404(sch_id)
+    db.session.delete(sch)
+    db.session.commit()
+    flash('تم حذف الجدول.', 'info')
+    return redirect(url_for('main.admin_schedules'))
+
+@main.route('/schedules')
+@login_required
+def schedules():
+    all_schedules = Schedule.query.order_by(Schedule.timestamp.desc()).all()
+    return render_template('schedules.html', schedules=all_schedules)

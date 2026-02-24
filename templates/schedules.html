@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}الجداول الدراسية - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div class="main-container-v2 animate-fade-in">
+    <div class="section-header-v2" style="text-align: center; margin-bottom: 3rem;">
+        <h2 style="font-weight: 900; color: var(--sky-primary); font-size: 2rem;">📅 الجداول والمواعيد</h2>
+        <p style="opacity: 0.8; font-weight: 600;">اطلع على كافة الجداول الدراسية والمستجدات</p>
+    </div>
+
+    <div class="schedules-grid" style="display: flex; flex-direction: column; gap: 20px;">
+        {% for sch in schedules %}
+        <div class="card schedule-premium-card"
+            style="display: flex; align-items: center; padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid var(--border-color); background: var(--card-bg); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;"
+            onclick="window.open('{{ url_for('static', filename='uploads/' + sch.filename) }}', '_blank')">
+
+            <!-- Left Side: Icon/Accent -->
+            <div
+                style="width: 80px; height: 100%; min-height: 120px; background: var(--sky-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+
+            <!-- Right Side: Content -->
+            <div style="flex: 1; padding: 1.5rem 2rem; display: flex; flex-direction: column; justify-content: center;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="margin: 0; color: var(--sky-primary); font-weight: 900; font-size: 1.3rem;">{{ sch.title
+                        }}</h3>
+                    <span style="font-size: 0.8rem; opacity: 0.6; font-family: 'Outfit';">{{
+                        sch.timestamp.strftime('%Y-%m-%d') }}</span>
+                </div>
+                <p style="margin: 0; font-size: 1rem; color: var(--text-primary); opacity: 0.8; line-height: 1.5;">
+                    {{ sch.content if sch.content else 'اضغط لعرض تفاصيل الجدول كاملة' }}
+                </p>
+                <div
+                    style="margin-top: 12px; display: flex; align-items: center; color: var(--sky-primary); font-weight: 800; font-size: 0.9rem;">
+                    <span>تحميل / عرض الجدول</span>
+                    <i class="fas fa-chevron-left" style="margin-right: 10px; font-size: 0.8rem;"></i>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card" style="text-align: center; padding: 4rem; opacity: 0.6;">
+            <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+            <h3>لا توجد جداول مضافة حالياً.</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .schedule-premium-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 40px var(--shadow-color);
+        border-color: var(--sky-primary);
+    }
+
+    .schedule-premium-card:hover i.fa-calendar-check {
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.2);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .schedule-premium-card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .schedule-premium-card div:first-child {
+            width: 100% !important;
+            height: 60px !important;
+            min-height: 60px !important;
+        }
+    }
+</style>
+{% endblock %}

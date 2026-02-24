@@ -17,7 +17,62 @@
         </a>
     </div>
     {% endif %}
+
+    {% if settings.telegram_link or settings.whatsapp_link %}
+    <div
+        style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-color); display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        {% if settings.telegram_link %}
+        <a href="{{ settings.telegram_link }}" target="_blank" class="social-link-btn telegram-btn">
+            <i class="fab fa-telegram" style="font-size: 1.3rem;"></i>
+            <span>قناة التيليجرام</span>
+        </a>
+        {% endif %}
+        {% if settings.whatsapp_link %}
+        <a href="{{ settings.whatsapp_link }}" target="_blank" class="social-link-btn whatsapp-btn">
+            <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i>
+            <span>واتساب</span>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
+
+<style>
+    .social-link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .telegram-btn {
+        background: linear-gradient(135deg, #0088cc, #00aaee);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+    }
+
+    .telegram-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 136, 204, 0.4);
+    }
+
+    .whatsapp-btn {
+        background: linear-gradient(135deg, #25d366, #128c7e);
+        color: white;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+
+    .whatsapp-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    }
+</style>
 
 {% for post in posts %}
 <div class="card post-card" id="post-{{ post.id }}" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">

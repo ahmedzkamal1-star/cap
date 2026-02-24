@@ -119,6 +119,8 @@ class SystemSettings(db.Model):
     allow_registration = db.Column(db.Boolean, default=True)
     maintenance_mode = db.Column(db.Boolean, default=False)
     schedule_filename = db.Column(db.String(255)) # Platform-wide schedule file
+    telegram_link = db.Column(db.String(500))
+    whatsapp_link = db.Column(db.String(500))
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)

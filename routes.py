@@ -784,6 +784,8 @@ def admin_settings():
         settings.system_name = request.form.get('system_name')
         settings.contact_email = request.form.get('contact_email')
         settings.contact_phone = request.form.get('contact_phone')
+        settings.telegram_link = request.form.get('telegram_link', '').strip()
+        settings.whatsapp_link = request.form.get('whatsapp_link', '').strip()
         settings.allow_registration = 'allow_registration' in request.form
         settings.maintenance_mode = 'maintenance_mode' in request.form
         

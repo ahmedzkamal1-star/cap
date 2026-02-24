@@ -71,6 +71,33 @@
             {% endif %}
         </div>
 
+        <!-- Social Media Links -->
+        <div class="card" style="border-right: 5px solid #0088cc;">
+            <h3 style="color: #0088cc; margin-bottom: 1.5rem;">📱 روابط التواصل الاجتماعي</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-field-v2">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">
+                        <i class="fab fa-telegram" style="color: #0088cc; margin-left: 6px; font-size: 1.1rem;"></i>رابط
+                        قناة تيليجرام
+                    </label>
+                    <input type="url" name="telegram_link" value="{{ settings.telegram_link or '' }}"
+                        placeholder="https://t.me/your_channel"
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+                </div>
+                <div class="form-field-v2">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">
+                        <i class="fab fa-whatsapp" style="color: #25d366; margin-left: 6px; font-size: 1.1rem;"></i>رابط
+                        واتساب
+                    </label>
+                    <input type="url" name="whatsapp_link" value="{{ settings.whatsapp_link or '' }}"
+                        placeholder="https://wa.me/201234567890"
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);">* هذه الروابط ستظهر للطلاب في
+                الصفحة الرئيسية كأزرار تواصل.</p>
+        </div>
+
         <!-- Security -->
         <div class="card" style="border-right: 5px solid #ef4444;">
             <h3 style="color: #ef4444; margin-bottom: 1.5rem;">🛡️ الأمان</h3>

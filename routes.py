@@ -742,11 +742,23 @@ def admin_view_student_messages(student_id):
 @login_required
 def uploaded_file(filename):
     """Gated route to serve files with proper headers for mobile compatibility."""
+    import mimetypes
     directory = current_app.config['UPLOAD_FOLDER']
-    # Use as_attachment=False to try and open in browser, but set headers to help mobile
+    
+    # Determine proper content type
+    mime_type, _ = mimetypes.guess_type(filename)
+    if not mime_type:
+        mime_type = 'application/octet-stream'
+    
+    # Strip UUID prefix to get clean filename for download
+    # Files are saved as: uuid_originalname.ext
+    parts = filename.split('_', 1)
+    clean_name = parts[1] if len(parts) > 1 else filename
+    
     response = send_from_directory(directory, filename)
+    response.headers["Content-Type"] = mime_type
+    response.headers["Content-Disposition"] = f"inline; filename=\"{clean_name}\""
     response.headers["X-Content-Type-Options"] = "nosniff"
-    # Ensure cache is handled but allows viewing
     response.headers["Cache-Control"] = "public, max-age=3600"
     return response
 

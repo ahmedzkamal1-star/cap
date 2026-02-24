@@ -10,7 +10,7 @@
 
     {% if settings.schedule_filename %}
     <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-color);">
-        <a href="{{ url_for('static', filename='uploads/' + settings.schedule_filename) }}" target="_blank"
+        <a href="{{ url_for('main.uploaded_file', filename=settings.schedule_filename) }}" target="_blank"
             class="premium-btn" style="text-decoration: none; display: inline-flex; width: auto; padding: 0.8rem 2rem;">
             <i class="fas fa-calendar-alt" style="margin-left: 10px;"></i>
             عرض الجدول الدراسي الجديد

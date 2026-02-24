@@ -741,7 +741,14 @@ def admin_view_student_messages(student_id):
 @main.route('/uploads/<filename>')
 @login_required
 def uploaded_file(filename):
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    """Gated route to serve files with proper headers for mobile compatibility."""
+    directory = current_app.config['UPLOAD_FOLDER']
+    # Use as_attachment=False to try and open in browser, but set headers to help mobile
+    response = send_from_directory(directory, filename)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    # Ensure cache is handled but allows viewing
+    response.headers["Cache-Control"] = "public, max-age=3600"
+    return response
 
 @main.route('/admin/settings', methods=['GET', 'POST'])
 @login_required

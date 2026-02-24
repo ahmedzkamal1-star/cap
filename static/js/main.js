@@ -59,7 +59,7 @@ function setupThemeToggle() {
 function updateThemeIcon(theme) {
     const icon = document.querySelector('.dark-mode-toggle i');
     if (icon) {
-        if (theme === 'light') icon.className = 'fas fa-sun';
+        if (theme === 'light') icon.className = 'fas fa-water';
         else if (theme === 'dark') icon.className = 'fas fa-moon';
         else if (theme === 'gold') icon.className = 'fas fa-crown';
     }

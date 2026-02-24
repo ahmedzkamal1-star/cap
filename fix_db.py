@@ -10,21 +10,33 @@ else:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
-        # Add master_key to user table
-        try:
-            cursor.execute("ALTER TABLE user ADD COLUMN master_key TEXT")
-            print("Successfully added 'master_key' column to 'user' table.")
-        except sqlite3.OperationalError as e:
-            if "duplicate column name" in str(e):
-                print("'master_key' column already exists.")
-            else:
-                print(f"Error adding 'master_key': {e}")
+        # 1. Add missing columns to 'user' table
+        user_columns = [
+            ('last_seen', 'DATETIME'),
+            ('created_by_id', 'INTEGER'),
+            ('master_key', 'TEXT')
+        ]
         
-        # Add any other potentially missing columns here based on recent models.py changes
-        # For example, if Message table is missing is_read (it seems it has it in models.py)
+        for col_name, col_type in user_columns:
+            try:
+                cursor.execute(f"ALTER TABLE user ADD COLUMN {col_name} {col_type}")
+                print(f"Successfully added '{col_name}' column to 'user' table.")
+            except sqlite3.OperationalError as e:
+                pass # Already exists
+        
+        # 2. Check if SystemSettings has at least one entry
+        try:
+            cursor.execute("SELECT id FROM system_settings LIMIT 1")
+            result = cursor.fetchone()
+            if not result:
+                cursor.execute("INSERT INTO system_settings (system_name) VALUES ('Al-dahih System')")
+                print("Added default entry to 'system_settings' table.")
+        except sqlite3.OperationalError:
+            # Table doesn't exist? Create all missing tables by running the app's create_all later or doing it here
+            print("Warning: 'system_settings' table might be missing.")
         
         conn.commit()
         conn.close()
-        print("Database fix completed.")
+        print("Database synchronization completed.")
     except Exception as e:
         print(f"An error occurred: {e}")

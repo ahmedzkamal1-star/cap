@@ -38,9 +38,18 @@ function setupThemeToggle() {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
         let nextTheme = 'light';
 
-        if (currentTheme === 'light') nextTheme = 'dark';
-        else if (currentTheme === 'dark') nextTheme = 'gold';
-        else nextTheme = 'light';
+        if (currentTheme === 'light') {
+            nextTheme = 'dark';
+        } else if (currentTheme === 'dark') {
+            // Only allow Gold Mode for Admin
+            if (window.userRole === 'admin') {
+                nextTheme = 'gold';
+            } else {
+                nextTheme = 'light';
+            }
+        } else {
+            nextTheme = 'light';
+        }
 
         applyTheme(nextTheme);
     });

@@ -186,7 +186,10 @@
     {% endif %}
 
     <!-- Scripts -->
-    <script src="{{ url_for('static', filename='js/main.js') }}?v=22.0"></script>
+    <script>
+        window.userRole = "{{ current_user.role|lower if current_user.is_authenticated else 'guest' }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=23.0"></script>
 </body>
 
 </html>

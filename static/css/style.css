@@ -140,24 +140,53 @@
     justify-content: center;
 }
 
-/* Liquid Gold Background */
-[data-theme='gold'] .mesh-background {
+/* Global Liquid Background Animation (v35.0) */
+.mesh-background {
     opacity: 0.6;
-    background: #0c0b05;
-    background-image: radial-gradient(at 0% 0%, hsla(45, 100%, 50%, 0.1) 0, transparent 50%),
-        radial-gradient(at 50% 0%, hsla(35, 100%, 50%, 0.1) 0, transparent 50%),
-        radial-gradient(at 100% 0%, hsla(50, 100%, 50%, 0.1) 0, transparent 50%);
-    animation: liquidGold 15s ease infinite alternate;
+    animation: liquidFlow 15s ease infinite alternate;
 }
 
-@keyframes liquidGold {
+@keyframes liquidFlow {
     0% {
-        filter: hue-rotate(0deg) brightness(1);
+        filter: hue-rotate(0deg) brightness(1) blur(100px);
     }
 
     100% {
-        filter: hue-rotate(10deg) brightness(1.2);
+        filter: hue-rotate(15deg) brightness(1.2) blur(80px);
     }
+}
+
+/* Mode-specific Blob Colors */
+.blob-1 {
+    background: var(--sky-primary);
+    top: -10%;
+    right: -10%;
+}
+
+.blob-2 {
+    background: var(--sky-dark);
+    bottom: -10%;
+    left: -10%;
+}
+
+.blob-3 {
+    background: var(--sky-secondary);
+    top: 40%;
+    left: 30%;
+    width: 35vw;
+    height: 35vw;
+}
+
+[data-theme='gold'] .blob-1 {
+    background: #bf953f;
+}
+
+[data-theme='gold'] .blob-2 {
+    background: #aa771c;
+}
+
+[data-theme='gold'] .blob-3 {
+    background: #b8860b;
 }
 
 [data-theme='gold'] .stat-value-v2,
@@ -336,13 +365,59 @@ body {
     overflow-x: hidden;
 }
 
+/* Cinematic Dark Login (Forced Dark Mode v35.0) */
+.login-page {
+    --bg-main: #010814;
+    --card-bg: rgba(2, 12, 27, 0.9);
+    --text-primary: #e6f1ff;
+    --text-secondary: #a8b2d1;
+    --border-color: rgba(0, 180, 216, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.8);
+    --sky-primary: #00d2ff;
+
+    background: radial-gradient(circle at center, #020c1b 0%, #010814 100%) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    background: var(--card-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 3.5rem;
+    border-radius: 40px;
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 30px 60px var(--shadow-color), 0 0 40px rgba(0, 210, 255, 0.1);
+    animation: cinematicIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cinematicIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.login-form input {
+    background: rgba(1, 8, 20, 0.6) !important;
+    border: 1px solid rgba(0, 180, 216, 0.2) !important;
+    color: #fff8e1 !important;
+}
+
 /* Premium Mesh */
 .mesh-background {
     position: fixed;
     inset: 0;
     z-index: -1;
-    filter: blur(100px);
-    opacity: 0.7;
     pointer-events: none;
     transition: opacity 1s ease;
 }
@@ -350,23 +425,8 @@ body {
 .mesh-blob {
     position: absolute;
     border-radius: 50%;
-    animation: float 20s infinite alternate linear;
-}
-
-.blob-1 {
-    width: 50vw;
-    height: 50vw;
-    background: var(--sky-primary);
-    top: -10%;
-    right: -10%;
-}
-
-.blob-2 {
-    width: 40vw;
-    height: 40vw;
-    background: var(--sky-dark);
-    bottom: -10%;
-    left: -10%;
+    animation: float 25s infinite alternate linear;
+    filter: blur(80px);
 }
 
 @keyframes float {

@@ -3,55 +3,68 @@
 {% block title %}تسجيل حساب جديد - {{ settings.system_name }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 500px; margin: 2rem auto;">
-    <div class="card">
-        <h2 style="text-align: center; margin-bottom: 1.5rem;">📝 إنشاء حساب جديد</h2>
+<div class="auth-container-v2 animate-slide-up" style="max-width: 500px; margin: 3rem auto; padding: 0 15px;">
+    <div class="card" style="border-top: 8px solid var(--sky-primary); padding: 2.5rem;">
+        <h2
+            style="text-align: center; font-weight: 900; color: var(--text-primary); margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; gap: 12px;">
+            <i class="fas fa-user-plus" style="color: var(--sky-primary);"></i> إنشاء حساب جديد
+        </h2>
+
         <form method="POST">
-            <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem;">الكود الجامعي</label>
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">الكود
+                    الجامعي</label>
                 <input type="text" name="code" required placeholder="مثال: 2023001"
-                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem;">الاسم الكامل</label>
-                <input type="text" name="full_name" required
-                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">الاسم
+                    الكامل</label>
+                <input type="text" name="full_name" required placeholder="ادخل اسمك الرباعي"
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem;">كلمة المرور</label>
-                <input type="password" name="password" required
-                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">كلمة
+                    المرور</label>
+                <input type="password" name="password" required placeholder="••••••••"
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <div>
-                    <label style="display: block; margin-bottom: 0.5rem;">القسم</label>
-                    <input type="text" name="department" placeholder="CS, IT, ..."
-                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 1.5rem;">
+                <div class="form-field-v2">
+                    <label
+                        style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">القسم</label>
+                    <input type="text" name="department" placeholder="مثل: CS"
+                        style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
                 </div>
-                <div>
-                    <label style="display: block; margin-bottom: 0.5rem;">السنة الدراسية</label>
-                    <input type="text" name="year" placeholder="1, 2, ..."
-                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+                <div class="form-field-v2">
+                    <label
+                        style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">السنة</label>
+                    <input type="text" name="year" placeholder="مثل: 1"
+                        style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
                 </div>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem;">رقم الهاتف</label>
-                <input type="text" name="phone"
-                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            <div class="form-field-v2" style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">رقم
+                    الهاتف</label>
+                <input type="text" name="phone" placeholder="01xxxxxxxxx"
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: bold;">
-                إنشاء حساب
+            <button type="submit" class="premium-btn"
+                style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem;">
+                <i class="fas fa-check-circle" style="margin-left: 10px;"></i> تأكيد إنشاء الحساب
             </button>
 
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <span>لديك حساب بالفعل؟</span>
+            <div
+                style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <span style="color: var(--text-secondary);">لديك حساب بالفعل؟</span>
                 <a href="{{ url_for('main.login') }}"
-                    style="color: #2196F3; text-decoration: none; font-weight: bold;">تسجيل الدخول</a>
+                    style="color: var(--sky-primary); text-decoration: none; font-weight: 800; margin-right: 8px;">تسجيل
+                    الدخول</a>
             </div>
         </form>
     </div>

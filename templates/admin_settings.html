@@ -4,70 +4,72 @@
 
 {% block content %}
 
-<div class="main-container-v2 animate-fade-in">
+<div class="main-container-v2 animate-slide-up">
     <div class="section-header-v2">
-        <h3><i class="fas fa-cog" style="margin-left: 8px;"></i>إعدادات النظام</h3>
+        <h3><i class="fas fa-sliders-h" style="margin-left: 10px; color: var(--sky-primary);"></i> إعدادات النظام</h3>
     </div>
 
     <form method="POST">
         <!-- Basic Info -->
-        <div class="card settings-group animate-fade-in" style="border-right: 5px solid var(--p-primary);">
-            <h3 style="color: var(--p-primary);">🔹 المعلومات الأساسية</h3>
-            <div class="form-field-v2">
-                <label>اسم النظام</label>
-                <input type="text" name="system_name" value="{{ settings.system_name }}" required>
+        <div class="card" style="border-right: 5px solid var(--sky-primary);">
+            <h3 style="color: var(--sky-primary); margin-bottom: 1.5rem;">🔹 المعلومات الأساسية</h3>
+            <div class="form-field-v2" style="margin-bottom: 1.2rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700;">اسم النظام</label>
+                <input type="text" name="system_name" value="{{ settings.system_name }}" required
+                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-field-v2">
-                    <label>بريد التواصل</label>
-                    <input type="email" name="contact_email" value="{{ settings.contact_email }}">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700;">بريد التواصل</label>
+                    <input type="email" name="contact_email" value="{{ settings.contact_email }}"
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
                 </div>
                 <div class="form-field-v2">
-                    <label>رقم الهاتف</label>
-                    <input type="text" name="contact_phone" value="{{ settings.contact_phone }}">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700;">رقم الهاتف</label>
+                    <input type="text" name="contact_phone" value="{{ settings.contact_phone }}"
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
                 </div>
             </div>
         </div>
 
         <!-- System Status -->
-        <div class="card settings-group animate-fade-in" style="border-right: 5px solid #10b981;">
-            <h3 style="color: #10b981;">🛠️ حالات النظام</h3>
-            <div class="check-field-v2">
-                <input type="checkbox" name="allow_registration" id="allow_reg" {% if settings.allow_registration
-                    %}checked{% endif %}>
-                <label for="allow_reg">السماح بتسجيل الطلاب الجدد</label>
+        <div class="card" style="border-right: 5px solid #10b981;">
+            <h3 style="color: #10b981; margin-bottom: 1.5rem;">🛠️ حالات النظام</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <label class="check-field-v2"
+                    style="cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: 700;">
+                    <input type="checkbox" name="allow_registration" {% if settings.allow_registration %}checked{% endif
+                        %} style="accent-color: #10b981; width: 20px; height: 20px;">
+                    السماح بتسجيل الطلاب
+                </label>
+                <label class="check-field-v2"
+                    style="cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: 700;">
+                    <input type="checkbox" name="maintenance_mode" {% if settings.maintenance_mode %}checked{% endif %}
+                        style="accent-color: #f59e0b; width: 20px; height: 20px;">
+                    وضع الصيانة
+                </label>
             </div>
-            <div class="check-field-v2">
-                <input type="checkbox" name="maintenance_mode" id="maint_mode" {% if settings.maintenance_mode
-                    %}checked{% endif %}>
-                <label for="maint_mode">تفعيل وضع الصيانة</label>
-            </div>
-            <p class="settings-hint">* وضع الصيانة يمنع وصول الطلاب للنظام مؤقتاً.</p>
+            <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);">* وضع الصيانة يمنع وصول
+                الطلاب للنظام مؤقتاً.</p>
         </div>
 
-        <!-- Security & Recovery -->
-        <div class="card settings-group animate-fade-in" style="border-right: 5px solid var(--danger);">
-            <h3 style="color: var(--danger);">🛡️ الأمان واستعادة الحساب</h3>
-            <div class="form-field-v2">
-                <label>كلمة مرور الأدمن الجديدة</label>
-                <input type="password" name="admin_password" placeholder="********">
+        <!-- Security -->
+        <div class="card" style="border-right: 5px solid #ef4444;">
+            <h3 style="color: #ef4444; margin-bottom: 1.5rem;">🛡️ الأمان</h3>
+            <div class="form-field-v2" style="margin-bottom: 1.2rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700;">تغيير كلمة المرور</label>
+                <input type="password" name="admin_password" placeholder="اتركها فارغة لعدم التغيير"
+                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
             </div>
-
             <div class="form-field-v2">
-                <label>كود الأمان الماستر (Master Key)</label>
+                <label style="display: block; margin-bottom: 8px; font-weight: 700;">كود الماستر (Master Key)</label>
                 <input type="text" name="master_key" value="{{ current_user.master_key }}" required
-                    style="font-family: 'Outfit';">
-            </div>
-
-            <div class="settings-footer">
-                <a href="{{ url_for('main.secure_reset') }}" target="_blank">
-                    🔗 معاينة رابط استعادة الحساب للطوارئ
-                </a>
+                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
             </div>
         </div>
 
-        <button type="submit" class="premium-btn">
-            <i class="fas fa-save" style="margin-left: 8px;"></i> حفظ كل التغييرات
+        <button type="submit" class="premium-btn" style="width: 100%; justify-content: center; padding: 1.2rem;">
+            <i class="fas fa-save" style="margin-left: 10px;"></i> حفظ الإعدادات
         </button>
     </form>
 </div>

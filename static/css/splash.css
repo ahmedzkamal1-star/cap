@@ -6,111 +6,100 @@
 }
 
 body {
-    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #a8e0ff 0%, #7ec8e0 50%, #6bb9d0 100%);
+    font-family: 'Cairo', sans-serif;
+    background: #020c1b;
+    /* Matching Dark Mode 2.0 bg */
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0;
+    overflow: hidden;
 }
 
 .splash-container {
     text-align: center;
-    padding: 2.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-radius: 35px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 3.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 40px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     max-width: 90%;
-    width: 420px;
+    width: 450px;
+    position: relative;
+    z-index: 10;
 }
 
 .logo-container {
     margin-bottom: 2rem;
-    animation: fadeInDown 1s ease;
 }
 
 .logo {
-    width: 150px;
+    width: 140px;
     height: auto;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 10px 20px rgba(0, 168, 204, 0.4));
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 20px rgba(0, 180, 216, 0.4));
+    animation: pulse-logo 2s infinite ease-in-out;
+}
+
+@keyframes pulse-logo {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(0, 180, 216, 0.4));
+    }
+
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 40px rgba(0, 180, 216, 0.7));
+    }
 }
 
 .site-name {
     color: white;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 900;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 1rem;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #00b4d8, #64ffda);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* تصميم مؤشر التحميل */
 .loader {
-    width: 55px;
-    height: 55px;
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s linear infinite;
+    width: 50px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     margin: 2.5rem auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: var(--sky-primary, #00b4d8);
+    border-radius: 10px;
+    animation: slide-loader 1.5s infinite ease-in-out;
+}
+
+@keyframes slide-loader {
+    to {
+        left: 100%;
+    }
 }
 
 .loading-text {
-    color: white;
-    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
     font-weight: 700;
-    opacity: 0.95;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-/* تأثيرات الحركة */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-40px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 0.7;
-        transform: scale(0.98);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* للشاشات الصغيرة */
-@media (max-width: 480px) {
-    .logo {
-        width: 120px;
-    }
-
-    .site-name {
-        font-size: 1.6rem;
-    }
-
-    .splash-container {
-        padding: 2rem 1.5rem;
-    }
+    letter-spacing: 1px;
 }

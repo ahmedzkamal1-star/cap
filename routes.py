@@ -82,8 +82,10 @@ def login():
             if not user.is_approved:
                 flash('حسابك قيد المراجعة من قبل الإدارة. يرجى المحاولة لاحقاً.', 'warning')
                 return redirect(url_for('main.login'))
-            login_user(user)
-            log_activity("تسجيل دخول", f"المستخدم {user.code} سجل دخوله.")
+            
+            remember = request.form.get('remember') == 'on'
+            login_user(user, remember=remember)
+            log_activity("تسجيل دخول", f"المستخدم {user.code} سجل دخوله. (تذكرني: {remember})")
             if user.role == 'admin':
                 return redirect(url_for('main.admin_dashboard'))
             return redirect(url_for('main.index'))

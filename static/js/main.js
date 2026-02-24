@@ -52,10 +52,19 @@ function updateDarkModeIcon(isDark) {
 function setupMobileSidebar() {
     const sidebar = document.getElementById('sidebar');
     const menuBtn = document.querySelector('.menu-toggle-btn');
+    const mainContent = document.querySelector('.main-content');
 
     if (menuBtn && sidebar) {
-        menuBtn.addEventListener('click', function () {
+        menuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
             sidebar.classList.toggle('open');
+        });
+
+        // إغلاق عند النقر بالخارج
+        document.addEventListener('click', function (e) {
+            if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
         });
     }
 }

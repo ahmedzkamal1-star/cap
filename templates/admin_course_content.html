@@ -4,70 +4,73 @@
 
 {% block content %}
 
-<div class="main-container-v2 animate-fade-in">
-    <div class="section-header-v2" style="margin-top: 10px;">
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
         <div>
-            <h3 style="margin-bottom: 5px;"><i class="fas fa-folder-open"
-                    style="color: #667eea; margin-left: 8px;"></i>محتوى مادة: {{ course.name }}</h3>
-            <span class="status-badge" style="background: #eff6ff; color: #3b82f6; font-size: 11px;">{{ course.code
-                }}</span>
+            <h3 style="margin-bottom: 5px; font-weight: 800; color: var(--text-primary);">
+                <i class="fas fa-folder-open" style="color: var(--sky-primary); margin-left: 10px;"></i> محتوى: {{
+                course.name }}
+            </h3>
+            <span class="premium-btn"
+                style="padding: 4px 12px; border-radius: 8px; font-size: 0.75rem; font-family: 'Outfit'; opacity: 0.8; box-shadow: none;">{{
+                course.code }}</span>
         </div>
         <div style="display: flex; gap: 10px;">
-            <a href="{{ url_for('main.admin_add_lesson', course_id=course.id) }}" class="back-btn-v2"
-                style="width: auto; padding: 0 15px; font-size: 13px; background: #10b981; color: white;">
-                <i class="fas fa-plus" style="margin-left: 5px;"></i> إضافة درس
+            <a href="{{ url_for('main.admin_add_lesson', course_id=course.id) }}" class="premium-btn"
+                style="background: #10b981;">
+                <i class="fas fa-plus" style="margin-left: 8px;"></i> درس
             </a>
-            <a href="{{ url_for('main.admin_add_exam', course_id=course.id) }}" class="back-btn-v2"
-                style="width: auto; padding: 0 15px; font-size: 13px; background: #6366f1; color: white;">
-                <i class="fas fa-file-signature" style="margin-left: 5px;"></i> إضافة امتحان
+            <a href="{{ url_for('main.admin_add_exam', course_id=course.id) }}" class="premium-btn">
+                <i class="fas fa-file-signature" style="margin-left: 8px;"></i> امتحان
             </a>
         </div>
     </div>
 
     <!-- Lessons Section -->
-    <div class="settings-group" style="margin-top: 25px; padding: 20px;">
-        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <i class="fas fa-book-reader" style="color: #10b981;"></i> الدروس المرفوعة
+    <div class="card" style="margin-top: 2rem; border-right: 5px solid #10b981;">
+        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; color: #10b981;">
+            <i class="fas fa-book-reader"></i> الدروس المرفوعة
         </h3>
 
-        <div class="table-container-v2" style="border: none; box-shadow: none; margin: 0;">
+        <div class="table-responsive">
             <table class="modern-table-v2">
                 <thead>
                     <tr>
-                        <th>العنوان</th>
-                        <th>الملفات</th>
-                        <th style="text-align: center;">الإجراء</th>
+                        <th>عنوان الدرس</th>
+                        <th>الحالة</th>
+                        <th style="text-align: center;">إدارة</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for lesson in course.lessons %}
                     <tr>
-                        <td style="font-weight: 600; color: #1e293b;">{{ lesson.title }}</td>
+                        <td style="font-weight: 800; color: var(--text-primary);">{{ lesson.title }}</td>
                         <td>
                             {% if lesson.pdf_filename %}
-                            <span class="status-badge" style="background: #f0fdf4; color: #166534; font-size: 11px;">
-                                <i class="fas fa-file-pdf" style="margin-left: 5px;"></i>ملف PDF جاهز
+                            <span class="premium-btn"
+                                style="padding: 4px 10px; font-size: 0.75rem; background: #ecfdf5; color: #10b981; border: none; box-shadow: none;">
+                                <i class="fas fa-check-circle" style="margin-left: 5px;"></i>PDF متوفر
                             </span>
                             {% else %}
-                            <span style="color: #94a3b8; font-size: 12px;">لا توجد مرفقات</span>
+                            <span style="color: var(--text-secondary); font-size: 0.8rem; font-weight: 600;">لا توجد
+                                مرفقات</span>
                             {% endif %}
                         </td>
-                        <td>
-                            <div style="display: flex; justify-content: center;">
-                                <form action="{{ url_for('main.admin_delete_lesson', lesson_id=lesson.id) }}"
-                                    method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الدرس؟')">
-                                    <button type="submit" class="header-action-btn"
-                                        style="width: 35px; height: 35px; background: #fef2f2; color: #ef4444; border: none; cursor: pointer;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
+                        <td style="text-align: center;">
+                            <form action="{{ url_for('main.admin_delete_lesson', lesson_id=lesson.id) }}" method="POST"
+                                onsubmit="return confirm('حذف هذا الدرس؟')">
+                                <button type="submit" class="premium-btn"
+                                    style="padding: 8px; background: #fee2e2; color: #ef4444; border: none; box-shadow: none; cursor: pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد دروس مضافة
-                            لهذه المادة حالياً.</td>
+                        <td colspan="3"
+                            style="text-align: center; padding: 3rem; color: var(--text-secondary); font-weight: 600;">
+                            لا توجد دروس حالياً.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -76,49 +79,45 @@
     </div>
 
     <!-- Exams Section -->
-    <div class="settings-group" style="margin-top: 25px; padding: 20px;">
-        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <i class="fas fa-spell-check" style="color: #6366f1;"></i> الامتحانات المنشورة
+    <div class="card" style="margin-top: 2rem; border-right: 5px solid var(--sky-primary);">
+        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; color: var(--sky-primary);">
+            <i class="fas fa-spell-check"></i> الامتحانات المتاحة
         </h3>
 
-        <div class="table-container-v2" style="border: none; box-shadow: none; margin: 0;">
+        <div class="table-responsive">
             <table class="modern-table-v2">
                 <thead>
                     <tr>
                         <th>عنوان الامتحان</th>
-                        <th>اسم المادة</th>
-                        <th style="text-align: center;">الإجراء</th>
+                        <th>الإحصائيات</th>
+                        <th style="text-align: center;">إدارة</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for exam in course.exams %}
                     <tr>
-                        <td style="font-weight: 600; color: #1e293b;">{{ exam.title }}</td>
-                        <td style="color: #64748b; font-size: 13px;">{{ course.name }}</td>
+                        <td style="font-weight: 800; color: var(--text-primary);">{{ exam.title }}</td>
                         <td>
-                            <div style="display: flex; justify-content: center;">
-                                <div style="display: flex; gap: 10px;">
-                                    <a href="{{ url_for('main.admin_view_exam_results', exam_id=exam.id) }}"
-                                        class="header-action-btn"
-                                        style="width: 40px; height: 40px; background: #ecfdf5; color: #10b981;"
-                                        title="نتائج الطلاب">
-                                        <i class="fas fa-chart-line"></i>
-                                    </a>
-                                    <form action="{{ url_for('main.admin_delete_exam', exam_id=exam.id) }}"
-                                        method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الامتحان؟');">
-                                        <button type="submit" class="header-action-btn"
-                                            style="width: 40px; height: 40px; background: #fef2f2; color: #ef4444; border: none;">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                            <a href="{{ url_for('main.admin_view_exam_results', exam_id=exam.id) }}" class="premium-btn"
+                                style="padding: 4px 10px; font-size: 0.75rem; background: var(--bg-main); color: var(--sky-primary); border: 1px solid var(--border-color); box-shadow: none;">
+                                <i class="fas fa-chart-bar" style="margin-left: 5px;"></i>النتائج
+                            </a>
+                        </td>
+                        <td style="text-align: center;">
+                            <form action="{{ url_for('main.admin_delete_exam', exam_id=exam.id) }}" method="POST"
+                                onsubmit="return confirm('حذف هذا الامتحان؟');">
+                                <button type="submit" class="premium-btn"
+                                    style="padding: 8px; background: #fee2e2; color: #ef4444; border: none; box-shadow: none; cursor: pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد امتحانات
-                            مضافة لهذه المادة حالياً.</td>
+                        <td colspan="3"
+                            style="text-align: center; padding: 3rem; color: var(--text-secondary); font-weight: 600;">
+                            لا توجد امتحانات حالياً.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -126,10 +125,10 @@
         </div>
     </div>
 
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="{{ url_for('main.admin_courses') }}" class="back-link"
-            style="text-decoration: none; color: #64748b; font-size: 14px;">
-            <i class="fas fa-arrow-right" style="margin-left: 8px;"></i> العودة لقائمة المواد
+    <div style="text-align: center; margin-top: 3rem;">
+        <a href="{{ url_for('main.admin_courses') }}"
+            style="text-decoration: none; color: var(--sky-primary); font-weight: 800; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fas fa-arrow-right"></i> العودة لإدارة المواد
         </a>
     </div>
 </div>

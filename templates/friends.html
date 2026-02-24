@@ -3,30 +3,46 @@
 {% block title %}الأصدقاء - Al-dahih{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h2>👥 الأصدقاء</h2>
-    <p>تواصل مع زملائك في الدراسة.</p>
-
-    <form method="POST" style="display: flex; gap: 10px; align-items: flex-end; max-width: 500px;">
-        <div class="form-group" style="flex: 1; margin-bottom: 0;">
-            <label for="friend_code">إضافة صديق جديد (الكود الجامعي)</label>
-            <input type="text" id="friend_code" name="friend_code" placeholder="أدخل كود الطالب" required>
-        </div>
-        <button type="submit">إضافة</button>
-    </form>
-</div>
-
-<div class="grid">
-    {% for friend in friends %}
-    <div class="course-card" style="text-align: center;">
-        <div style="font-size: 3rem;">👤</div>
-        <h3>{{ friend.full_name }}</h3>
-        <p class="badge">{{ friend.code }}</p>
-        <p>{{ friend.department }} - السنة {{ friend.year }}</p>
-        <button style="background-color: var(--secondary-color); margin-top: 10px;">راسله الآن</button>
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-user-friends" style="color: var(--sky-primary); margin-left: 10px;"></i> الزملاء</h3>
     </div>
-    {% else %}
-    <p>ليس لديك أصدقاء بعد. ابدأ بإضافة زملائك!</p>
-    {% endfor %}
+
+    <div class="card" style="margin-bottom: 2rem;">
+        <h4 style="margin-bottom: 1rem; color: var(--text-primary);">إضافة صديق جديد بالكود الجامعي</h4>
+        <form method="POST" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <input type="text" name="friend_code" placeholder="أدخل كود الطالب" required
+                style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit'; min-width: 200px;">
+            <button type="submit" class="premium-btn">
+                <i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة صديق
+            </button>
+        </form>
+    </div>
+
+    <div class="stats-grid-v2">
+        {% for friend in friends %}
+        <div class="card"
+            style="text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center; border-bottom: 5px solid var(--sky-primary);">
+            <div class="user-avatar"
+                style="width: 70px; height: 70px; font-size: 2rem; margin-bottom: 1rem; transform: none;">{{
+                friend.full_name[0] }}</div>
+            <h3 style="font-weight: 800; color: var(--text-primary); margin-bottom: 5px;">{{ friend.full_name }}</h3>
+            <span class="premium-btn"
+                style="padding: 4px 10px; font-size: 0.75rem; font-family: 'Outfit'; opacity: 0.8; margin-bottom: 1rem;">#{{
+                friend.code }}</span>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">{{ friend.department or
+                'بدون قسم' }} - {{ friend.year or 'مجهول' }}</p>
+            <a href="#" class="premium-btn" style="width: 100%; justify-content: center;">
+                <i class="fas fa-comments" style="margin-left: 10px;"></i> محادثة
+            </a>
+        </div>
+        {% else %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+            <i class="fas fa-users-slash"
+                style="font-size: 3rem; color: var(--text-secondary); opacity: 0.3; margin-bottom: 1.5rem; display: block;"></i>
+            <p style="color: var(--text-secondary); font-weight: 700;">لا يوجد أصدقاء بعد. ابدأ بإضافة زملائك!</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

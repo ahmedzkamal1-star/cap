@@ -7,78 +7,58 @@
 <div class="main-container-v2 animate-fade-in">
     <!-- Dahih Premium Header/Stats -->
     <div class="stats-grid-v2">
-        <div class="card stat-card-v2" style="border-right: 4px solid var(--p-primary);">
-            <div class="stat-icon-dahih">
-                <i class="fas fa-users"></i>
-            </div>
+        <div class="card stat-card-v2">
             <div>
                 <div class="stat-label-v2">إجمالي الطلاب</div>
-                <div class="stat-value-v2">{{ students_count }}</div>
+                <div class="stat-value-v2" style="font-family: 'Outfit';">{{ students_count }}</div>
+            </div>
+            <div class="stat-icon-dahih" style="margin-right: auto; color: var(--sky-primary);">
+                <i class="fas fa-user-graduate"></i>
             </div>
         </div>
-        <div class="card stat-card-v2" style="border-right: 4px solid #f59e0b;">
-            <div class="stat-icon-dahih" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                <i class="fas fa-clock"></i>
-            </div>
+        <div class="card stat-card-v2" style="--sky-primary: #f59e0b;">
             <div>
                 <div class="stat-label-v2">بانتظار المراجعة</div>
-                <div class="stat-value-v2">12</div>
+                <div class="stat-value-v2" style="font-family: 'Outfit';">12</div>
+            </div>
+            <div class="stat-icon-dahih" style="margin-right: auto; color: #f59e0b;">
+                <i class="fas fa-clock"></i>
             </div>
         </div>
     </div>
 
-    <!-- Quick Search -->
-    <div class="search-container">
-        <div class="card search-box-v2">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="ابحث عن طالب، مادة، رسالة...">
-            <i class="fas fa-sliders-h"></i>
-        </div>
-    </div>
 
     <!-- 3-Column Menu Grid (REDUCED) -->
     <div class="section-header-v2">
         <h3><i class="fas fa-bookmark" style="margin-left: 8px;"></i>إدارة المنصة</h3>
     </div>
 
-    <div class="menu-grid-v2">
-        <a href="{{ url_for('main.admin_moderators') }}" class="card menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-user-shield"></i></div>
-            <span>المشرفين</span>
+    <div class="menu-grid-v2"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;">
+        <a href="{{ url_for('main.admin_moderators') }}" class="card"
+            style="text-align: center; padding: 1.5rem; text-decoration: none;">
+            <div style="font-size: 2rem; color: var(--sky-primary); margin-bottom: 10px;"><i
+                    class="fas fa-user-shield"></i></div>
+            <span style="font-weight: 800; color: var(--text-primary);">المشرفين</span>
         </a>
-        <a href="{{ url_for('main.admin_posts') }}" class="card menu-item-v2">
-            <div class="menu-icon-v2"><i class="fas fa-newspaper"></i></div>
-            <span>المنشورات</span>
+        <a href="{{ url_for('main.admin_posts') }}" class="card"
+            style="text-align: center; padding: 1.5rem; text-decoration: none;">
+            <div style="font-size: 2rem; color: var(--sky-secondary); margin-bottom: 10px;"><i
+                    class="fas fa-newspaper"></i></div>
+            <span style="font-weight: 800; color: var(--text-primary);">المنشورات</span>
         </a>
-        <a href="{{ url_for('main.admin_courses') }}" class="card menu-item-v2">
-            <div class="menu-icon-v2" style="color: #10b981;"><i class="fas fa-book"></i></div>
-            <span>المواد</span>
+        <a href="{{ url_for('main.admin_courses') }}" class="card"
+            style="text-align: center; padding: 1.5rem; text-decoration: none;">
+            <div style="font-size: 2rem; color: #10b981; margin-bottom: 10px;"><i class="fas fa-book"></i></div>
+            <span style="font-weight: 800; color: var(--text-primary);">المواد</span>
         </a>
-        <a href="{{ url_for('main.admin_messages') }}" class="card menu-item-v2">
-            <div class="menu-icon-v2" style="color: #f59e0b;"><i class="fas fa-envelope"></i></div>
-            <span>الرسائل</span>
+        <a href="{{ url_for('main.admin_messages') }}" class="card"
+            style="text-align: center; padding: 1.5rem; text-decoration: none;">
+            <div style="font-size: 2rem; color: #f59e0b; margin-bottom: 10px;"><i class="fas fa-envelope"></i></div>
+            <span style="font-weight: 800; color: var(--text-primary);">الرسائل</span>
         </a>
     </div>
 
-    <!-- Recent Registration Requests -->
-    <div class="section-header-v2">
-        <h3><i class="fas fa-user-clock" style="margin-left: 8px;"></i>طلبات حديثة</h3>
-        <a href="{{ url_for('main.admin_pending_users') }}" class="view-all-btn">عرض الكل</a>
-    </div>
-
-    <div class="requests-list-dahih">
-        <a href="{{ url_for('main.admin_pending_users') }}" class="card request-item-dahih">
-            <div class="student-avatar-dahih">أ</div>
-            <div class="student-info-dahih">
-                <div class="student-name-dahih">أحمد محمد عبدالله</div>
-                <div class="student-meta-dahih">هندسة حاسوب • 12/02/2026</div>
-            </div>
-            <div class="status-dahih status-pending">
-                <i class="fas fa-hourglass-half"></i>
-                <span>مراجعة</span>
-            </div>
-        </a>
-    </div>
 </div>
 
 {% endblock %}

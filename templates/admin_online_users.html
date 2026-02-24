@@ -3,43 +3,60 @@
 {% block title %}المستخدمين المتصلين - Al-dahih{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h2>🟢 المستخدمين المتصلين (آخر 5 دقائق)</h2>
-</div>
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-signal" style="color: #10b981; margin-left: 10px;"></i> المتصلون الآن</h3>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; font-weight: 600;">المستخدمون الذين
+        سجلوا نشاطاً خلال آخر 5 دقائق.</p>
 
-<div class="card" style="overflow-x: auto;">
-    <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #ddd;">
-                <th style="padding: 1rem; text-align: right;">الاسم</th>
-                <th style="padding: 1rem; text-align: right;">الكود</th>
-                <th style="padding: 1rem; text-align: right;">الدور</th>
-                <th style="padding: 1rem; text-align: right;">آخر ظهور</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 1rem;">{{ user.full_name }}</td>
-                <td style="padding: 1rem;">{{ user.code }}</td>
-                <td style="padding: 1rem;">
-                    {% if user.role == 'admin' %}
-                    <span
-                        style="background: #fee2e2; color: #991b1b; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">أدمن</span>
+    <div class="card" style="padding: 1rem;">
+        <div class="table-responsive">
+            <table class="modern-table-v2">
+                <thead>
+                    <tr>
+                        <th>الاسم الكامل</th>
+                        <th style="font-family: 'Outfit';">الكود</th>
+                        <th>الرتبة</th>
+                        <th style="font-family: 'Outfit';">آخر ظهور</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div
+                                    style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);">
+                                </div>
+                                <div style="font-weight: 800; color: var(--text-primary);">{{ user.full_name }}</div>
+                            </div>
+                        </td>
+                        <td><span style="font-family: 'Outfit'; color: var(--sky-primary); font-weight: 800;">#{{
+                                user.code }}</span></td>
+                        <td>
+                            {% if user.role == 'admin' %}
+                            <span class="premium-btn"
+                                style="padding: 4px 10px; font-size: 0.7rem; background: #fee2e2; color: #ef4444; border: none; box-shadow: none;">أدمن</span>
+                            {% else %}
+                            <span class="premium-btn"
+                                style="padding: 4px 10px; font-size: 0.7rem; background: #ecfdf5; color: #10b981; border: none; box-shadow: none;">طالب</span>
+                            {% endif %}
+                        </td>
+                        <td style="font-family: 'Outfit'; font-size: 0.8rem; color: var(--text-secondary);">
+                            {{ user.last_seen.strftime('%H:%M:%S') if user.last_seen else 'مجهول' }}
+                        </td>
+                    </tr>
                     {% else %}
-                    <span
-                        style="background: #dcfce7; color: #166534; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">طالب</span>
-                    {% endif %}
-                </td>
-                <td style="padding: 1rem;">{{ user.last_seen.strftime('%Y-%m-%d %H:%M:%S') if user.last_seen else 'N/A'
-                    }}</td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="4" style="padding: 1rem; text-align: center;">لا يوجد مستخدمين متصلين حالياً.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    <tr>
+                        <td colspan="4"
+                            style="text-align: center; padding: 4rem; color: var(--text-secondary); font-weight: 600;">
+                            لا يوجد مستخدمون متصلون حالياً.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}

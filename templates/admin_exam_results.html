@@ -3,38 +3,52 @@
 {% block title %}نتائج الامتحان - {{ exam.title }}{% endblock %}
 
 {% block content %}
-<div class="main-container-v2 animate-fade-in">
-    <div class="section-header-v2" style="margin-top: 10px;">
-        <h3><i class="fas fa-chart-bar" style="color: #667eea; margin-left: 8px;"></i>نتائج: {{ exam.title }}</h3>
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-chart-bar" style="color: var(--sky-primary); margin-left: 10px;"></i> نتائج: {{ exam.title
+            }}</h3>
     </div>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; font-weight: 600;">قائمة بجميع
+        الطلاب الذين أتموا هذا الامتحان مع درجاتهم النهائية.</p>
 
-    <div class="table-container-v2 animate-fade-in" style="margin: 20px 0; border: none; box-shadow: none;">
-        <table class="modern-table-v2">
-            <thead>
-                <tr>
-                    <th>الطالب</th>
-                    <th>الكود</th>
-                    <th>الدرجة</th>
-                    <th>التاريخ</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for result in results %}
-                <tr>
-                    <td>{{ result.user.full_name }}</td>
-                    <td>{{ result.user.code }}</td>
-                    <td style="font-weight: 700; color: #10b981;">{{ result.score }} / {{ result.total_questions }}</td>
-                    <td style="font-size: 0.8rem; color: #64748b;">{{ result.timestamp.strftime('%Y-%m-%d %H:%M') }}
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4" style="text-align: center; padding: 40px; color: #94a3b8;">لا توجد نتائج مسجلة لهذا
-                        الامتحان بعد.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="card" style="padding: 1rem;">
+        <div class="table-responsive">
+            <table class="modern-table-v2">
+                <thead>
+                    <tr>
+                        <th>اسم الطالب</th>
+                        <th style="font-family: 'Outfit';">الكود</th>
+                        <th>الدرجة النهائية</th>
+                        <th style="font-family: 'Outfit';">التاريخ والوقت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>
+                            <div style="font-weight: 800; color: var(--text-primary);">{{ result.user.full_name }}</div>
+                        </td>
+                        <td><span style="font-family: 'Outfit'; color: var(--sky-primary); font-weight: 800;">#{{
+                                result.user.code }}</span></td>
+                        <td>
+                            <span class="premium-btn"
+                                style="padding: 5px 15px; font-size: 0.85rem; background: var(--hover-bg); color: #10b981; border: none; box-shadow: none; font-family: 'Outfit';">
+                                {{ result.score }} / {{ result.total_questions }}
+                            </span>
+                        </td>
+                        <td style="font-family: 'Outfit'; font-size: 0.8rem; color: var(--text-secondary);">{{
+                            result.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4"
+                            style="text-align: center; padding: 4rem; color: var(--text-secondary); font-weight: 600;">
+                            لا توجد نتائج مسجلة لهذا الامتحان بعد.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

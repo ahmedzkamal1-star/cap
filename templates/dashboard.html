@@ -5,48 +5,45 @@
 {% block content %}
 
 <!-- Student Stats Grid -->
-<div class="stats-grid-v2 animate-fade-in" style="margin-bottom: 25px;">
-    <div class="card stat-card-v2"
-        style="border-right: 4px solid var(--p-primary); display: flex; align-items: center; gap: 15px;">
-        <div class="stat-icon-v2" style="background: rgba(99, 102, 241, 0.1); color: var(--p-primary);"><i
-                class="fas fa-graduation-cap"></i></div>
+<div class="stats-grid-v2 animate-slide-up">
+    <div class="card stat-card-v2">
         <div>
-            <div class="stat-label-v2" style="font-size: 0.85rem; opacity: 0.8;">موادي المسجلة</div>
-            <div class="stat-value-v2" style="font-size: 1.5rem; font-weight: 900;">{{ enrollments|length }}</div>
+            <div class="stat-label-v2">موادي المسجلة</div>
+            <div class="stat-value-v2" style="font-family: 'Outfit';">{{ enrollments|length }}</div>
+        </div>
+        <div class="stat-icon-v2" style="margin-right: auto; color: var(--sky-primary); font-size: 2rem;">
+            <i class="fas fa-graduation-cap"></i>
         </div>
     </div>
-    <div class="card stat-card-v2"
-        style="border-right: 4px solid var(--p-secondary); display: flex; align-items: center; gap: 15px;">
-        <div class="stat-icon-v2" style="background: rgba(168, 85, 247, 0.1); color: var(--p-secondary);"><i
-                class="fas fa-star"></i></div>
+    <div class="card stat-card-v2" style="--sky-primary: #f59e0b;">
         <div>
-            <div class="stat-label-v2" style="font-size: 0.85rem; opacity: 0.8;">نقاطي الحالية</div>
-            <div class="stat-value-v2" style="font-size: 1.5rem; font-weight: 900;">120</div>
+            <div class="stat-label-v2">نقاطي الحالية</div>
+            <div class="stat-value-v2" style="font-family: 'Outfit';">120</div>
+        </div>
+        <div class="stat-icon-v2" style="margin-right: auto; color: #f59e0b; font-size: 2rem;">
+            <i class="fas fa-star"></i>
         </div>
     </div>
 </div>
 
-<!-- Student services Menu Grid (REDUCED) -->
-<div class="section-header-v2 animate-fade-in" style="animation-delay: 0.1s; margin-right: 20px;">
-    <h3>🚀 خدمات سريعة</h3>
+<!-- Student services Menu Grid -->
+<div class="section-header-v2" style="margin-top: 2rem;">
+    <h3><i class="fas fa-rocket" style="margin-left: 10px; color: var(--sky-primary);"></i> خدمات سريعة</h3>
 </div>
-<div class="menu-grid-v2 animate-fade-in"
-    style="animation-delay: 0.2s; padding: 0 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-    <a href="#my-courses" class="card menu-item-v2" style="text-align: center; padding: 15px; text-decoration: none;">
-        <div class="menu-icon-v2" style="color: var(--p-primary); margin-bottom: 8px; font-size: 1.5rem;"><i
-                class="fas fa-book-open"></i></div>
-        <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الدروس</span>
+<div class="menu-grid-v2" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+    <a href="#my-courses" class="card" style="text-align: center; padding: 1.5rem; text-decoration: none;">
+        <div style="font-size: 2rem; color: var(--sky-primary); margin-bottom: 8px;"><i class="fas fa-book-open"></i>
+        </div>
+        <span style="font-weight: 800; color: var(--text-primary);">الدروس</span>
     </a>
-    <a href="{{ url_for('main.admin_chat') }}" class="card menu-item-v2"
-        style="text-align: center; padding: 15px; text-decoration: none;">
-        <div class="menu-icon-v2" style="color: var(--p-accent); margin-bottom: 8px; font-size: 1.5rem;"><i
-                class="fas fa-headset"></i></div>
-        <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الدعم</span>
+    <a href="{{ url_for('main.admin_chat') }}" class="card"
+        style="text-align: center; padding: 1.5rem; text-decoration: none;">
+        <div style="font-size: 2rem; color: #10b981; margin-bottom: 8px;"><i class="fas fa-headset"></i></div>
+        <span style="font-weight: 800; color: var(--text-primary);">الدعم</span>
     </a>
-    <a href="#" class="card menu-item-v2" style="text-align: center; padding: 15px; text-decoration: none;">
-        <div class="menu-icon-v2" style="color: #f59e0b; margin-bottom: 8px; font-size: 1.5rem;"><i
-                class="fas fa-calendar-check"></i></div>
-        <span style="font-size: 0.8rem; font-weight: 700; color: var(--p-text);">الجدول</span>
+    <a href="#" class="card" style="text-align: center; padding: 1.5rem; text-decoration: none;">
+        <div style="font-size: 2rem; color: #f59e0b; margin-bottom: 8px;"><i class="fas fa-calendar-check"></i></div>
+        <span style="font-weight: 800; color: var(--text-primary);">الجدول</span>
     </a>
 </div>
 

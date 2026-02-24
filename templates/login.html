@@ -7,7 +7,7 @@
     <title>تسجيل الدخول - منصة الدحيح</title>
     <!-- Google Cairo Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=22.0">
 </head>
 
 <body class="login-page">
@@ -19,10 +19,10 @@
     </div>
 
     <div class="login-container">
-        <div class="login-header">
+        <div class="login-header" style="text-align: center;">
             <!-- الشعار -->
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="شعار المنصة" class="logo"
-                style="width: 120px; margin-bottom: 1rem; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));">
+                style="width: 120px; display: block; margin: 0 auto 1.5rem; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));">
             <h2>تسجيل الدخول</h2>
             <p>أهلاً بك مجدداً! يرجى إدخال بياناتك</p>
         </div>
@@ -32,7 +32,7 @@
             {% if messages %}
             {% for category, message in messages %}
             <div class="alert alert-{{ category }}"
-                style="padding: 12px; border-radius: 12px; background: rgba(255,0,0,0.1); color: #ef4444; font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                style="padding: 12px; border-radius: 12px; background: rgba(0, 180, 216, 0.1); color: var(--sky-primary); font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; border: 1px solid rgba(0, 180, 216, 0.2);">
                 {{ message }}
             </div>
             {% endfor %}
@@ -41,9 +41,8 @@
         </div>
 
         <form class="login-form" method="POST" action="{{ url_for('main.login') }}">
-            <!-- في مشروعك يستخدم كود الطالب (Code) -->
             <div class="input-group">
-                <input type="text" name="code" placeholder="الكود الجامعي الخاص بك" required autocomplete="off">
+                <input type="text" name="code" placeholder="كود الطالب" required autocomplete="off">
             </div>
 
             <div class="input-group">
@@ -51,20 +50,28 @@
             </div>
 
             <div
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.9rem;">
-                <label style="color: var(--sky-dark); cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                    <input type="checkbox" name="remember" style="width: auto; margin-bottom: 0;"> تذكرني
+                style="display: flex; justify-content: space-between; align-items: center; margin: 1.5rem 0.5rem; font-size: 0.95rem;">
+                <label
+                    style="color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                    <input type="checkbox" name="remember"
+                        style="width: 18px; height: 18px; margin: 0; accent-color: var(--sky-primary);"> تذكرني
                 </label>
-                <a href="#" style="color: var(--sky-primary); text-decoration: none; font-weight: 700;">نسيت كلمة
+                <a href="#" style="color: var(--sky-primary); text-decoration: none; font-weight: 800;">نسيت كلمة
                     المرور؟</a>
             </div>
 
-            <button type="submit" class="login-btn">دخول المنصة</button>
+            <button type="submit" class="premium-btn"
+                style="width: 100%; justify-content: center; padding: 18px; font-size: 1.2rem;">
+                دخول المنصة <i class="fas fa-chevron-left" style="margin-right: 10px; font-size: 1rem;"></i>
+            </button>
         </form>
 
-        <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
-            <p style="color: #666; font-size: 0.95rem;">ليس لديك حساب؟ <a href="{{ url_for('main.register') }}"
-                    style="color: var(--sky-primary); text-decoration: none; font-weight: 900;">إنشاء حساب جديد</a></p>
+        <div
+            style="text-align: center; margin-top: 2.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <p style="color: var(--text-secondary); font-size: 0.95rem; font-weight: 600;">ليس لديك حساب؟ <a
+                    href="{{ url_for('main.register') }}"
+                    style="color: var(--sky-primary); text-decoration: none; font-weight: 900; margin-right: 5px;">إنشاء
+                    حساب</a></p>
         </div>
     </div>
 </body>

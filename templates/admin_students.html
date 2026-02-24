@@ -4,56 +4,58 @@
 
 {% block content %}
 
-<div class="main-container-v2 animate-fade-in" style="padding: 0 15px;">
-    <div class="section-header-v2"
-        style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center; margin-right: 5px;">
-        <h3><i class="fas fa-user-graduate" style="color: var(--p-primary); margin-left: 8px;"></i>إدارة الطلاب</h3>
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-user-graduate" style="color: var(--sky-primary); margin-left: 10px;"></i> إدارة الطلاب</h3>
         <a href="{{ url_for('main.admin_add_student') }}" class="premium-btn"
-            style="padding: 10px 15px; font-size: 0.8rem; border-radius: 12px; box-shadow: none;">
-            <i class="fas fa-plus" style="margin-left: 5px;"></i> إضافة طالب
+            style="padding: 10px 20px; font-size: 0.85rem;">
+            <i class="fas fa-user-plus" style="margin-left: 8px;"></i> إضافة طالب جديد
         </a>
     </div>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; font-weight: 600;">إدارة بيانات
+        الطلاب المسجلين بالكامل، بما في ذلك التعديل والحذف.</p>
 
-    <!-- Student List in Card -->
-    <div class="card animate-fade-in" style="padding: 0; overflow: hidden; border-radius: 20px; margin-top: 20px;">
-        <div class="table-container-v2" style="margin: 0; border: none; box-shadow: none;">
-            <table class="modern-table-v2" style="width: 100%; border-collapse: collapse;">
-                <thead style="background: rgba(99, 102, 241, 0.05);">
+    <div class="card" style="padding: 1rem;">
+        <div class="table-responsive">
+            <table class="modern-table-v2">
+                <thead>
                     <tr>
-                        <th style="padding: 15px; text-align: right; color: var(--p-primary); font-weight: 700;">الكود
-                        </th>
-                        <th style="padding: 15px; text-align: right; color: var(--p-primary); font-weight: 700;">الاسم
-                            الكامل</th>
-                        <th style="padding: 15px; text-align: center; color: var(--p-primary); font-weight: 700;">
-                            الأفعال</th>
+                        <th style="font-family: 'Outfit';">الكود الجامعي</th>
+                        <th>اسم الطالب بالكامل</th>
+                        <th style="text-align: center;">إدارة الحساب</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for student in students %}
-                    <tr style="border-top: 1px solid var(--p-border);">
-                        <td style="padding: 15px; font-weight: 900; color: var(--p-primary); font-family: 'Outfit';">#{{
-                            student.code }}</td>
-                        <td style="padding: 15px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="student-avatar-dahih"
-                                    style="width: 40px; height: 40px; background: var(--grad-main); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700;">
-                                    {{ student.full_name[0] }}</div>
-                                <span style="font-weight: 600; color: var(--p-text);">{{ student.full_name }}</span>
+                    <tr>
+                        <td><span
+                                style="font-family: 'Outfit'; color: var(--sky-primary); font-weight: 800; font-size: 1.1rem;">#{{
+                                student.code }}</span></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div
+                                    style="width: 45px; height: 45px; border-radius: 12px; background: var(--hover-bg); color: var(--sky-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 950; border: 1px solid var(--border-color);">
+                                    {{ student.full_name[0] }}
+                                </div>
+                                <div style="font-weight: 800; color: var(--text-primary); font-size: 1.05rem;">{{
+                                    student.full_name }}</div>
                             </div>
                         </td>
-                        <td style="padding: 15px;">
+                        <td style="text-align: center;">
                             <div style="display: flex; gap: 10px; justify-content: center;">
                                 <a href="{{ url_for('main.admin_edit_student', user_id=student.id) }}"
-                                    class="header-action-btn"
-                                    style="background: rgba(99, 102, 241, 0.1); color: var(--p-primary);" title="تعديل">
+                                    class="premium-btn"
+                                    style="padding: 8px 12px; background: var(--bg-main); color: var(--sky-primary); border: 1px solid var(--border-color); box-shadow: none;"
+                                    title="تعديل البيانات">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ url_for('main.admin_delete_student', user_id=student.id) }}"
-                                    method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الطالب؟');">
-                                    <button type="submit" class="header-action-btn"
-                                        style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; cursor: pointer;"
-                                        title="حذف">
-                                        <i class="fas fa-trash"></i>
+                                    method="POST"
+                                    onsubmit="return confirm('هل أنت متأكد من حذف الطالب {{ student.full_name }} نهائياً؟');">
+                                    <button type="submit" class="premium-btn"
+                                        style="padding: 8px 12px; background: #fee2e2; color: #ef4444; border: none; box-shadow: none; cursor: pointer;"
+                                        title="حذف الحساب">
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </div>
@@ -61,10 +63,9 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 60px;">
-                            <i class="fas fa-users-slash"
-                                style="font-size: 40px; margin-bottom: 15px; display: block; color: var(--p-text-muted); opacity: 0.3;"></i>
-                            <span style="color: var(--p-text-muted);">لا يوجد طلاب مسجلين حالياً.</span>
+                        <td colspan="3" style="text-align: center; padding: 5rem; color: var(--text-secondary);">
+                            <div style="font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.2;">🎓</div>
+                            <div style="font-weight: 600;">لا يوجد طلاب مسجلين حالياً.</div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -73,11 +74,11 @@
         </div>
     </div>
 
-    <div class="card animate-fade-in"
-        style="margin-top: 20px; padding: 15px; text-align: center; border: 1px dashed var(--p-border);">
-        <p style="font-size: 12px; color: var(--p-text-muted); margin: 0;">
-            <i class="fas fa-shield-alt" style="margin-left: 5px; color: var(--p-primary);"></i>
-            تم إزالة خيارات الحذف الجماعي كإجراء أمان بناءً على طلبك.
+    <div
+        style="margin-top: 2rem; padding: 1.5rem; border-radius: 20px; background: var(--hover-bg); border: 1px dashed var(--border-color); text-align: center;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; font-weight: 600;">
+            <i class="fas fa-shield-alt" style="color: var(--sky-primary); margin-left: 8px;"></i>
+            تم إلغاء خيار الحذف الجماعي لأسباب أمنية. الحذف يتم لكل مستخدم على حدة وبشكل مؤكد.
         </p>
     </div>
 </div>

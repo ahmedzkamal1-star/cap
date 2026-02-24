@@ -3,41 +3,55 @@
 {% block title %}سجل النشاطات - {{ settings.system_name }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h2>📜 سجل نشاطات النظام</h2>
-    <p>آخر 100 عملية تمت في النظام</p>
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-history" style="color: var(--sky-primary); margin-left: 10px;"></i> سجل نشاطات النظام</h3>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; font-weight: 600;">آخر 100 عملية
+        تمت في النظام لمتابعة الأداء والأمان.</p>
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>الوقت</th>
-                    <th>المستخدم</th>
-                    <th>العملية</th>
-                    <th>التفاصيل</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                <tr>
-                    <td style="white-space: nowrap;">{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                    <td>
-                        {% if log.user %}
-                        {{ log.user.full_name }} ({{ log.user.code }})
-                        {% else %}
-                        <span style="color: #999;">نظام</span>
-                        {% endif %}
-                    </td>
-                    <td><span class="badge badge-info">{{ log.action }}</span></td>
-                    <td>{{ log.details }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4" style="text-align: center;">لا توجد سجلات حالياً.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="card" style="padding: 1rem;">
+        <div class="table-responsive">
+            <table class="modern-table-v2">
+                <thead>
+                    <tr>
+                        <th style="font-family: 'Outfit';">الوقت</th>
+                        <th>المستخدم</th>
+                        <th>العملية</th>
+                        <th>التفاصيل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td style="font-family: 'Outfit'; font-size: 0.85rem; color: var(--text-secondary);">{{
+                            log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>
+                            {% if log.user %}
+                            <div style="font-weight: 800; color: var(--text-primary);">{{ log.user.full_name }}</div>
+                            <div style="font-family: 'Outfit'; font-size: 0.75rem; color: var(--text-secondary);">#{{
+                                log.user.code }}</div>
+                            {% else %}
+                            <span style="color: var(--sky-primary); font-weight: 800;">[ النظام ]</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="premium-btn"
+                                style="padding: 4px 10px; font-size: 0.75rem; background: var(--hover-bg); color: var(--sky-primary); border: none; box-shadow: none;">{{
+                                log.action }}</span>
+                        </td>
+                        <td style="font-size: 0.9rem; max-width: 300px;">{{ log.details }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4"
+                            style="text-align: center; padding: 4rem; color: var(--text-secondary); font-weight: 600;">
+                            لا توجد سجلات حالياً.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

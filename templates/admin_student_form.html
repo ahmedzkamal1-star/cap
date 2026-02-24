@@ -3,71 +3,80 @@
 {% block title %}{{ action }} طالب - {{ settings.system_name }}{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 600px; margin: 2rem auto;">
-    <h2>👤 {{ action }} طالب{% if action == 'Edit' %} - {{ student.code }}{% endif %}</h2>
-    <form method="POST">
-        {% if action == 'Add' %}
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">الكود الجامعي</label>
-            <input type="text" name="code" required
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
-        {% endif %}
+<div class="main-container-v2 animate-slide-up" style="max-width: 600px; margin: 2rem auto;">
+    <div class="card" style="border-top: 8px solid var(--sky-primary); padding: 2.5rem;">
+        <h2
+            style="font-weight: 900; color: var(--text-primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-user-graduate" style="color: var(--sky-primary);"></i> {{ action }} طالب{% if action ==
+            'Edit' %} - {{ student.code }}{% endif %}
+        </h2>
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">الاسم بالكامل</label>
-            <input type="text" name="full_name" value="{{ student.full_name if student else '' }}" required
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
+        <form method="POST">
+            {% if action == 'Add' %}
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">الكود
+                    الجامعي</label>
+                <input type="text" name="code" required
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+            </div>
+            {% endif %}
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">كلمة المرور {% if action == 'Edit' %}(اتركها فارغة إذا
-                لم ترد التغيير){% endif %}</label>
-            <input type="password" name="password" {% if action=='Add' %}required{% endif %}
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">الاسم
+                    بالكامل</label>
+                <input type="text" name="full_name" value="{{ student.full_name if student else '' }}" required
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+            </div>
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">البريد الإلكتروني</label>
-            <input type="email" name="email" value="{{ student.email if student else '' }}"
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">كلمة
+                    المرور {% if action == 'Edit' %}(اتركها فارغة للتخطي){% endif %}</label>
+                <input type="password" name="password" {% if action=='Add' %}required{% endif %} placeholder="••••••••"
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+            </div>
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">رقم الهاتف</label>
-            <input type="text" name="phone" value="{{ student.phone if student else '' }}"
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 1.5rem;">
+                <div class="form-field-v2">
+                    <label
+                        style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">القسم</label>
+                    <input type="text" name="department" value="{{ student.department if student else '' }}"
+                        style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+                </div>
+                <div class="form-field-v2">
+                    <label
+                        style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">السنة</label>
+                    <input type="text" name="year" value="{{ student.year if student else '' }}"
+                        style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+                </div>
+            </div>
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">القسم</label>
-            <input type="text" name="department" value="{{ student.department if student else '' }}"
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
+            <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">رقم
+                    الهاتف</label>
+                <input type="text" name="phone" value="{{ student.phone if student else '' }}"
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+            </div>
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">السنة الدراسية</label>
-            <input type="text" name="year" value="{{ student.year if student else '' }}"
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-        </div>
+            <div class="form-field-v2" style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">الرتبة
+                    (الصلاحية)</label>
+                <select name="role"
+                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none;">
+                    <option value="student" {% if student and student.role=='student' %}selected{% endif %}>طالب المنصة
+                    </option>
+                    <option value="admin" {% if student and student.role=='admin' %}selected{% endif %}>مشرف النظام
+                    </option>
+                </select>
+            </div>
 
-        <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem;">نوع المستخدم (الصلاحية)</label>
-            <select name="role" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
-                <option value="student" {% if student and student.role=='student' %}selected{% endif %}>طالب (Student)
-                </option>
-                <option value="admin" {% if student and student.role=='admin' %}selected{% endif %}>مشرف (Admin)
-                </option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;">
-            💾 حفظ البيانات
-        </button>
-        <a href="{{ url_for('main.admin_students') }}"
-            style="display: block; text-align: center; margin-top: 1rem; color: #666; text-decoration: none;">
-            ← رجوع إلى قائمة الطلاب
-        </a>
-    </form>
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="premium-btn" style="flex: 2; justify-content: center; padding: 16px;">
+                    <i class="fas fa-save" style="margin-left: 10px;"></i> إتمام الحفظ
+                </button>
+                <a href="{{ url_for('main.admin_students') }}" class="premium-btn"
+                    style="flex: 1; justify-content: center; background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border-color); box-shadow: none; text-decoration: none;">إلغاء</a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

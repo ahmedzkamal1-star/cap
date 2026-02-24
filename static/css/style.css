@@ -88,7 +88,56 @@
     --sky-secondary: #ffb700;
     --sky-light: #fff3bf;
     --sky-dark: #b8860b;
-    --sky-gradient: linear-gradient(135deg, #ffd700, #b8860b);
+    --sky-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+}
+
+/* Creative Gold Mode Enhancements */
+[data-theme='gold'] .card {
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    box-shadow: 0 10px 30px rgba(184, 134, 11, 0.2);
+    animation: goldFloat 6s ease-in-out infinite alternate;
+}
+
+[data-theme='gold'] .stat-value-v2,
+[data-theme='gold'] h1,
+[data-theme='gold'] h2,
+[data-theme='gold'] .stat-label-v2 {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 0 20px rgba(184, 134, 11, 0.2);
+    background: var(--sky-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme='gold'] .premium-btn {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    border: 1px solid #fff8e1;
+    background: var(--sky-gradient);
+}
+
+[data-theme='gold'] .mesh-background {
+    opacity: 0.4;
+}
+
+[data-theme='gold'] .blob-1 {
+    background: #bf953f;
+}
+
+[data-theme='gold'] .blob-2 {
+    background: #aa771c;
+}
+
+[data-theme='gold'] .blob-3 {
+    background: #b8860b;
+}
+
+@keyframes goldFloat {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-5px);
+    }
 }
 
 * {

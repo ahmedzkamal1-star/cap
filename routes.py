@@ -811,8 +811,10 @@ def register():
         if User.query.filter_by(code=code).first():
             flash('هذا الكود الجامعي مسجل بالفعل.', 'danger')
         else:
+            gender = request.form.get('gender', 'male')
             new_student = User(code=code, full_name=full_name, phone=phone, 
-                              department=department, year=year, role='student', is_approved=False)
+                              department=department, year=year, role='student', 
+                              is_approved=False, gender=gender)
             new_student.set_password(password)
             db.session.add(new_student)
             db.session.commit()

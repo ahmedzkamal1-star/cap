@@ -23,6 +23,9 @@ class User(UserMixin, db.Model):
     # Master key for secure password resets
     master_key = db.Column(db.String(100), nullable=True)
     
+    # Gender for personalized greetings
+    gender = db.Column(db.String(10), default='male') # 'male' or 'female'
+    
     # Relationships
     enrollments = db.relationship('Enrollment', backref='student', lazy=True, cascade="all, delete-orphan")
     

@@ -17,7 +17,8 @@ def fix_database():
         user_columns = [
             ('last_seen', 'DATETIME'),
             ('created_by_id', 'INTEGER'),
-            ('master_key', 'TEXT')
+            ('master_key', 'TEXT'),
+            ('gender', 'TEXT DEFAULT "male"')
         ]
         
         for col_name, col_type in user_columns:

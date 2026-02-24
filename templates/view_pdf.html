@@ -5,62 +5,52 @@
 {% block content %}
 <div class="main-container-v2 animate-slide-up">
     <div class="section-header-v2">
-        <h3><i class="fas fa-file-pdf" style="color: var(--sky-primary); margin-left: 10px;"></i> المكتبة الرقمية: عرض
-            آمن</h3>
-        <a href="javascript:history.back()" class="premium-btn"
-            style="padding: 8px 15px; font-size: 0.85rem; background: var(--hover-bg); color: var(--text-secondary); border: 1px solid var(--border-color); box-shadow: none; text-decoration: none;">
-            <i class="fas fa-arrow-right" style="margin-left: 8px;"></i> العودة للمادة
-        </a>
-    </div>
-
-    <div class="card"
-        style="padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; border-right: 5px solid var(--sky-primary);">
-        <p style="font-size: 0.95rem; color: var(--text-primary); margin: 0 0 1rem 0; font-weight: 700;">
-            <i class="fas fa-shield-alt" style="color: var(--sky-primary); margin-left: 8px;"></i>
-            ممنوع النسخ، التصوير، أو الطباعة لحماية حقوق المحتوى. الملف محمي بعلامات مائية برقم كودك.
-        </p>
-        <!-- Direct open button - primary access method, especially for mobile -->
-        <a href="{{ url_for('main.uploaded_file', filename=filename) }}" target="_blank" class="premium-btn"
-            style="text-decoration: none; display: inline-flex; width: auto; padding: 0.8rem 2rem; gap: 10px;">
-            <i class="fas fa-external-link-alt"></i>
-            فتح / تحميل الملف مباشرة
-        </a>
+        <h3><i class="fas fa-file-pdf" style="color: var(--sky-primary); margin-left: 10px;"></i> المكتبة الرقمية</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="{{ url_for('main.uploaded_file', filename=filename) }}" target="_blank" class="premium-btn"
+                style="text-decoration: none; padding: 8px 15px; font-size: 0.85rem; gap: 8px;">
+                <i class="fas fa-download"></i> تحميل
+            </a>
+            <a href="javascript:history.back()" class="premium-btn"
+                style="padding: 8px 15px; font-size: 0.85rem; background: var(--hover-bg); color: var(--text-secondary); border: 1px solid var(--border-color); box-shadow: none; text-decoration: none;">
+                <i class="fas fa-arrow-right" style="margin-left: 8px;"></i> العودة للمادة
+            </a>
+        </div>
     </div>
 
     <div class="card pdf-viewer-container"
         style="position: relative; overflow: hidden; padding: 0; border-radius: 25px; background: #1a1a2e; border: 1px solid var(--border-color); box-shadow: var(--card-shadow); min-height: 80vh;">
-        <!-- Anti-Screenshot Overlay -->
-        <div id="protection-overlay"
-            style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 100; pointer-events: none; background: rgba(0,0,0,0.01);">
-        </div>
 
-        <div id="pdf-viewer-wrapper"
-            style="overflow-y: auto; height: 80vh; padding: 40px 0; transition: filter 0.3s ease;">
+        <div id="pdf-viewer-wrapper" style="overflow-y: auto; height: 80vh; padding: 40px 0;">
             <canvas id="pdf-canvas"
                 style="display: block; margin: 0 auto; box-shadow: 0 10px 50px rgba(0,0,0,0.5); max-width: 95%; transition: transform 0.2s ease; border-radius: 8px;"></canvas>
         </div>
 
-        <!-- Zoom Controls Overlay -->
+        <!-- Zoom Controls -->
         <div
             style="position: absolute; top: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 102;">
             <button onclick="zoom(0.2)" class="premium-btn"
-                style="width: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 15px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color);"><i
-                    class="fas fa-search-plus"></i></button>
+                style="width: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 15px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color);">
+                <i class="fas fa-search-plus"></i>
+            </button>
             <button onclick="zoom(-0.2)" class="premium-btn"
-                style="width: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 15px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color);"><i
-                    class="fas fa-search-minus"></i></button>
+                style="width: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 15px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color);">
+                <i class="fas fa-search-minus"></i>
+            </button>
             <button onclick="resetZoom()" class="premium-btn"
-                style="width: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 15px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color);"><i
-                    class="fas fa-undo"></i></button>
+                style="width: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 15px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color);">
+                <i class="fas fa-undo"></i>
+            </button>
         </div>
 
-        <!-- Controls -->
+        <!-- Page Controls -->
         <div class="pdf-controls"
             style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--glass-bg); backdrop-filter: blur(20px); padding: 12px 30px; border-radius: 20px; display: flex; justify-content: center; gap: 25px; align-items: center; z-index: 101; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
             <button onclick="changePage(-1)" class="premium-btn"
                 style="padding: 8px 20px; font-size: 0.85rem; background: transparent; border: 1px solid var(--border-color);">السابق</button>
-            <span id="page-info" style="font-weight: 800; color: white; font-family: 'Outfit'; font-size: 0.9rem;">PAGE
-                <span id="page-num" style="color: var(--sky-primary);">1</span> / <span id="page-count">?</span></span>
+            <span id="page-info" style="font-weight: 800; color: white; font-family: 'Outfit'; font-size: 0.9rem;">
+                صفحة <span id="page-num" style="color: var(--sky-primary);">1</span> / <span id="page-count">?</span>
+            </span>
             <button onclick="changePage(1)" class="premium-btn"
                 style="padding: 8px 20px; font-size: 0.85rem; background: var(--sky-primary); border: none;">التالي</button>
         </div>
@@ -68,21 +58,6 @@
 </div>
 
 <style>
-    /* Disable printing */
-    @media print {
-        body {
-            display: none !important;
-        }
-    }
-
-    /* Prevent selection */
-    body {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
     #pdf-viewer-wrapper::-webkit-scrollbar {
         width: 8px;
     }
@@ -99,7 +74,6 @@
 <script>
     const url = "{{ url_for('static', filename='uploads/' + filename) }}";
 
-    // Set pdf.js worker
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
     let pdfDoc = null,
@@ -109,152 +83,69 @@
 
     const getQualityScale = () => {
         const dpr = window.devicePixelRatio || 1;
-        return 2.0 * dpr; // Increased base scale + DPR for extreme clarity
+        return 2.0 * dpr;
     };
 
     const canvas = document.getElementById('pdf-canvas'),
-        ctx = canvas.getContext('2d', { alpha: false }); // Optimization
+        ctx = canvas.getContext('2d', { alpha: false });
 
-    // Render the page
     const renderPage = num => {
         pageIsRendering = true;
         const currentScale = getQualityScale();
 
-        // Get page
         pdfDoc.getPage(num).then(page => {
             const viewport = page.getViewport({ scale: currentScale });
-
-            // Set canvas dimensions matched to the high-res viewport
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-
-            // Use CSS to scale the canvas back down to fit the screen
             canvas.style.width = '100%';
             canvas.style.height = 'auto';
 
-            const renderCtx = {
-                canvasContext: ctx,
-                viewport,
-                intent: 'display'
-            };
+            const renderCtx = { canvasContext: ctx, viewport, intent: 'display' };
 
             page.render(renderCtx).promise.then(() => {
                 pageIsRendering = false;
-
-                // Draw Watermark
-                drawWatermark(currentScale);
-
                 if (pageNumIsPending !== null) {
                     renderPage(pageNumIsPending);
                     pageNumIsPending = null;
                 }
             });
 
-            // Output current page
             document.getElementById('page-num').textContent = num;
         });
     };
 
-    const drawWatermark = (currentScale) => {
-        const studentName = "{{ current_user.full_name }}";
-        const studentCode = "{{ current_user.code }}";
-        const watermarkText = `${studentName} - ${studentCode}`;
-
-        ctx.save();
-        // Adjust font size based on scale to keep it consistent
-        const fontSize = 25 * (currentScale / 2.5);
-        ctx.font = `bold ${fontSize}px Cairo`;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        const stepX = 350 * (currentScale / 2.5);
-        const stepY = 250 * (currentScale / 2.5);
-
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(-45 * Math.PI / 180);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-        for (let y = -canvas.height; y < canvas.height * 2; y += stepY) {
-            for (let x = -canvas.width; x < canvas.width * 2; x += stepX) {
-                ctx.fillText(watermarkText, x, y);
-            }
-        }
-
-        ctx.restore();
-    };
-
-    // Check for pages rendering
     const queueRenderPage = num => {
-        if (pageIsRendering) {
-            pageNumIsPending = num;
-        } else {
-            renderPage(num);
-        }
+        if (pageIsRendering) { pageNumIsPending = num; } else { renderPage(num); }
     };
 
-    // Show Prev Page
     const changePage = offset => {
-        if (pageNum + offset <= 0 || pageNum + offset > pdfDoc.numPages) {
-            return;
-        }
+        if (pageNum + offset <= 0 || pageNum + offset > pdfDoc.numPages) return;
         pageNum += offset;
         queueRenderPage(pageNum);
     };
 
-    // Get Document
     pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
         pdfDoc = pdfDoc_;
         document.getElementById('page-count').textContent = pdfDoc.numPages;
         renderPage(pageNum);
     }).catch(err => {
         console.error('Error loading PDF:', err);
-        alert('لا يمكن تحميل الملف حالياً أو أن الرابط غير صحيح.');
+        document.getElementById('pdf-viewer-wrapper').innerHTML =
+            '<div style="text-align:center; padding: 4rem; color: white;">' +
+            '<i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f59e0b; display: block; margin-bottom: 1rem;"></i>' +
+            '<p style="font-size: 1.1rem;">تعذر عرض الملف في المتصفح. <br><a href="{{ url_for(\'main.uploaded_file\', filename=filename) }}" target="_blank" style="color: var(--sky-primary); font-weight: 800;">اضغط هنا لتحميله مباشرة</a></p>' +
+            '</div>';
     });
 
-    /** ZOOM LOGIC **/
     let currentZoom = 1;
     const zoom = (delta) => {
         currentZoom = Math.max(0.5, Math.min(3, currentZoom + delta));
         canvas.style.transform = `scale(${currentZoom})`;
         canvas.style.transformOrigin = 'top center';
     };
-
     const resetZoom = () => {
         currentZoom = 1;
         canvas.style.transform = 'scale(1)';
     };
-
-    /** SECURITY MEASURES **/
-
-    // Blur on focus loss (Protect against external recording/screenshots)
-    window.addEventListener('blur', () => {
-        document.getElementById('pdf-viewer-wrapper').style.filter = 'blur(15px)';
-    });
-    window.addEventListener('focus', () => {
-        document.getElementById('pdf-viewer-wrapper').style.filter = 'none';
-    });
-
-    // Disable Right Click
-    document.addEventListener('contextmenu', e => e.preventDefault());
-
-    // Disable Shortcuts (Control + S, P, C, U, F12)
-    document.onkeydown = function (e) {
-        if (
-            (e.ctrlKey && (e.keyCode === 83 || e.keyCode === 80 || e.keyCode === 67 || e.keyCode === 85)) ||
-            e.keyCode === 123
-        ) {
-            alert('❌ تم تعطيل هذا الإجراء لحماية حقوق المحتوى.');
-            return false;
-        }
-    };
-
-    // Detect PrintScreen (Partial protection)
-    document.addEventListener('keyup', (e) => {
-        if (e.key == 'PrintScreen') {
-            navigator.clipboard.writeText('');
-            alert('📸 تصوير الشاشة ممنوع!');
-        }
-    });
 </script>
 {% endblock %}

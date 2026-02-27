@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}الطلاب بانتظار المراجعة - Al-dahih{% endblock %}
+
+{% block content %}
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-user-clock" style="color: #f59e0b; margin-left: 10px;"></i> طلاب بانتظار المراجعة</h3>
+    </div>
+
+    <div class="stats-grid-v2" style="grid-template-columns: 1fr;">
+        {% for user in pending %}
+        <div class="card"
+            style="display: flex; justify-content: space-between; align-items: center; border-right: 5px solid #f59e0b; padding: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem; transform: none;">{{
+                    user.full_name[0] }}</div>
+                <div>
+                    <h4 style="margin: 0; color: var(--text-primary);">{{ user.full_name }}</h4>
+                    <p style="margin: 2px 0 0 0; font-size: 0.85rem; color: var(--text-secondary);">
+                        كود: <span style="font-family: 'Outfit'; font-weight: 700;">#{{ user.code }}</span> |
+                        قسم: {{ user.department or 'غير محدد' }} |
+                        سنة: {{ user.year or 'غير محدد' }}
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ url_for('main.admin_approve_user', user_id=user.id, action='approve') }}"
+                    class="premium-btn" style="background: #10b981; padding: 8px 20px;">
+                    <i class="fas fa-check-circle" style="margin-left: 8px;"></i> قبول
+                </a>
+                <a href="{{ url_for('main.admin_approve_user', user_id=user.id, action='reject') }}" class="premium-btn"
+                    style="background: #ef4444; padding: 8px 20px;"
+                    onclick="return confirm('هل أنت متأكد من رفض وحذف هذا الطالب؟')">
+                    <i class="fas fa-times-circle" style="margin-left: 8px;"></i> رفض
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <i class="fas fa-check-double"
+                style="font-size: 3rem; color: #10b981; opacity: 0.3; margin-bottom: 1.5rem; display: block;"></i>
+            <p style="color: var(--text-secondary); font-weight: 700;">لا توجد طلبات معلقة حالياً.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

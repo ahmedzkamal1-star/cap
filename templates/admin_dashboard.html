@@ -16,19 +16,29 @@
                 <i class="fas fa-user-graduate"></i>
             </div>
         </div>
-        <div class="card stat-card-v2" style="--sky-primary: #f59e0b;">
+        <a href="{{ url_for('main.admin_pending_users') }}" class="card stat-card-v2"
+            style="--sky-primary: #f59e0b; text-decoration: none;">
             <div>
                 <div class="stat-label-v2">بانتظار المراجعة</div>
-                <div class="stat-value-v2" style="font-family: 'Outfit';">12</div>
+                <div class="stat-value-v2" style="font-family: 'Outfit';">{{ pending_count }}</div>
             </div>
             <div class="stat-icon-dahih" style="margin-right: auto; color: #f59e0b;">
-                <i class="fas fa-clock"></i>
+                <i class="fas fa-user-clock"></i>
             </div>
-        </div>
+        </a>
+        <a href="{{ url_for('main.admin_online_users') }}" class="card stat-card-v2"
+            style="--sky-primary: #10b981; text-decoration: none;">
+            <div>
+                <div class="stat-label-v2">متصل الآن</div>
+                <div class="stat-value-v2" style="font-family: 'Outfit';">{{ online_count }}</div>
+            </div>
+            <div class="stat-icon-dahih" style="margin-right: auto; color: #10b981;">
+                <i class="fas fa-signal"></i>
+            </div>
+        </a>
     </div>
 
-
-    <!-- 3-Column Menu Grid (REDUCED) -->
+    <!-- 3-Column Menu Grid -->
     <div class="section-header-v2">
         <h3><i class="fas fa-bookmark" style="margin-left: 8px;"></i>إدارة المنصة</h3>
     </div>
@@ -57,11 +67,10 @@
             <div style="font-size: 2rem; color: #f59e0b; margin-bottom: 10px;"><i class="fas fa-envelope"></i></div>
             <span style="font-weight: 800; color: var(--text-primary);">الرسائل</span>
         </a>
-        <a href="{{ url_for('main.admin_manage_schedules') }}" class="card"
+        <a href="{{ url_for('main.admin_activity') }}" class="card"
             style="text-align: center; padding: 1.5rem; text-decoration: none;">
-            <div style="font-size: 2rem; color: var(--sky-primary); margin-bottom: 10px;"><i
-                    class="fas fa-calendar-alt"></i></div>
-            <span style="font-weight: 800; color: var(--text-primary);">الجداول</span>
+            <div style="font-size: 2rem; color: #ef4444; margin-bottom: 10px;"><i class="fas fa-history"></i></div>
+            <span style="font-weight: 800; color: var(--text-primary);">سجل النشاطات</span>
         </a>
     </div>
 

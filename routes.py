@@ -882,6 +882,7 @@ def admin_settings():
         settings.allow_registration = 'allow_registration' in request.form
         settings.maintenance_mode = 'maintenance_mode' in request.form
         settings.show_schedule = 'show_schedule' in request.form
+        settings.show_schedule = 'show_schedule' in request.form
         
         # Security Updates for Admin
         new_pass = request.form.get('admin_password')

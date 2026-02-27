@@ -58,9 +58,16 @@
     --bg-sidebar: rgba(11, 43, 64, 0.95);
     --text-primary: var(--ramadan-star);
     --text-secondary: var(--ramadan-gold);
-    --card-bg: rgba(107, 45, 92, 0.15);
+    --card-bg: rgba(11, 43, 64, 0.85);
     --border-color: rgba(255, 215, 0, 0.2);
     --hover-bg: rgba(255, 215, 0, 0.1);
+
+    /* Fixed luxury background */
+    background-image: url('../ramadan_bg.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
 }
 
 [data-ramadan='enabled'] .mesh-background {

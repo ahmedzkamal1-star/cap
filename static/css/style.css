@@ -780,9 +780,10 @@ body {
     box-shadow: 0 8px 15px var(--shadow-color);
 }
 
-/* Responsive Overrides */
+/* Responsive Overrides & Desktop View Logic */
 @media (max-width: 1200px) {
-    .main-content {
+    /* Standard Mobile Behavior */
+    html:not(.desktop-view) .main-content {
         margin-right: 0 !important;
         width: 100% !important;
         padding: 1.5rem !important;
@@ -790,7 +791,7 @@ body {
         padding-bottom: 110px !important;
     }
 
-    .sidebar {
+    html:not(.desktop-view) .sidebar {
         transform: translateX(110.1%);
         right: 15px;
         top: 15px;
@@ -798,12 +799,12 @@ body {
         width: 300px;
     }
 
-    .sidebar.open {
+    html:not(.desktop-view) .sidebar.open {
         transform: translateX(0);
         box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
     }
 
-    .mobile-header {
+    html:not(.desktop-view) .mobile-header {
         display: flex !important;
         right: 15px;
         left: 15px;
@@ -811,12 +812,56 @@ body {
         border-radius: 20px;
     }
 
-    .mobile-bottom-nav {
+    html:not(.desktop-view) .mobile-bottom-nav {
         display: flex;
     }
 
-    .dark-mode-toggle {
+    html:not(.desktop-view) .dark-mode-toggle {
         bottom: 110px;
         left: 25px;
+    }
+}
+
+/* Forced Desktop View on Mobile */
+html.desktop-view {
+    min-width: 1200px;
+    overflow-x: auto;
+}
+
+html.desktop-view body {
+    width: 1200px;
+}
+
+html.desktop-view .sidebar {
+    transform: translateX(0) !important;
+    display: block !important;
+    width: 280px !important;
+    right: 0 !important;
+    left: auto !important;
+}
+
+html.desktop-view .main-content {
+    margin-right: 280px !important;
+    width: calc(100% - 280px) !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+html.desktop-view .mobile-header,
+html.desktop-view .mobile-bottom-nav,
+html.desktop-view .menu-toggle-btn {
+    display: none !important;
+}
+
+/* Portrait Mode Refinements */
+@media (max-width: 600px) {
+    .section-header-v2 h3 {
+        font-size: 1.1rem;
+    }
+    .post-card img {
+        max-height: 350px;
+    }
+    .main-container-v2 {
+        padding: 10px;
     }
 }

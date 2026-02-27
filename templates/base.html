@@ -18,11 +18,16 @@
     <meta name="theme-color" content="#00b4d8">
 
     <script>
-        // High-speed theme detection to prevent white flash
+        // High-speed theme & view mode detection
         (function () {
             const savedTheme = localStorage.getItem('darkMode');
             const theme = savedTheme === 'enabled' ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', theme);
+
+            const viewMode = localStorage.getItem('viewMode');
+            if (viewMode === 'desktop') {
+                document.documentElement.classList.add('desktop-view');
+            }
         })();
     </script>
 </head>
@@ -110,6 +115,15 @@
                 class="nav-item {{ 'active' if request.endpoint == 'main.profile' }}">
                 <i class="fas fa-fingerprint"></i> <span>ملفي</span>
             </a>
+
+            <!-- View Mode Toggle -->
+            <div class="view-mode-section"
+                style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <button onclick="toggleViewMode()" class="nav-item"
+                    style="width: 100%; border: none; background: none; cursor: pointer; text-align: right;">
+                    <i class="fas fa-desktop" id="view-icon"></i> <span id="view-text">عرض الكمبيوتر</span>
+                </button>
+            </div>
             {% endif %}
 
             <div style="margin-top: auto; padding-top: 2rem;">
@@ -205,6 +219,37 @@
         window.userRole = "{{ current_user.role|lower if current_user.is_authenticated else 'guest' }}";
     </script>
     <script src="{{ url_for('static', filename='js/main.js') }}?v=23.0"></script>
+    <script>
+        function toggleViewMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('view-icon');
+            const text = document.getElementById('view-text');
+
+            if (html.classList.contains('desktop-view')) {
+                html.classList.remove('desktop-view');
+                localStorage.setItem('viewMode', 'mobile');
+                if (icon) icon.className = 'fas fa-desktop';
+                if (text) text.innerText = 'عرض الكمبيوتر';
+                window.location.reload(); // Reload to reset viewport/layout properly
+            } else {
+                html.classList.add('desktop-view');
+                localStorage.setItem('viewMode', 'desktop');
+                if (icon) icon.className = 'fas fa-mobile-alt';
+                if (text) text.innerText = 'عرض الموبايل';
+                window.location.reload();
+            }
+        }
+
+        // Initialize button text based on current mode
+        document.addEventListener('DOMContentLoaded', () => {
+            const icon = document.getElementById('view-icon');
+            const text = document.getElementById('view-text');
+            if (document.documentElement.classList.contains('desktop-view')) {
+                if (icon) icon.className = 'fas fa-mobile-alt';
+                if (text) text.innerText = 'عرض الموبايل';
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_from_directory
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_from_directory, jsonify, make_response
 from flask_login import login_user, logout_user, login_required, current_user
-from models import User, Course, Enrollment, Friend, Lesson, Exam, SystemSettings, Message, ActivityLog, HomePost, ExamResult, Schedule, db
+from models import User, Course, Enrollment, Friend, Lesson, Exam, SystemSettings, Message, ActivityLog, HomePost, ExamResult, Schedule, PostLike, PostComment, db
 import json
 import random
 
@@ -80,6 +80,20 @@ def like_post(post_id):
     
     db.session.commit()
     return jsonify({'status': status, 'count': PostLike.query.filter_by(post_id=post_id).count()})
+
+@main.route('/add_comment/<int:post_id>', methods=['POST'])
+@login_required
+def add_comment(post_id):
+    if current_user.role != 'student':
+        return redirect(url_for('main.index'))
+    
+    content = request.form.get('content')
+    if content:
+        comment = PostComment(post_id=post_id, user_id=current_user.id, content=content)
+        db.session.add(comment)
+        db.session.commit()
+        flash('تم إضافة تعليقك بنجاح!', 'success')
+    return redirect(url_for('main.index'))
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -228,6 +242,13 @@ def course_details(course_id):
 def profile():
     return render_template('profile.html', user=current_user)
 
+@main.route('/schedules')
+@login_required
+def schedules():
+    from models import Schedule
+    all_schedules = Schedule.query.order_by(Schedule.timestamp.desc()).all()
+    return render_template('schedules.html', schedules=all_schedules)
+
 @main.route('/admin/secure-reset', methods=['GET', 'POST'])
 def secure_reset():
     if request.method == 'POST':
@@ -306,6 +327,35 @@ def friends():
             
     return render_template('friends.html', friends=friends_list)
 
+@main.route('/chat/<int:recipient_id>', methods=['GET', 'POST'])
+@login_required
+def private_chat(recipient_id):
+    if current_user.role != 'student':
+        return redirect(url_for('main.dashboard'))
+    
+    recipient = User.query.get_or_404(recipient_id)
+    if recipient.role != 'student':
+        return redirect(url_for('main.friends'))
+    
+    if request.method == 'POST':
+        body = request.form.get('message')
+        if body:
+            new_msg = Message(sender_id=current_user.id, recipient_id=recipient.id, body=body, subject=f"Private Chat")
+            db.session.add(new_msg)
+            db.session.commit()
+            return redirect(url_for('main.private_chat', recipient_id=recipient.id))
+
+    messages = Message.query.filter(
+        ((Message.sender_id == current_user.id) & (Message.recipient_id == recipient.id)) |
+        ((Message.sender_id == recipient.id) & (Message.recipient_id == current_user.id))
+    ).order_by(Message.timestamp.asc()).all()
+    
+    # Mark messages as read
+    Message.query.filter_by(sender_id=recipient.id, recipient_id=current_user.id).update({Message.is_read: True})
+    db.session.commit()
+
+    return render_template('student_chat.html', recipient=recipient, messages=messages)
+
 # --- Admin Routes ---
 
 @main.route('/admin')
@@ -358,6 +408,31 @@ def admin_moderators():
         ).all()
         
     return render_template('admin_moderators.html', moderators=moderators)
+
+@main.route('/admin/pending_users')
+@login_required
+def admin_pending_users():
+    if current_user.role != 'admin':
+        return redirect(url_for('main.dashboard'))
+    pending_users = User.query.filter_by(is_approved=False).all()
+    return render_template('admin_pending_users.html', users=pending_users)
+
+@main.route('/admin/approve_user/<int:user_id>/<string:action>')
+@login_required
+def admin_approve_user(user_id, action):
+    if current_user.role != 'admin':
+        return redirect(url_for('main.dashboard'))
+    
+    user = User.query.get_or_404(user_id)
+    if action == 'approve':
+        user.is_approved = True
+        flash(f'تم قبول الطالب {user.full_name} بنجاح.', 'success')
+    elif action == 'reject':
+        db.session.delete(user)
+        flash(f'تم رفض وحذف طلب {user.full_name}.', 'info')
+    
+    db.session.commit()
+    return redirect(url_for('main.admin_pending_users'))
 
 @main.route('/admin/moderator/<int:user_id>/demote', methods=['POST'])
 @login_required
@@ -799,6 +874,7 @@ def admin_settings():
         settings.whatsapp_link = request.form.get('whatsapp_link', '').strip()
         settings.allow_registration = 'allow_registration' in request.form
         settings.maintenance_mode = 'maintenance_mode' in request.form
+        settings.show_schedule = 'show_schedule' in request.form
         
         # Security Updates for Admin
         new_pass = request.form.get('admin_password')

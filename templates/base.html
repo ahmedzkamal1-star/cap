@@ -82,6 +82,10 @@
                 class="nav-item {{ 'active' if request.endpoint == 'main.admin_courses' }}">
                 <i class="fas fa-book-open"></i> <span>المواد</span>
             </a>
+            <a href="{{ url_for('main.admin_online_users') }}"
+                class="nav-item {{ 'active' if request.endpoint == 'main.admin_online_users' }}">
+                <i class="fas fa-users-viewfinder"></i> <span>المتصلون الآن</span>
+            </a>
             <a href="{{ url_for('main.admin_settings') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.admin_settings' }}">
                 <i class="fas fa-sliders-h"></i> <span>الإعدادات</span>
@@ -93,6 +97,10 @@
             <a href="{{ url_for('main.friends') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.friends' }}">
                 <i class="fas fa-users"></i> <span>الزملاء</span>
+            </a>
+            <a href="{{ url_for('main.admin_chat') }}"
+                class="nav-item {{ 'active' if request.endpoint == 'main.admin_chat' }}">
+                <i class="fas fa-comments"></i> <span>رسائل المدير</span>
             </a>
             <a href="{{ url_for('main.schedules') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.schedules' }}">

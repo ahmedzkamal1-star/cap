@@ -48,27 +48,15 @@
                         style="accent-color: #f59e0b; width: 20px; height: 20px;">
                     وضع الصيانة
                 </label>
+                <label class="check-field-v2"
+                    style="cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: 700;">
+                    <input type="checkbox" name="show_schedule" {% if settings.show_schedule %}checked{% endif %}
+                        style="accent-color: var(--sky-primary); width: 20px; height: 20px;">
+                    إظهار الجدول الدراسي للطلاب
+                </label>
             </div>
             <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);">* وضع الصيانة يمنع وصول
                 الطلاب للنظام مؤقتاً.</p>
-        </div>
-
-        <!-- Platform Schedule -->
-        <div class="card" style="border-right: 5px solid var(--sky-secondary);">
-            <h3 style="color: var(--sky-secondary); margin-bottom: 1.5rem;">📅 الجدول الدراسي العام</h3>
-            <div class="form-field-v2">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700;">رفع ملف الجدول (صورة أو
-                    PDF)</label>
-                <input type="file" name="schedule_file" accept=".pdf,image/*"
-                    style="width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
-            </div>
-            {% if settings.schedule_filename %}
-            <div style="margin-top: 15px; font-size: 0.9rem;">
-                <i class="fas fa-file-pdf" style="margin-left: 5px; color: var(--sky-primary);"></i>
-                الجدول الحالي: <a href="{{ url_for('static', filename='uploads/' + settings.schedule_filename) }}"
-                    target="_blank" style="color: var(--sky-primary); font-weight: 700;">عرض الملف</a>
-            </div>
-            {% endif %}
         </div>
 
         <!-- Social Media Links -->

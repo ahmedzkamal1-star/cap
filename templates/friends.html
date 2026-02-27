@@ -32,7 +32,8 @@
                 friend.code }}</span>
             <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">{{ friend.department or
                 'بدون قسم' }} - {{ friend.year or 'مجهول' }}</p>
-            <a href="#" class="premium-btn" style="width: 100%; justify-content: center;">
+            <a href="{{ url_for('main.private_chat', recipient_id=friend.id) }}" class="premium-btn"
+                style="width: 100%; justify-content: center;">
                 <i class="fas fa-comments" style="margin-left: 10px;"></i> محادثة
             </a>
         </div>

@@ -121,6 +121,7 @@ class SystemSettings(db.Model):
     schedule_filename = db.Column(db.String(255)) # Platform-wide schedule file
     telegram_link = db.Column(db.String(500))
     whatsapp_link = db.Column(db.String(500))
+    show_schedule = db.Column(db.Boolean, default=True)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -149,11 +150,20 @@ class HomePost(db.Model):
     # Relationships
     likes = db.relationship('PostLike', backref='post', cascade="all, delete-orphan")
     views = db.relationship('PostView', backref='post', cascade="all, delete-orphan")
+    comments = db.relationship('PostComment', backref='post', cascade="all, delete-orphan")
 
 class PostLike(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('home_post.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class PostComment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('home_post.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', backref=db.backref('comments', lazy=True))
 
 class PostView(db.Model):
     id = db.Column(db.Integer, primary_key=True)

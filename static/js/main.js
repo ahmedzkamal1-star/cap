@@ -20,34 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // دالة تهيئة وضع رمضان
+// دالة تهيئة وضع رمضان (دائمه الآن)
 function initRamadan() {
-    let ramadanStatus = localStorage.getItem('ramadanMode');
-
-    // التفعيل التلقائي إذا لم يسبق للمستخدم اختيار شيء
-    if (ramadanStatus === null) {
-        ramadanStatus = 'enabled';
-        localStorage.setItem('ramadanMode', 'enabled');
-    }
-
-    if (ramadanStatus === 'enabled') {
-        document.documentElement.setAttribute('data-ramadan', 'enabled');
-        generateOrnaments();
-    }
+    // تفعيل إجباري لجميع المستخدمين
+    document.documentElement.setAttribute('data-ramadan', 'enabled');
+    generateOrnaments();
+    localStorage.setItem('ramadanMode', 'enabled');
 }
 
-// دالة تبديل وضع رمضان
+// دالة تبديل وضع رمضان (تم إيقافها لجعل الوضع دائماً)
 window.toggleRamadan = function () {
-    const currentState = document.documentElement.getAttribute('data-ramadan');
-    const newState = currentState === 'enabled' ? 'disabled' : 'enabled';
-
-    document.documentElement.setAttribute('data-ramadan', newState);
-    localStorage.setItem('ramadanMode', newState);
-
-    if (newState === 'enabled') {
-        generateOrnaments();
-    } else {
-        removeOrnaments();
-    }
+    console.log('وضع رمضان مفعل تلقائياً! 🌙✨');
 };
 
 function generateOrnaments() {

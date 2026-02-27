@@ -37,17 +37,17 @@
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.4);
 
-    /* Ramadan Palette - Festive Layers */
+    /* Ramadan Palette - Festive Layers (Refined v43) */
     --ramadan-gold: #FFD700;
-    --ramadan-purple: #6B2D5C;
-    --ramadan-teal: #1E5F5F;
-    --ramadan-orange: #FF8C42;
-    --ramadan-beige: #F5E6D3;
-    --ramadan-night: #0B2B40;
-    --ramadan-star: #F9F3E6;
+    --ramadan-purple: #4A0E4E;
+    --ramadan-teal: #0D3B3B;
+    --ramadan-orange: #E67E22;
+    --ramadan-beige: #FCF3CF;
+    --ramadan-night: #060C1E;
+    --ramadan-star: #FFF9E3;
 }
 
-/* ===== Ramadan Mode Override ===== */
+/* ===== Ramadan Mode Override (ALWAYS ON) ===== */
 [data-ramadan='enabled'] {
     --sky-primary: var(--ramadan-gold);
     --sky-secondary: var(--ramadan-purple);
@@ -55,12 +55,13 @@
     --sky-gradient: linear-gradient(135deg, var(--ramadan-purple), var(--ramadan-night));
 
     --bg-main: var(--ramadan-night);
-    --bg-sidebar: rgba(11, 43, 64, 0.95);
+    --bg-sidebar: rgba(6, 12, 30, 0.98);
     --text-primary: var(--ramadan-star);
     --text-secondary: var(--ramadan-gold);
-    --card-bg: rgba(11, 43, 64, 0.85);
-    --border-color: rgba(255, 215, 0, 0.2);
-    --hover-bg: rgba(255, 215, 0, 0.1);
+    --card-bg: rgba(6, 12, 30, 0.88);
+    /* Increased opacity for elite readability */
+    --border-color: rgba(255, 215, 0, 0.25);
+    --hover-bg: rgba(255, 215, 0, 0.12);
 
     /* Fixed luxury background */
     background-image: url('../ramadan_bg.png') !important;

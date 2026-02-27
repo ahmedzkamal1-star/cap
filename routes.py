@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
 from flask import (
@@ -22,9 +22,9 @@ def before_request():
         db.session.commit()
 
 @main.app_context_processor
-def inject_settings():
+def inject_global_vars():
     settings = SystemSettings.query.first()
-    return dict(settings=settings)
+    return dict(settings=settings, datetime=datetime, timedelta=timedelta)
 
 def log_activity(action, details=None):
     if current_user.is_authenticated:

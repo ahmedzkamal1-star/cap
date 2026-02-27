@@ -250,7 +250,7 @@ def profile():
 
 @main.route('/schedules')
 @login_required
-def view_schedules():
+def student_view_schedules():
     from models import Schedule
     all_schedules = Schedule.query.order_by(Schedule.timestamp.desc()).all()
     return render_template('schedules.html', schedules=all_schedules)
@@ -997,7 +997,7 @@ def admin_delete_post(post_id):
 
 @main.route('/admin/schedules', methods=['GET', 'POST'])
 @login_required
-def admin_schedules():
+def admin_manage_schedules():
     if current_user.role != 'admin':
         return redirect(url_for('main.dashboard'))
     
@@ -1018,7 +1018,7 @@ def admin_schedules():
         db.session.add(new_sch)
         db.session.commit()
         flash('تم إضافة الجدول بنجاح.', 'success')
-        return redirect(url_for('main.admin_schedules'))
+        return redirect(url_for('main.admin_manage_schedules'))
 
     schedules = Schedule.query.order_by(Schedule.timestamp.desc()).all()
     return render_template('admin_schedules.html', schedules=schedules)
@@ -1032,5 +1032,5 @@ def admin_delete_schedule(sch_id):
     db.session.delete(sch)
     db.session.commit()
     flash('تم حذف الجدول.', 'info')
-    return redirect(url_for('main.admin_schedules'))
+    return redirect(url_for('main.admin_manage_schedules'))
 

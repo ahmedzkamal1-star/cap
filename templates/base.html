@@ -102,8 +102,8 @@
                 class="nav-item {{ 'active' if request.endpoint == 'main.admin_chat' }}">
                 <i class="fas fa-comments"></i> <span>رسائل المدير</span>
             </a>
-            <a href="{{ url_for('main.view_schedules') }}"
-                class="nav-item {{ 'active' if request.endpoint == 'main.view_schedules' }}">
+            <a href="{{ url_for('main.student_view_schedules') }}"
+                class="nav-item {{ 'active' if request.endpoint == 'main.student_view_schedules' }}">
                 <i class="fas fa-calendar-alt"></i> <span>الجدول الدراسى</span>
             </a>
             <a href="{{ url_for('main.profile') }}"
@@ -187,8 +187,8 @@
             <i class="fas fa-users"></i>
             <span>الزملاء</span>
         </a>
-        <a href="{{ url_for('main.view_schedules') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.view_schedules' }}">
+        <a href="{{ url_for('main.student_view_schedules') }}"
+            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.student_view_schedules' }}">
             <i class="fas fa-calendar-alt"></i>
             <span>الجدول</span>
         </a>

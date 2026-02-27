@@ -232,8 +232,7 @@
     </script>
     <script src="{{ url_for('static', filename='js/main.js') }}?v=23.0"></script>
     <script>
-        <script>
-            function setViewMode(mode) {
+        function setViewMode(mode) {
             const current = localStorage.getItem('viewMode') || 'mobile';
             if (current === mode) return;
 

@@ -14,7 +14,68 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 4. تفعيل العناصر النشطة في القائمة
     setupActiveNav();
+
+    // 5. تهيئة وضع رمضان
+    initRamadan();
 });
+
+// دالة تهيئة وضع رمضان
+function initRamadan() {
+    const isRamadan = localStorage.getItem('ramadanMode') === 'enabled';
+    if (isRamadan) {
+        document.documentElement.setAttribute('data-ramadan', 'enabled');
+        generateStars();
+    }
+}
+
+// دالة تبديل وضع رمضان
+window.toggleRamadan = function () {
+    const currentState = document.documentElement.getAttribute('data-ramadan');
+    const newState = currentState === 'enabled' ? 'disabled' : 'enabled';
+
+    document.documentElement.setAttribute('data-ramadan', newState);
+    localStorage.setItem('ramadanMode', newState);
+
+    if (newState === 'enabled') {
+        generateStars();
+        showFestiveEffect();
+    } else {
+        removeStars();
+    }
+};
+
+function generateStars() {
+    let container = document.querySelector('.ramadan-stars');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'ramadan-stars';
+        document.body.prepend(container);
+    }
+    container.innerHTML = '';
+
+    for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 3 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        container.appendChild(star);
+    }
+}
+
+function removeStars() {
+    const container = document.querySelector('.ramadan-stars');
+    if (container) container.innerHTML = '';
+}
+
+function showFestiveEffect() {
+    // Simple alert or micro-animation for the first toggle
+    console.log('رمضان كريم! 🌙✨');
+}
 
 // دالة تطبيق السمة
 function applyTheme(theme) {

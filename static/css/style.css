@@ -36,6 +36,86 @@
 
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.4);
+
+    /* Ramadan Palette - Festive Layers */
+    --ramadan-gold: #FFD700;
+    --ramadan-purple: #6B2D5C;
+    --ramadan-teal: #1E5F5F;
+    --ramadan-orange: #FF8C42;
+    --ramadan-beige: #F5E6D3;
+    --ramadan-night: #0B2B40;
+    --ramadan-star: #F9F3E6;
+}
+
+/* ===== Ramadan Mode Override ===== */
+[data-ramadan='enabled'] {
+    --sky-primary: var(--ramadan-gold);
+    --sky-secondary: var(--ramadan-purple);
+    --sky-dark: var(--ramadan-night);
+    --sky-gradient: linear-gradient(135deg, var(--ramadan-purple), var(--ramadan-night));
+
+    --bg-main: var(--ramadan-night);
+    --bg-sidebar: rgba(11, 43, 64, 0.95);
+    --text-primary: var(--ramadan-star);
+    --text-secondary: var(--ramadan-gold);
+    --card-bg: rgba(107, 45, 92, 0.15);
+    --border-color: rgba(255, 215, 0, 0.2);
+    --hover-bg: rgba(255, 215, 0, 0.1);
+}
+
+[data-ramadan='enabled'] .mesh-background {
+    background: radial-gradient(circle at center, #0B2B40 0%, #051622 100%);
+    opacity: 1;
+}
+
+[data-ramadan='enabled'] .blob-1 {
+    background: var(--ramadan-purple);
+}
+
+[data-ramadan='enabled'] .blob-2 {
+    background: var(--ramadan-teal);
+}
+
+[data-ramadan='enabled'] .blob-3 {
+    background: var(--ramadan-orange);
+}
+
+/* Twinkling Stars Decoration */
+.ramadan-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    display: none;
+}
+
+[data-ramadan='enabled'] .ramadan-stars {
+    display: block;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
 }
 
 /* ===== Deep Space Dark Mode ===== */

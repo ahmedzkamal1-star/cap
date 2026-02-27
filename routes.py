@@ -945,26 +945,6 @@ def register():
             
     return render_template('register.html')
 
-@main.route('/admin/pending-users')
-@login_required
-def admin_pending_users():
-    if current_user.role != 'admin':
-        return redirect(url_for('main.dashboard'))
-    pending_users = User.query.filter_by(is_approved=False).all()
-    return render_template('admin_pending_users.html', users=pending_users)
-
-@main.route('/admin/approve-user/<int:user_id>', methods=['POST'])
-@login_required
-def admin_approve_user(user_id):
-    if current_user.role != 'admin':
-        return redirect(url_for('main.dashboard'))
-    user = User.query.get_or_404(user_id)
-    user.is_approved = True
-    db.session.commit()
-    log_activity("موافقة مستخدم", f"تمت الموافقة على حساب {user.full_name} ({user.code})")
-    flash(f"تمت الموافقة على {user.full_name} بنجاح.", 'success')
-    return redirect(url_for('main.admin_pending_users'))
-
 @main.route('/admin/posts', methods=['GET', 'POST'])
 @login_required
 def admin_posts():

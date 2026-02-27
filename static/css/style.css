@@ -781,10 +781,11 @@ body {
 }
 
 /* Responsive Overrides & Desktop View Logic */
+/* Responsive Overrides & Mobile Optimization */
 @media (max-width: 1200px) {
 
     /* Standard Mobile Behavior */
-    html:not(.desktop-view) .main-content {
+    .main-content {
         margin-right: 0 !important;
         width: 100% !important;
         padding: 1.5rem !important;
@@ -792,7 +793,7 @@ body {
         padding-bottom: 110px !important;
     }
 
-    html:not(.desktop-view) .sidebar {
+    .sidebar {
         transform: translateX(110.1%);
         right: 15px;
         top: 15px;
@@ -800,12 +801,12 @@ body {
         width: 300px;
     }
 
-    html:not(.desktop-view) .sidebar.open {
+    .sidebar.open {
         transform: translateX(0);
         box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
     }
 
-    html:not(.desktop-view) .mobile-header {
+    .mobile-header {
         display: flex !important;
         right: 15px;
         left: 15px;
@@ -813,17 +814,17 @@ body {
         border-radius: 20px;
     }
 
-    html:not(.desktop-view) .mobile-bottom-nav {
+    .mobile-bottom-nav {
         display: flex;
     }
 
-    html:not(.desktop-view) .dark-mode-toggle {
+    .dark-mode-toggle {
         bottom: 110px;
         left: 25px;
     }
 
     /* Floating Navigation Overrides */
-    html:not(.desktop-view) .mobile-bottom-nav {
+    .mobile-bottom-nav {
         display: flex;
         bottom: 25px;
         left: 20px;
@@ -840,7 +841,7 @@ body {
         height: 75px;
     }
 
-    html:not(.desktop-view) .mobile-nav-item {
+    .mobile-nav-item {
         flex: 1;
         background: transparent;
         color: var(--text-secondary);
@@ -855,16 +856,16 @@ body {
         box-shadow: none;
     }
 
-    html:not(.desktop-view) .mobile-nav-item i {
+    .mobile-nav-item i {
         font-size: 1.3rem;
     }
 
-    html:not(.desktop-view) .mobile-nav-item span {
+    .mobile-nav-item span {
         font-size: 0.75rem;
         font-weight: 700;
     }
 
-    html:not(.desktop-view) .mobile-nav-item.active {
+    .mobile-nav-item.active {
         background: var(--sky-primary);
         color: white;
         transform: translateY(-5px);
@@ -872,86 +873,17 @@ body {
     }
 }
 
-/* Segmented Control Switcher */
-.view-switcher-v2 {
-    display: flex;
-    background: var(--hover-bg);
-    padding: 5px;
-    border-radius: 15px;
-    margin: 1rem 0;
-    border: 1px solid var(--border-color);
-}
-
-.switcher-option {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 12px;
-    font-weight: 800;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.switcher-option.active {
-    background: white;
-    color: var(--sky-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-[data-theme='dark'] .switcher-option.active {
-    background: var(--sky-primary);
-    color: white;
-}
-
-
-/* Forced Desktop View on Mobile */
-html.desktop-view {
-    min-width: 1200px;
-    overflow-x: auto;
-}
-
-html.desktop-view body {
-    width: 1200px;
-}
-
-html.desktop-view .sidebar {
-    transform: translateX(0) !important;
-    display: block !important;
-    width: 280px !important;
-    right: 0 !important;
-    left: auto !important;
-}
-
-html.desktop-view .main-content {
-    margin-right: 280px !important;
-    width: calc(100% - 280px) !important;
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-}
-
-html.desktop-view .mobile-header,
-html.desktop-view .mobile-bottom-nav,
-html.desktop-view .menu-toggle-btn {
-    display: none !important;
-}
-
 /* Portrait Mode Refinements */
 @media (max-width: 600px) {
-    html:not(.desktop-view) .section-header-v2 h3 {
+    .section-header-v2 h3 {
         font-size: 1.1rem;
     }
 
-    html:not(.desktop-view) .post-card img {
+    .post-card img {
         max-height: 350px;
     }
 
-    html:not(.desktop-view) .main-container-v2 {
+    .main-container-v2 {
         padding: 10px;
     }
 }

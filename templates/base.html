@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta id="viewport-meta" name="viewport"
+    <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <title>{% block title %}{{ settings.system_name }}{% endblock %}</title>
     <!-- Google Cairo Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=23.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=24.0">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
 
     <!-- PWA -->
@@ -18,21 +18,11 @@
     <meta name="theme-color" content="#00b4d8">
 
     <script>
-        // High-speed theme & view mode detection
+        // High-speed theme detection
         (function () {
             const savedTheme = localStorage.getItem('darkMode');
             const theme = savedTheme === 'enabled' ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', theme);
-
-            const viewMode = localStorage.getItem('viewMode');
-            if (viewMode === 'desktop') {
-                document.documentElement.classList.add('desktop-view');
-                // Force fixed viewport for desktop mode - needs to happen after meta tag is parsed
-                window.addEventListener('DOMContentLoaded', () => {
-                    const vp = document.getElementById('viewport-meta');
-                    if (vp) vp.setAttribute('content', 'width=1200');
-                });
-            }
         })();
     </script>
 </head>
@@ -124,21 +114,6 @@
                 <i class="fas fa-fingerprint"></i> <span>ملفي</span>
             </a>
 
-            <!-- Premium View Mode Switcher -->
-            <div class="view-mode-container"
-                style="padding: 1rem 0; border-top: 1px solid var(--border-color); margin-top: 1rem;">
-                <label
-                    style="font-size: 0.8rem; font-weight: 800; opacity: 0.7; margin-bottom: 8px; display: block;">وضع
-                    العرض</label>
-                <div class="view-switcher-v2">
-                    <div class="switcher-option" id="mobile-opt" onclick="setViewMode('mobile')">
-                        <i class="fas fa-mobile-alt"></i> هاتف
-                    </div>
-                    <div class="switcher-option" id="desktop-opt" onclick="setViewMode('desktop')">
-                        <i class="fas fa-desktop"></i> كمبيوتر
-                    </div>
-                </div>
-            </div>
             {% endif %}
 
             <div style="margin-top: auto; padding-top: 2rem;">
@@ -240,20 +215,8 @@
     </script>
     <script src="{{ url_for('static', filename='js/main.js') }}?v=23.0"></script>
     <script>
-        function setViewMode(mode) {
-            const current = localStorage.getItem('viewMode') || 'mobile';
-            if (current === mode) return;
-
-            localStorage.setItem('viewMode', mode);
-            window.location.reload();
-        }
-
-        // Initialize Switcher UI
-        document.addEventListener('DOMContentLoaded', () => {
-            const mode = localStorage.getItem('viewMode') || 'mobile';
-            const opt = document.getElementById(mode + '-opt');
-            if (opt) opt.classList.add('active');
-        });
+        // Cleanup old localStorage if present
+        localStorage.removeItem('viewMode');
     </script>
 </body>
 

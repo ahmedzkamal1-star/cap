@@ -98,16 +98,13 @@
                 class="nav-item {{ 'active' if request.endpoint == 'main.friends' }}">
                 <i class="fas fa-users"></i> <span>الزملاء</span>
             </a>
-            <a href="{{ url_for('main.groups') }}" class="nav-item {{ 'active' if request.endpoint == 'main.groups' }}">
-                <i class="fas fa-comments"></i> <span>المجموعات</span>
-            </a>
             <a href="{{ url_for('main.admin_chat') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.admin_chat' }}">
                 <i class="fas fa-comments"></i> <span>رسائل المدير</span>
             </a>
             <a href="{{ url_for('main.student_view_schedules') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.student_view_schedules' }}">
-                <i class="fas fa-calendar-alt"></i> <span>الجدول الدراسى</span>
+                <i class="fas fa-calendar-alt"></i> <span>الجدول</span>
             </a>
             <a href="{{ url_for('main.profile') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.profile' }}">
@@ -171,42 +168,6 @@
         <i class="fas fa-moon"></i>
     </button>
 
-    <!-- Mobile Bottom Navigation (Students only, hidden on auth pages) -->
-    {% if request.endpoint not in ['main.login', 'main.register', 'main.splash'] and current_user.role|lower != 'admin'
-    %}
-    <nav class="mobile-bottom-nav">
-        <a href="{{ url_for('main.dashboard') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.dashboard' }}">
-            <i class="fas fa-th-large"></i>
-            <span>الرئيسية</span>
-        </a>
-
-        <a href="{{ url_for('main.index') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.index' }}">
-            <i class="fas fa-stream"></i>
-            <span>المنشورات</span>
-        </a>
-        <a href="{{ url_for('main.friends') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.friends' }}">
-            <i class="fas fa-users"></i>
-            <span>الزملاء</span>
-        </a>
-        <a href="{{ url_for('main.groups') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.groups' }}">
-            <i class="fas fa-comments"></i>
-            <span>المجموعات</span>
-        </a>
-        <a href="{{ url_for('main.student_view_schedules') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.student_view_schedules' }}">
-            <i class="fas fa-calendar-alt"></i>
-            <span>الجدول</span>
-        </a>
-        <a href="{{ url_for('main.profile') }}"
-            class="mobile-nav-item {{ 'active' if request.endpoint == 'main.profile' }}">
-            <i class="fas fa-fingerprint"></i>
-            <span>ملفي</span>
-        </a>
-    </nav>
     {% endif %}
 
     <!-- Scripts -->

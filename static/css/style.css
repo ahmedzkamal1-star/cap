@@ -790,7 +790,6 @@ body {
         width: 100% !important;
         padding: 1.5rem !important;
         padding-top: 100px !important;
-        padding-bottom: 110px !important;
     }
 
     .sidebar {
@@ -819,58 +818,11 @@ body {
     }
 
     .dark-mode-toggle {
-        bottom: 110px;
+        bottom: 25px;
         left: 25px;
     }
 
-    /* Floating Navigation Overrides */
-    .mobile-bottom-nav {
-        display: flex;
-        bottom: 25px;
-        left: 20px;
-        right: 20px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        border-radius: 25px;
-        padding: 10px 15px;
-        box-shadow: 0 15px 35px var(--shadow-color);
-        justify-content: space-around;
-        align-items: center;
-        height: 75px;
-    }
-
-    .mobile-nav-item {
-        flex: 1;
-        background: transparent;
-        color: var(--text-secondary);
-        border-radius: 18px;
-        padding: 8px 5px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.3s ease;
-        border: none;
-        box-shadow: none;
-    }
-
-    .mobile-nav-item i {
-        font-size: 1.3rem;
-    }
-
-    .mobile-nav-item span {
-        font-size: 0.75rem;
-        font-weight: 700;
-    }
-
-    .mobile-nav-item.active {
-        background: var(--sky-primary);
-        color: white;
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 180, 216, 0.4);
-    }
+    /* Floating Navigation Removed */
 }
 
 /* Portrait Mode Refinements */

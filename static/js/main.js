@@ -24,7 +24,7 @@ function initRamadan() {
     const isRamadan = localStorage.getItem('ramadanMode') === 'enabled';
     if (isRamadan) {
         document.documentElement.setAttribute('data-ramadan', 'enabled');
-        generateStars();
+        generateOrnaments();
     }
 }
 
@@ -37,26 +37,25 @@ window.toggleRamadan = function () {
     localStorage.setItem('ramadanMode', newState);
 
     if (newState === 'enabled') {
-        generateStars();
-        showFestiveEffect();
+        generateOrnaments();
     } else {
-        removeStars();
+        removeOrnaments();
     }
 };
 
-function generateStars() {
-    let container = document.querySelector('.ramadan-stars');
-    if (!container) {
-        container = document.createElement('div');
-        container.className = 'ramadan-stars';
-        document.body.prepend(container);
-    }
-    container.innerHTML = '';
+function generateOrnaments() {
+    removeOrnaments(); // Clean up first
 
-    for (let i = 0; i < 50; i++) {
+    // 1. Container for Ornaments
+    const container = document.createElement('div');
+    container.className = 'ramadan-ornaments';
+    document.body.prepend(container);
+
+    // 2. Stars
+    for (let i = 0; i < 60; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        const size = Math.random() * 3 + 1;
+        const size = Math.random() * 2 + 1;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
         star.style.left = `${Math.random() * 100}%`;
@@ -65,11 +64,27 @@ function generateStars() {
         star.style.animationDelay = `${Math.random() * 5}s`;
         container.appendChild(star);
     }
+
+    // 3. Hanging Lanterns
+    const lanternPositions = [15, 30, 70, 85]; // Percentages
+    lanternPositions.forEach(pos => {
+        const lantern = document.createElement('div');
+        lantern.className = 'lantern-css';
+        lantern.style.left = `${pos}%`;
+        lantern.style.top = `0`;
+        lantern.style.animationDelay = `${Math.random() * 2}s`;
+        container.appendChild(lantern);
+    });
+
+    // 4. Large Crescent
+    const crescent = document.createElement('div');
+    crescent.className = 'crescent-festive';
+    container.appendChild(crescent);
 }
 
-function removeStars() {
-    const container = document.querySelector('.ramadan-stars');
-    if (container) container.innerHTML = '';
+function removeOrnaments() {
+    const container = document.querySelector('.ramadan-ornaments');
+    if (container) container.remove();
 }
 
 function showFestiveEffect() {

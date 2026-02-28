@@ -135,20 +135,11 @@
             }
         </script>
 </div>
-
-<!-- Security -->
-<div class="card" style="border-right: 5px solid #ef4444;">
-    <h3 style="color: #ef4444; margin-bottom: 1.5rem;">🛡️ الأمان</h3>
-    <div class="form-field-v2" style="margin-bottom: 1.2rem;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 700;">تغيير كلمة المرور</label>
-        <input type="password" name="admin_password" placeholder="اتركها فارغة لعدم التغيير"
-            style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
-    </div>
-    <div class="form-field-v2">
-        <label style="display: block; margin-bottom: 8px; font-weight: 700;">كود الماستر (Master Key)</label>
-        <input type="text" name="master_key" value="{{ current_user.master_key }}" required
-            style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
-    </div>
+<div class="form-field-v2">
+    <label style="display: block; margin-bottom: 8px; font-weight: 700;">كود الماستر (Master Key)</label>
+    <input type="text" name="master_key" value="{{ current_user.master_key }}" required
+        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+</div>
 </div>
 
 <button type="submit" class="premium-btn" style="width: 100%; justify-content: center; padding: 1.2rem;">

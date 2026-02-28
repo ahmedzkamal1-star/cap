@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(20), default='student')  # 'admin' or 'student'
     is_approved = db.Column(db.Boolean, default=False)
     last_seen = db.Column(db.DateTime)
+    telegram_id = db.Column(db.String(50), index=True) # Linked Telegram Chat ID
     
     # Hierarchy: Track who appointed this user
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)

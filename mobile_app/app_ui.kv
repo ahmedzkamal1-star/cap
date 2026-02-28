@@ -28,7 +28,7 @@
                     text_color: get_color_from_hex("#FFD700") # GOLD
 
                 MDLabel:
-                    text: "EL-DAHIH"
+                    text: app.get_text('login_title')
                     font_style: "H4"
                     halign: "center"
                     bold: True
@@ -36,7 +36,7 @@
                     text_color: 1, 1, 1, 1
 
                 MDLabel:
-                    text: app.f_ar("منصتك التعليمية الآمنة")
+                    text: app.get_text('login_subtitle')
                     font_name: "Arabic"
                     halign: "center"
                     theme_text_color: "Custom"
@@ -50,23 +50,23 @@
             
             MDTextField:
                 id: user_code
-                hint_text: app.f_ar("كود الطالب")
+                hint_text: app.get_text('student_code')
                 mode: "outlined"
                 icon_right: "account"
                 font_name_hint_text: "Arabic"
-                halign: "right"
+                halign: "right" if app.current_lang == 'ar' else "left"
             
             MDTextField:
                 id: password
-                hint_text: app.f_ar("كلمة المرور")
+                hint_text: app.get_text('password')
                 mode: "outlined"
                 icon_right: "lock"
                 password: True
                 font_name_hint_text: "Arabic"
-                halign: "right"
+                halign: "right" if app.current_lang == 'ar' else "left"
 
             MDFillRoundFlatButton:
-                text: app.f_ar("دخول آمن")
+                text: app.get_text('login_btn')
                 font_name: "Arabic"
                 font_size: "18sp"
                 size_hint_x: 1
@@ -74,14 +74,15 @@
                 on_release: root.do_login(user_code.text, password.text)
 
             MDTextButton:
-                text: app.f_ar("هل تواجه مشكلة؟ تواصل مع الدعم")
+                text: app.get_text('menu_lang_en') if app.current_lang == 'ar' else app.get_text('menu_lang_ar')
                 font_name: "Arabic"
                 theme_text_color: "Secondary"
                 pos_hint: {"center_x": .5}
+                on_release: app.change_language('en' if app.current_lang == 'ar' else 'ar')
 
         # Footer
         MDLabel:
-            text: "v1.0.2 | Powered by ShieldCore"
+            text: app.get_text('footer_version')
             halign: "center"
             font_style: "Caption"
             theme_text_color: "Hint"
@@ -94,11 +95,11 @@
         md_bg_color: self.theme_cls.bg_normal
 
         MDTopAppBar:
-            title: "EL-DAHIH"
+            title: app.get_text('dashboard_title')
             font_style: "H6"
             elevation: 2
             md_bg_color: get_color_from_hex("#00B4D8")
-            right_action_items: [["theme-light-dark", lambda x: app.toggle_theme()], ["logout", lambda x: setattr(app.root, 'current', 'login')]]
+            right_action_items: [["dots-vertical", lambda x: app.show_settings_menu(x)], ["logout", lambda x: setattr(app.root, 'current', 'login')]]
 
         MDScrollView:
             MDBoxLayout:
@@ -118,20 +119,20 @@
                     MDBoxLayout:
                         orientation: 'vertical'
                         MDLabel:
-                            text: app.f_ar("مرحباً بك في منصة الدحيح")
+                            text: app.get_text('welcome_msg')
                             font_name: "Arabic"
                             bold: True
                             theme_text_color: "Custom"
                             text_color: 0, 0, 0, 1
                         MDLabel:
-                            text: app.f_ar("استمتع بتجربة تعليمية فريدة وآمنة")
+                            text: app.get_text('welcome_sub')
                             font_name: "Arabic"
                             theme_text_color: "Custom"
                             text_color: 0, 0, 0, 0.7
 
                 # Sections Grid (Simplified for demo)
                 MDLabel:
-                    text: app.f_ar("المواد المتاحة")
+                    text: app.get_text('courses_header')
                     font_name: "Arabic"
                     bold: True
                     adaptive_height: True
@@ -157,7 +158,7 @@
                                 text_color: get_color_from_hex("#00B4D8")
                                 pos_hint: {"center_y": .5}
                             MDLabel:
-                                text: app.f_ar("رياضيات - الفرقة الأولى")
+                                text: app.f_ar("رياضيات - الفرقة الأولى") # Keep f_ar for specific content
                                 font_name: "Arabic"
-                                halign: "right"
+                                halign: "right" if app.current_lang == 'ar' else "left"
                                 pos_hint: {"center_y": .5}

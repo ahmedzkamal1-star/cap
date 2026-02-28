@@ -6,28 +6,21 @@ from kivy.utils import get_color_from_hex
 from kivy.clock import Clock
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.label import MDLabel
+from kivymd.uix.menu import MDDropdownMenu
 from auth_manager import AuthManager
 from security_logic import SecurityShield
 from kivy.core.text import LabelBase
-import arabic_reshaper
+from arabic_reshaper import reshape
 from bidi.algorithm import get_display
+from kivy.properties import StringProperty
 import os
-
 import platform
 import logging
-
-# Set up logging to file for debugging crashes on real devices
-log_file = os.path.join(os.path.dirname(__file__), "app_debug.log")
-if platform.system() == 'Android':
-    from android.storage import app_storage_path
-    log_file = os.path.join(app_storage_path(), "app_debug.log")
-
-logging.basicConfig(
-    filename=log_file,
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logging.info("--- APP STARTING ---")
+import security_utils
+import requests
+import json
+import base64
 
 # Register Arabic font globally
 if platform.system() == 'Windows':
@@ -47,6 +40,69 @@ else:
     # But if we need a specific Arabic font, we can bundle it or use system one
     # For now, we rely on the reshapher + bidi to work on system default
     pass
+
+class SecurePlatformApp(MDApp):
+    current_lang = StringProperty('ar')
+    
+    def get_text(self, key):
+        """Helper to get translated text based on current language."""
+        text = TRANSLATIONS[self.current_lang][key]
+        if self.current_lang == 'ar':
+            return f_ar(text)
+        return text
+
+    def switch_language(self, lang):
+        self.current_lang = lang
+        logging.info(f"Language switched to {lang}")
+
+    def show_settings_menu(self, button):
+        menu_items = [
+            {
+                "text": self.get_text('menu_lang_en'),
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="en": self.change_language(x),
+            },
+            {
+                "text": self.get_text('menu_lang_ar'),
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="ar": self.change_language(x),
+            },
+            {
+                "text": self.get_text('menu_theme_dark'),
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="Dark": self.set_theme(x),
+            },
+            {
+                "text": self.get_text('menu_theme_light'),
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="Light": self.set_theme(x)
+            }
+        ]
+        self.menu = MDDropdownMenu(
+            caller=button,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.menu.open()
+
+    def change_language(self, lang):
+        self.current_lang = lang
+        if hasattr(self, 'menu'):
+            self.menu.dismiss()
+        logging.info(f"Language changed to: {lang}")
+
+    def set_theme(self, theme):
+        self.theme_cls.theme_style = theme
+        if hasattr(self, 'menu'):
+            self.menu.dismiss()
+
+    def toggle_theme(self):
+        self.theme_cls.theme_style = (
+            "Dark" if self.theme_cls.theme_style == "Light" else "Light"
+        )
+
+    def f_ar(self, text):
+        return f_ar(text)
 
 def f_ar(text):
     """Reshapes and reorders Arabic text for Kivy labels on Windows."""

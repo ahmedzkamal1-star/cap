@@ -35,9 +35,17 @@
     <div
         style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-color); display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
         {% if settings.telegram_link %}
-        <a href="{{ settings.telegram_link }}" target="_blank" class="social-link-btn telegram-btn">
+        {% set tg_url = settings.telegram_link %}
+        {% if current_user.is_authenticated and 't.me/' in tg_url %}
+        {% if '?' in tg_url %}
+        {% set tg_url = tg_url + '&start=' + current_user.code %}
+        {% else %}
+        {% set tg_url = tg_url + '?start=' + current_user.code %}
+        {% endif %}
+        {% endif %}
+        <a href="{{ tg_url }}" target="_blank" class="social-link-btn telegram-btn">
             <i class="fab fa-telegram" style="font-size: 1.3rem;"></i>
-            <span>قناة التيليجرام</span>
+            <span>قناة / بوت التيليجرام</span>
         </a>
         {% endif %}
         {% if settings.whatsapp_link %}

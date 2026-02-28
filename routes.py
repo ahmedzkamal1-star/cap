@@ -44,6 +44,48 @@ def service_worker():
     response.headers['Service-Worker-Allowed'] = '/'
     return response
 
+@main.route('/telegram_webhook/<token>', methods=['POST'])
+def telegram_webhook(token):
+    settings = SystemSettings.query.first()
+    # Basic verification
+    if not settings or not settings.telegram_bot_token or token != settings.telegram_bot_token:
+        return "Unauthorized", 403
+    
+    try:
+        update = request.get_json(force=True)
+        if "message" in update and "text" in update["message"]:
+            msg_data = update["message"]
+            chat_id = msg_data["chat"]["id"]
+            text = msg_data["text"].strip()
+            first_name = msg_data["from"].get("first_name", "طالبنا")
+            
+            # Deep-linking start command, e.g. /start 12345
+            if text.startswith("/start"):
+                parts = text.split()
+                if len(parts) > 1:
+                    user_code = parts[1]
+                    user = User.query.filter_by(code=user_code).first()
+                    if user:
+                        # Link account
+                        user.telegram_id = str(chat_id)
+                        db.session.commit()
+                        reply = f"مرحباً بك يا أشطر الدحيحة، {user.full_name}! 👋\n\nتم ربط حسابك في نظام الدحيح الجامعي (كود: {user.code}) بنجاح. ستتلقى هنا جميع الإشعارات والتحديثات المهمة! 🎓✨"
+                    else:
+                        reply = "عذراً، الكود الجامعي غير صحيح أو غير مسجل في النظام. يرجى التأكد من الرابط والمحاولة مرة أخرى."
+                else:
+                    reply = f"مرحباً بك {first_name} في بوت نظام الدحيح الجامعي! 🤖\n\nلربط حسابك، يرجى الدخول للموقع والضغط على أيقونة التيليجرام من الصفحة الرئيسية."
+                
+                # Send response back to user
+                import requests
+                requests.post(
+                    f"https://api.telegram.org/bot{token}/sendMessage",
+                    json={"chat_id": chat_id, "text": reply}
+                )
+    except Exception as e:
+        print(f"Telegram Webhook Error: {e}")
+        
+    return "OK", 200
+
 @main.route('/')
 def splash():
     # If the user is already logged in, we might skip the splash, 

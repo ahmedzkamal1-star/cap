@@ -375,16 +375,59 @@ def admin_dashboard():
         return redirect(url_for('main.dashboard'))
     
     from models import User, Course, Lesson, Enrollment
+    from datetime import datetime, timedelta
+    
     students_count = User.query.filter_by(role='student').count()
     courses_count = Course.query.count()
     lessons_count = Lesson.query.count()
     enrollments_count = Enrollment.query.count()
     
+    # New Stats for Online and Pending Students
+    pending_count = User.query.filter_by(role='student', is_approved=False).count()
+    fifteen_mins_ago = datetime.utcnow() - timedelta(minutes=15)
+    online_count = User.query.filter(User.role == 'student', User.last_seen >= fifteen_mins_ago).count()
+    
     return render_template('admin_dashboard.html', 
                            students_count=students_count,
                            courses_count=courses_count,
                            lessons_count=lessons_count,
-                           enrollments_count=enrollments_count)
+                           pending_count=pending_count,
+                           online_count=online_count)
+
+@main.route('/admin/online_users')
+@login_required
+def admin_online_users():
+    if current_user.role != 'admin':
+        flash('Access denied.', 'danger')
+        return redirect(url_for('main.dashboard'))
+    
+    from datetime import datetime, timedelta
+    fifteen_mins_ago = datetime.utcnow() - timedelta(minutes=15)
+    online_students = User.query.filter(User.role == 'student', User.last_seen >= fifteen_mins_ago).order_by(User.last_seen.desc()).all()
+    
+    return render_template('admin_online_users.html', students=online_students)
+
+@main.route('/admin/pending_users')
+@login_required
+def admin_pending_users():
+    if current_user.role != 'admin':
+        flash('Access denied.', 'danger')
+        return redirect(url_for('main.dashboard'))
+    
+    pending_students = User.query.filter_by(role='student', is_approved=False).order_by(User.id.desc()).all()
+    return render_template('admin_pending_users.html', students=pending_students)
+
+@main.route('/admin/approve_user/<int:user_id>', methods=['POST'])
+@login_required
+def approve_user(user_id):
+    if current_user.role != 'admin':
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    user = User.query.get_or_404(user_id)
+    user.is_approved = True
+    db.session.commit()
+    return jsonify({'success': True, 'message': f'تم الموافقة على الطالب {user.full_name}'})
+
 
 @main.route('/admin/students')
 @login_required
@@ -1028,6 +1071,19 @@ def admin_posts():
 
     posts = HomePost.query.order_by(HomePost.timestamp.desc()).all()
     return render_template('admin_posts.html', posts=posts)
+
+@main.route('/admin/post/<int:post_id>/delete', methods=['POST'])
+@login_required
+def admin_delete_post(post_id):
+    if current_user.role != 'admin':
+        return redirect(url_for('main.dashboard'))
+    
+    post = HomePost.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    flash('تم طباعة حذف المنشور بنجاح.', 'info')
+    return redirect(url_for('main.admin_posts'))
+
 
 
 @main.route('/admin/schedules', methods=['GET', 'POST'])

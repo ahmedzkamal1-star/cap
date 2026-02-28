@@ -1029,16 +1029,6 @@ def admin_posts():
     posts = HomePost.query.order_by(HomePost.timestamp.desc()).all()
     return render_template('admin_posts.html', posts=posts)
 
-@main.route('/admin/post/<int:post_id>/delete', methods=['POST'])
-@login_required
-def admin_delete_post(post_id):
-    if current_user.role != 'admin':
-        return redirect(url_for('main.dashboard'))
-    post = HomePost.query.get_or_404(post_id)
-    db.session.delete(post)
-    db.session.commit()
-    flash('تم حذف المنشور.', 'info')
-    return redirect(url_for('main.admin_posts'))
 
 @main.route('/admin/schedules', methods=['GET', 'POST'])
 @login_required

@@ -88,18 +88,19 @@
 
         <!-- Telegram Bot Management (v53 - Sky Blue Evolution) -->
         <div class="card"
-            style="border-right: 5px solid #229ED9; background: var(--hover-bg); position: relative; overflow: hidden;">
+            style="border-right: 5px solid #229ED9; position: relative; overflow: hidden; background: var(--card-bg);">
             <div
-                style="position: absolute; top: -20px; left: -20px; font-size: 8rem; color: rgba(34, 158, 217, 0.05); transform: rotate(-15deg); pointer-events: none;">
+                style="position: absolute; top: -20px; left: -20px; font-size: 8rem; color: rgba(34, 158, 217, 0.1); transform: rotate(-15deg); pointer-events: none;">
                 <i class="fab fa-telegram-plane"></i>
             </div>
 
-            <h3 style="color: #229ED9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+            <h3
+                style="color: #229ED9; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; position: relative; z-index: 2;">
                 <i class="fab fa-telegram-plane" style="font-size: 1.4rem;"></i>
                 إعدادات بوت التنبيهات (Admin Notifications)
             </h3>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; position: relative; z-index: 1;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; position: relative; z-index: 2;">
                 <div class="form-field-v2">
                     <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">Bot
                         API Token</label>
@@ -121,7 +122,7 @@
                 </div>
             </div>
 
-            <div class="form-field-v2" style="margin-top: 20px; position: relative; z-index: 1;">
+            <div class="form-field-v2" style="margin-top: 20px; position: relative; z-index: 2;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">رابط
                     المنصة (لتوزيعه تلقائياً)</label>
                 <input type="url" name="platform_url" value="{{ settings.platform_url or '' }}"
@@ -132,7 +133,7 @@
             </div>
 
             <div
-                style="margin-top: 2rem; display: flex; align-items: center; gap: 20px; position: relative; z-index: 1;">
+                style="margin-top: 2rem; display: flex; align-items: center; gap: 20px; position: relative; z-index: 2;">
                 <button type="button" onclick="testBot()" class="premium-btn"
                     style="background: linear-gradient(135deg, #229ED9, #1c84b5); padding: 12px 25px; font-size: 0.95rem; border: none; box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);">
                     <i class="fas fa-paper-plane" style="margin-left: 8px;"></i> تجربة الربط
@@ -141,9 +142,10 @@
             </div>
 
             <div
-                style="margin-top: 20px; padding: 12px; border-radius: 10px; background: rgba(34, 158, 217, 0.05); border: 1px dashed rgba(34, 158, 217, 0.3);">
-                <p style="font-size: 0.85rem; color: #1c84b5; margin: 0; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-info-circle"></i>
+                style="margin-top: 20px; padding: 12px; border-radius: 10px; background: rgba(34, 158, 217, 0.1); border: 1px dashed #229ED9; position: relative; z-index: 2;">
+                <p
+                    style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                    <i class="fas fa-info-circle" style="color: #229ED9;"></i>
                     تأكد من إرسال "مرحباً" للبوت أولاً لكي يستطيع الربط بنجاح.
                 </p>
             </div>

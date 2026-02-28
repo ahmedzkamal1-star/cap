@@ -157,17 +157,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Floating Navigation Actions -->
-    {% if current_user.is_authenticated and request.endpoint not in ['main.login', 'main.register', 'main.splash'] %}
-    <button class="premium-back-v2" onclick="history.length > 1 ? history.back() : window.location.href='/dashboard'"
-        title="رجوع">
-        <i class="fas fa-arrow-right"></i>
-    </button>
-    {% endif %}
-
-    <button class="dark-mode-toggle" title="تبديل الوضع">
-        <i class="fas fa-adjust"></i>
-    </button>
+    <!-- Floating Navigation Actions Removed -->
 
     <script src="{{ url_for('static', filename='js/main.js') }}?v=46.0"></script>
     <script>

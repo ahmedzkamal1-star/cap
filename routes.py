@@ -886,6 +886,7 @@ def admin_settings():
         settings.show_schedule = 'show_schedule' in request.form
         settings.telegram_bot_token = request.form.get('telegram_bot_token')
         settings.telegram_chat_id = request.form.get('telegram_chat_id')
+        settings.platform_url = request.form.get('platform_url')
         
         # Security Updates for Admin
         new_pass = request.form.get('admin_password')
@@ -959,7 +960,24 @@ def register():
             new_student.set_password(password)
             db.session.add(new_student)
             db.session.commit()
-            flash('تم إنشاء الحساب بنجاح! بانتظار موافقة الأدمن لتتمكن من الدخول.', 'success')
+            
+            # Notify Admin via Telegram (v51)
+            try:
+                from telegram_utils import send_telegram_notification
+                admin_msg = (
+                    f"<b>🔔 تسجيل طالب جديد!</b>\n\n"
+                    f"▪️ <b>الاسم:</b> {full_name}\n"
+                    f"▪️ <b>الكود الجامعي:</b> {code}\n"
+                    f"▪️ <b>الفرقة:</b> {year}\n"
+                    f"▪️ <b>القسم:</b> {department}\n"
+                    f"▪️ <b>الهاتف:</b> {phone}\n\n"
+                    f"يرجى الدخول للمنصة لقبول الطالب. ✅"
+                )
+                send_telegram_notification(admin_msg)
+            except Exception as e:
+                print(f"Admin Notification Exception: {e}")
+                
+            flash('تم إرسال طلبك بنجاح! يرجى انتظار موافقة الإدارة.', 'success')
             return redirect(url_for('main.login'))
             
     return render_template('register.html')

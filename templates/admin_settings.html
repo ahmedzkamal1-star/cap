@@ -105,6 +105,13 @@
                         style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
                 </div>
             </div>
+            <div class="form-field-v2" style="margin-top: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 700;">رابط المنصة (لتوزيعه
+                    تلقائياً)</label>
+                <input type="url" name="platform_url" value="{{ settings.platform_url or '' }}"
+                    placeholder="https://yourname.pythonanywhere.com"
+                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+            </div>
             <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 15px;">
                 <button type="button" onclick="testBot()" class="premium-btn"
                     style="background: #229ED9; padding: 10px 20px; font-size: 0.9rem;">

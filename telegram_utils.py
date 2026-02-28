@@ -52,3 +52,37 @@ def send_telegram_notification(text, photo_filename=None):
     except Exception as e:
         print(f"Error sending Telegram notification: {e}")
         return False
+
+def get_telegram_updates(offset=None):
+    """
+    Polls the Telegram API for new messages/updates.
+    """
+    from models import SystemSettings
+    settings = SystemSettings.query.first()
+    token = settings.telegram_bot_token if settings and settings.telegram_bot_token else current_app.config.get('TELEGRAM_BOT_TOKEN')
+    
+    if not token:
+        return []
+        
+    try:
+        # PythonAnywhere Proxy Support
+        if 'PYTHONANYWHERE_SITE' in os.environ:
+            proxy_handler = urllib.request.ProxyHandler({
+                'http': 'http://proxy.server:3128',
+                'https': 'http://proxy.server:3128'
+            })
+            opener = urllib.request.build_opener(proxy_handler)
+            urllib.request.install_opener(opener)
+
+        url = f"https://api.telegram.org/bot{token}/getUpdates"
+        if offset:
+            url += f"?offset={offset}"
+            
+        with urllib.request.urlopen(url, timeout=15) as response:
+            if response.getcode() == 200:
+                data = json.loads(response.read().decode('utf-8'))
+                return data.get('result', [])
+    except Exception as e:
+        print(f"Error getting Telegram updates: {e}")
+        
+    return []

@@ -4,7 +4,7 @@ import json
 import os
 from flask import current_app
 
-def send_telegram_notification(text, photo_filename=None):
+def send_telegram_notification(text, photo_filename=None, chat_id=None, reply_markup=None):
     """
     Sends a notification to the configured Telegram Chat/Channel using built-in urllib.
     Supports PythonAnywhere proxies and dynamic DB settings.
@@ -14,20 +14,16 @@ def send_telegram_notification(text, photo_filename=None):
     
     # Preferred: Use DB settings. Fallback: Use Config constants.
     token = settings.telegram_bot_token if settings and settings.telegram_bot_token else current_app.config.get('TELEGRAM_BOT_TOKEN')
-    chat_id = settings.telegram_chat_id if settings and settings.telegram_chat_id else current_app.config.get('TELEGRAM_CHAT_ID')
+    target_chat_id = chat_id or (settings.telegram_chat_id if settings and settings.telegram_chat_id else current_app.config.get('TELEGRAM_CHAT_ID'))
     
-    if not token or not chat_id:
+    if not token or not target_chat_id:
         print("Telegram Notification Skipped: Token or Chat ID missing.")
         return False
         
     try:
         # PythonAnywhere Proxy Support (Free Tier)
-        # PA provides api.telegram.org access for free accounts but might require proxy setup for urllib
         if 'PYTHONANYWHERE_SITE' in os.environ:
-            proxy_handler = urllib.request.ProxyHandler({
-                'http': 'http://proxy.server:3128',
-                'https': 'http://proxy.server:3128'
-            })
+            proxy_handler = urllib.request.ProxyHandler({'http': 'http://proxy.server:3128', 'https': 'http://proxy.server:3128'})
             opener = urllib.request.build_opener(proxy_handler)
             urllib.request.install_opener(opener)
 
@@ -37,10 +33,12 @@ def send_telegram_notification(text, photo_filename=None):
             
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         data = {
-            'chat_id': chat_id,
+            'chat_id': target_chat_id,
             'text': text,
             'parse_mode': 'HTML'
         }
+        if reply_markup:
+            data['reply_markup'] = reply_markup
         
         req = urllib.request.Request(url)
         req.add_header('Content-Type', 'application/json; charset=utf-8')
@@ -53,36 +51,28 @@ def send_telegram_notification(text, photo_filename=None):
         print(f"Error sending Telegram notification: {e}")
         return False
 
-def get_telegram_updates(offset=None):
+def set_telegram_webhook(webhook_url):
     """
-    Polls the Telegram API for new messages/updates.
+    Sets the Telegram webhook to the specified URL.
     """
     from models import SystemSettings
     settings = SystemSettings.query.first()
     token = settings.telegram_bot_token if settings and settings.telegram_bot_token else current_app.config.get('TELEGRAM_BOT_TOKEN')
     
     if not token:
-        return []
+        return False, "Token missing"
         
     try:
-        # PythonAnywhere Proxy Support
         if 'PYTHONANYWHERE_SITE' in os.environ:
-            proxy_handler = urllib.request.ProxyHandler({
-                'http': 'http://proxy.server:3128',
-                'https': 'http://proxy.server:3128'
-            })
+            proxy_handler = urllib.request.ProxyHandler({'http': 'http://proxy.server:3128', 'https': 'http://proxy.server:3128'})
             opener = urllib.request.build_opener(proxy_handler)
             urllib.request.install_opener(opener)
 
-        url = f"https://api.telegram.org/bot{token}/getUpdates"
-        if offset:
-            url += f"?offset={offset}"
-            
+        url = f"https://api.telegram.org/bot{token}/setWebhook?url={webhook_url}"
         with urllib.request.urlopen(url, timeout=15) as response:
             if response.getcode() == 200:
                 data = json.loads(response.read().decode('utf-8'))
-                return data.get('result', [])
+                return data.get('ok', False), data.get('description', '')
     except Exception as e:
-        print(f"Error getting Telegram updates: {e}")
-        
-    return []
+        return False, str(e)
+    return False, "Unknown error"

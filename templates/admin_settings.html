@@ -133,10 +133,14 @@
             </div>
 
             <div
-                style="margin-top: 2rem; display: flex; align-items: center; gap: 20px; position: relative; z-index: 2;">
+                style="margin-top: 2rem; display: flex; align-items: center; gap: 15px; position: relative; z-index: 2; flex-wrap: wrap;">
                 <button type="button" onclick="testBot()" class="premium-btn"
-                    style="background: linear-gradient(135deg, #229ED9, #1c84b5); padding: 12px 25px; font-size: 0.95rem; border: none; box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);">
+                    style="background: linear-gradient(135deg, #229ED9, #1c84b5); padding: 12px 22px; font-size: 0.9rem; border: none; box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);">
                     <i class="fas fa-paper-plane" style="margin-left: 8px;"></i> تجربة الربط
+                </button>
+                <button type="button" onclick="activateWebhook()" class="premium-btn"
+                    style="background: linear-gradient(135deg, #10b981, #059669); padding: 12px 22px; font-size: 0.9rem; border: none; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                    <i class="fas fa-bolt" style="margin-left: 8px;"></i> تفعيل الرد التلقائي الدائم
                 </button>
                 <div id="bot-test-status" style="font-size: 0.9rem; font-weight: 700; transition: all 0.3s ease;"></div>
             </div>
@@ -156,9 +160,22 @@
                 const statusDiv = document.getElementById('bot-test-status');
                 statusDiv.innerText = 'جاري التجربة...';
                 statusDiv.style.color = 'var(--text-secondary)';
-
                 try {
                     const response = await fetch("{{ url_for('main.admin_test_bot') }}", { method: 'POST' });
+                    const result = await response.json();
+                    statusDiv.innerText = result.message;
+                    statusDiv.style.color = result.success ? '#10b981' : '#ef4444';
+                } catch (e) {
+                    statusDiv.innerText = 'خطأ في الاتصال بالسيرفر';
+                    statusDiv.style.color = '#ef4444';
+                }
+            }
+            async function activateWebhook() {
+                const statusDiv = document.getElementById('bot-test-status');
+                statusDiv.innerText = 'جاري التفعيل...';
+                statusDiv.style.color = 'var(--text-secondary)';
+                try {
+                    const response = await fetch("{{ url_for('main.admin_activate_webhook') }}", { method: 'POST' });
                     const result = await response.json();
                     statusDiv.innerText = result.message;
                     statusDiv.style.color = result.success ? '#10b981' : '#ef4444';

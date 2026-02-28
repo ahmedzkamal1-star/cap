@@ -925,20 +925,12 @@ def admin_test_bot():
         return jsonify({'success': False, 'message': 'Unauthorized'})
     
     from telegram_utils import send_telegram_notification
-    settings = SystemSettings.query.first()
-    
-    if not settings or not settings.telegram_bot_token:
-        return jsonify({'success': False, 'message': 'التوكن غير موجود في الإعدادات.'})
-    
     success = send_telegram_notification("<b>🔔 رسالة اختبار من منصة الدحيح</b>\nالربط يعمل بنجاح! ✅")
     
     if success:
-        msg = 'تم إرسال رسالة الاختبار بنجاح! تفقد التليجرام.'
-        if not settings.platform_url:
-            msg += ' (ملاحظة: رابط المنصة غير مضبوط في الإعدادات، لن يستطيع البوت توزيعه)'
-        return jsonify({'success': True, 'message': msg})
+        return jsonify({'success': True, 'message': 'تم إرسال رسالة الاختبار بنجاح! تفقد التليجرام.'})
     else:
-        return jsonify({'success': False, 'message': 'فشل الإرسال. تأكد من التوكن والـ Chat ID، وتأكد من بدء محادثة مع البوت أولاً.'})
+        return jsonify({'success': False, 'message': 'فشل الإرسال. تأكد من التوكن والـ Chat ID.'})
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1094,4 +1086,89 @@ def admin_delete_schedule(sch_id):
     db.session.commit()
     flash('تم حذف الجدول.', 'info')
     return redirect(url_for('main.admin_manage_schedules'))
+
+@main.route('/telegram_webhook', methods=['POST'])
+def telegram_webhook():
+    """
+    Permanent endpoint for Telegram Bot updates.
+    """
+    from models import SystemSettings, User, db
+    from telegram_utils import send_telegram_notification
+    
+    data = request.get_json()
+    if not data or 'message' not in data:
+        return 'OK', 200
+        
+    message = data['message']
+    chat_id = message['chat']['id']
+    user_name = message['from'].get('first_name', 'طالبنا العزيز')
+    settings = SystemSettings.query.first()
+    platform_url = settings.platform_url if settings and settings.platform_url else current_app.config.get('PLATFORM_URL', 'لم يتم ضبط الرابط بعد')
+
+    # 1. Handle Contact Sharing (Auto Linking)
+    if 'contact' in message:
+        phone = message['contact']['phone_number'].replace('+', '').strip()
+        search_phone = phone[2:] if phone.startswith('20') and len(phone) > 11 else phone
+        
+        user = User.query.filter(User.phone.like(f"%{search_phone}%")).first()
+        if user:
+            user.telegram_id = str(chat_id)
+            db.session.commit()
+            reply = f"✅ تم التعرف عليك يا <b>{user.full_name}</b>!\nتم ربط حسابك في المنصة بهذا الحساب بنجاح. ستصلك تنبيهاتك الشخصية هنا."
+        else:
+            reply = f"❌ لم نجد حساباً مسجلاً برقم الهاتف: {phone}\nيرجى التأكد من كتابة الرقم بشكل صحيح في ملفك الشخصي بالمنصة."
+        
+        send_telegram_notification(reply, chat_id=chat_id)
+        return 'OK', 200
+
+    # 2. Handle Text Commands
+    if 'text' in message:
+        text = message['text'].lower()
+        keywords = ['link', 'الرابط', 'رابط', 'لينك', '/start']
+        
+        if any(k in text for k in keywords):
+            reply = (
+                f"أهلاً بك يا <b>{user_name}</b> في منصة الدحيح! 👋✨\n\n"
+                f"إليك رابط المنصة الخاص بنا:\n"
+                f"🔗 {platform_url}\n\n"
+                f"لحصولك على تنبيهات شخصية (مثل مواعيدك الخاصة أو نتائجك)، اضغط على الزر أدناه لمشاركة رقمك والربط تلقائياً! 👇"
+            )
+            keyboard = {
+                'keyboard': [[{'text': '📱 مشاركة رقم الهاتف للربط التلقائي', 'request_contact': True}]],
+                'resize_keyboard': True,
+                'one_time_keyboard': True
+            }
+            send_telegram_notification(reply, chat_id=chat_id, reply_markup=keyboard)
+            
+    return 'OK', 200
+
+@main.route('/admin/activate_webhook', methods=['POST'])
+@login_required
+def admin_activate_webhook():
+    if current_user.role != 'admin':
+        return jsonify({'success': False, 'message': 'غير مسموح'})
+        
+    from telegram_utils import set_telegram_webhook
+    # Construct the webhook URL: Current site + /telegram_webhook
+    # PythonAnywhere uses https by default for its domains
+    webhook_url = request.url_root.replace('http://', 'https://').rstrip('/') + url_for('main.telegram_webhook')
+    
+    success, description = set_telegram_webhook(webhook_url)
+    if success:
+        return jsonify({'success': True, 'message': 'تم تفعيل الرد التلقائي الدائم بنجاح! 🚀'})
+    else:
+        return jsonify({'success': False, 'message': f'فشل التفعيل: {description}'})
+
+@main.route('/admin/test_bot', methods=['POST'])
+@login_required
+def admin_test_bot():
+    if current_user.role != 'admin':
+        return jsonify({'success': False, 'message': 'غير مسموح'})
+        
+    from telegram_utils import send_telegram_notification
+    success = send_telegram_notification("🚀 تجربة ربط البوت من الإعدادات: ناجحة!")
+    if success:
+        return jsonify({'success': True, 'message': 'تم إرسال رسالة تجريبية بنجاح!'})
+    else:
+        return jsonify({'success': False, 'message': 'فشل إرسال الرسالة. تأكد من الرمز وChat ID.'})
 

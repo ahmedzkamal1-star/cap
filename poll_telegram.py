@@ -14,29 +14,16 @@ def poll_bot():
         
         while True:
             try:
-                # Re-query settings inside loop to get latest token/url
-                settings = SystemSettings.query.first()
-                if not settings:
-                    print("Error: No system settings found in DB.")
-                    time.sleep(10)
-                    continue
-
-                platform_url = settings.platform_url if settings and settings.platform_url else "لم يتم تحديد الرابط بعد."
-                
                 updates = get_telegram_updates(offset=last_offset)
-                if updates:
-                    print(f"Received {len(updates)} updates.")
-                
                 for update in updates:
                     last_offset = update['update_id'] + 1
                     
-                    if 'message' in update:
+                    if 'message' in update and 'text' in update['message']:
                         chat_id = update['message']['chat']['id']
                         user_name = update['message']['from'].get('first_name', 'طالبنا العزيز')
                         
                         # 1. Handle Contact Sharing (Automatic Linking)
                         if 'contact' in update['message']:
-                            # ... (rest of contact logic)
                             phone = update['message']['contact']['phone_number'].replace('+', '').strip()
                             # Clean local Egyptian numbers if needed (e.g., 20)
                             if phone.startswith('20') and len(phone) > 11:
@@ -60,7 +47,6 @@ def poll_bot():
                         # 2. Handle Text Commands
                         if 'text' in update['message']:
                             text = update['message']['text'].lower()
-                            print(f"Processing message: '{text}' from {user_name} ({chat_id})")
                             
                             # Keywords to trigger link distribution
                             keywords = ['link', 'الرابط', 'رابط', 'لينك', '/start']

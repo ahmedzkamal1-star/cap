@@ -27,7 +27,7 @@
     </script>
 </head>
 
-<body class="{{ 'dark-mode' if request.cookies.get('theme') == 'dark' else '' }}">
+<body class="{% if request.cookies.get('theme') == 'dark' %}dark-mode{% endif %}">
     <!-- Premium Mesh Background -->
     <div class="mesh-background">
         <div class="mesh-blob blob-1"></div>

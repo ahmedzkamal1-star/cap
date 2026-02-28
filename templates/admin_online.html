@@ -20,7 +20,8 @@
             </div>
             <h4 style="margin: 0; color: var(--text-primary);">{{ student.full_name }}</h4>
             <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 5px;">
-                آخر ظهور: {{ student.last_seen.strftime('%H:%M:%S') if student.last_seen else 'منذ قليل' }}
+                آخر ظهور: {% if student.last_seen %}{{ student.last_seen.strftime('%H:%M:%S') }}{% else %}منذ قليل{%
+                endif %}
             </span>
             <div style="margin-top: 1rem; display: flex; gap: 8px; justify-content: center;">
                 <a href="{{ url_for('main.admin_view_student_messages', student_id=student.id) }}" title="إرسال رسالة"

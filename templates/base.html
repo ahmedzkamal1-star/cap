@@ -86,6 +86,10 @@
                 class="nav-item {{ 'active' if request.endpoint == 'main.admin_online_users' }}">
                 <i class="fas fa-users-viewfinder"></i> <span>المتصلون الآن</span>
             </a>
+            <a href="{{ url_for('main.admin_penalties') }}"
+                class="nav-item {{ 'active' if request.endpoint == 'main.admin_penalties' }}">
+                <i class="fas fa-shield-virus" style="color: #ef4444;"></i> <span>المخالفات والأمان</span>
+            </a>
             <a href="{{ url_for('main.admin_settings') }}"
                 class="nav-item {{ 'active' if request.endpoint == 'main.admin_settings' }}">
                 <i class="fas fa-sliders-h"></i> <span>الإعدادات</span>

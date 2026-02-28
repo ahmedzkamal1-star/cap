@@ -60,14 +60,50 @@
             <div class="form-field-v2" style="margin-bottom: 2rem;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-primary);">الرتبة
                     (الصلاحية)</label>
-                <select name="role"
-                    style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); cursor: pointer; appearance: none; -webkit-appearance: none;">
-                    <option value="student" {% if student and student.role=='student' %}selected{% endif %}>طالب المنصة
-                    </option>
-                    <option value="admin" {% if student and student.role=='admin' %}selected{% endif %}>مشرف النظام
-                    </option>
                 </select>
             </div>
+
+            {% if student and student.role == 'student' %}
+            <div
+                style="margin-top: 1rem; margin-bottom: 2rem; padding: 1.5rem; border-radius: 20px; background: #fff5f5; border: 1px solid #feb2b2;">
+                <h4 style="color: #c53030; margin-bottom: 1.5rem; font-weight: 950; font-size: 1.1rem;">
+                    <i class="fas fa-shield-alt" style="margin-left: 8px;"></i> نظام الحماية والتجميد (PAN)
+                </h4>
+
+                <div class="form-field-v2" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #c53030;">مستوى المخالفات
+                        الحالي</label>
+                    <select name="pan_level"
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #feb2b2; background: white; color: #c53030; font-weight: 800; cursor: pointer;">
+                        <option value="0" {% if student.pan_level==0 %}selected{% endif %}>Level 0 - سجل نظيف ✅</option>
+                        <option value="1" {% if student.pan_level==1 %}selected{% endif %}>Level 1 - تحذير بريدي ⚠️
+                        </option>
+                        <option value="2" {% if student.pan_level==2 %}selected{% endif %}>Level 2 - تجميد 24 ساعة ❄️
+                        </option>
+                        <option value="3" {% if student.pan_level==3 %}selected{% endif %}>Level 3 - تجميد 7 أيام 🧊
+                        </option>
+                        <option value="4" {% if student.pan_level==4 %}selected{% endif %}>Level 4 - حظر نهائي دائم 🚫
+                        </option>
+                    </select>
+                </div>
+
+                <div
+                    style="display: flex; align-items: center; gap: 12px; background: white; padding: 12px; border-radius: 12px; border: 1px solid #feb2b2;">
+                    <input type="checkbox" name="is_frozen" id="is_frozen"
+                        style="width: 20px; height: 20px; cursor: pointer;" {% if student.is_frozen %}checked{% endif
+                        %}>
+                    <label for="is_frozen" style="font-weight: 800; color: #c53030; cursor: pointer; margin: 0;">تجميد
+                        الحساب يدوياً (لأسباب إدارية)</label>
+                </div>
+
+                {% if student.freeze_until %}
+                <p style="font-size: 0.85rem; color: #c53030; margin-top: 10px; font-weight: 700;">
+                    <i class="fas fa-clock"></i> ينتهي التجميد الآلي في: {{ student.freeze_until.strftime('%Y-%m-%d
+                    %H:%M') }}
+                </p>
+                {% endif %}
+            </div>
+            {% endif %}
 
             <div style="display: flex; gap: 1rem;">
                 <button type="submit" class="premium-btn" style="flex: 2; justify-content: center; padding: 16px;">

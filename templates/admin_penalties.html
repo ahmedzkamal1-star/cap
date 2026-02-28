@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الأمان والمخالفات - {{ settings.system_name }}{% endblock %}
+
+{% block content %}
+<div class="main-container-v2 animate-slide-up">
+    <div class="section-header-v2">
+        <h3><i class="fas fa-user-shield" style="color: #ef4444; margin-left: 10px;"></i> إدارة الأمان والمخالفات (PAN)
+        </h3>
+    </div>
+
+    <div class="card" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <p style="color: var(--text-secondary); font-weight: 600;">متابعة محاولات الاختراق، تسجيل الشاشة، والتعامل مع
+            حسابات الطلاب المجمدة تلقائياً.</p>
+    </div>
+
+    <div class="card" style="padding: 1rem;">
+        <div class="table-responsive">
+            <table class="modern-table-v2">
+                <thead>
+                    <tr>
+                        <th>الطالب</th>
+                        <th>المخالفة</th>
+                        <th>المستوى</th>
+                        <th>التاريخ</th>
+                        <th style="text-align: center;">الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for penalty in penalties %}
+                    <tr>
+                        <td>
+                            <div style="font-weight: 800;">{{ penalty.user.full_name }}</div>
+                            <small class="text-secondary">#{{ penalty.user.code }}</small>
+                        </td>
+                        <td>
+                            <span class="badge"
+                                style="background: #fee2e2; color: #ef4444; padding: 4px 10px; border-radius: 8px;">
+                                {{ penalty.reason }}
+                            </span>
+                        </td>
+                        <td style="text-align: center;">
+                            <span style="font-weight: 900; color: var(--sky-primary);">L{{ penalty.level }}</span>
+                        </td>
+                        <td>{{ penalty.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td style="text-align: center;">
+                            <a href="{{ url_for('main.admin_edit_student', user_id=penalty.user_id) }}"
+                                class="premium-btn" style="padding: 6px 12px; font-size: 0.8rem;">
+                                إدارة الطالب
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                            <i class="fas fa-check-circle"
+                                style="font-size: 2rem; display: block; margin-bottom: 10px; color: #22c55e;"></i>
+                            لا توجد مخالفات مسجلة حالياً.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

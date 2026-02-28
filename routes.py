@@ -8,9 +8,10 @@ from flask import (
 from flask_login import login_user, logout_user, login_required, current_user
 from models import (
     User, Course, Enrollment, Friend, Lesson, Exam, SystemSettings, 
-    Message, ActivityLog, HomePost, ExamResult, Schedule, PostLike, PostComment, db
+    Message, ActivityLog, HomePost, ExamResult, Schedule, PostLike, PostComment, Penalty, db
 )
 from telegram_utils import send_telegram_notification
+from security_utils import encrypt_data, add_watermark_to_pdf, add_watermark_to_image, generate_user_key
 import json
 import random
 
@@ -222,7 +223,158 @@ def submit_exam(exam_id):
         flash('ممتاز! حصلت على 50 نقطة لاجتيازك الامتحان بنجاح. 🚀', 'success')
     
     db.session.commit()
-    return redirect(url_for('main.exam_result', result_id=result.id))
+    return redirect(url_for('main.admin_exam_results', exam_id=exam_id))
+
+# --- Mobile & Security API (Phase 1) ---
+
+@main.route('/api/login', methods=['POST'])
+def api_login():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+        
+    code = data.get('code')
+    password = data.get('password')
+    device_id = data.get('device_id')
+    
+    user = User.query.filter_by(code=code).first()
+    if user and user.check_password(password):
+        if user.is_frozen:
+            if user.freeze_until and user.freeze_until > datetime.utcnow():
+                return jsonify({"error": "Account frozen", "until": user.freeze_until.isoformat()}), 403
+            else:
+                user.is_frozen = False
+                db.session.commit()
+                
+        if user.pan_level >= 4:
+            return jsonify({"error": "Account permanently banned"}), 403
+            
+        # Device Binding (Optional security)
+        if device_id:
+            if not user.device_id:
+                user.device_id = device_id
+                db.session.commit()
+            elif user.device_id != device_id:
+                log_activity("Unauthorized Device Access", f"Attempt from {device_id}")
+                # return jsonify({"error": "Device mismatch"}), 403
+            
+        login_user(user)
+        return jsonify({
+            "status": "success",
+            "token": user.enc_key,
+            "full_name": user.full_name,
+            "role": user.role
+        })
+    return jsonify({"error": "Invalid credentials"}), 401
+
+@main.route('/api/report_violation', methods=['POST'])
+@login_required
+def report_violation():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+        
+    reason = data.get('reason')
+    details = data.get('details')
+    
+    # Update PAN Level
+    current_user.pan_level = min(4, current_user.pan_level + 1)
+    
+    # Determine Action based on levels requested by user
+    # Level 1: Warning
+    # Level 2: 24h freeze
+    # Level 3: 1 week freeze
+    # Level 4: Permanent ban
+    
+    action_taken = "Warning (Level 1)"
+    if current_user.pan_level == 2:
+        current_user.is_frozen = True
+        current_user.freeze_until = datetime.utcnow() + timedelta(days=1)
+        action_taken = "24h Freeze (Level 2)"
+    elif current_user.pan_level == 3:
+        current_user.is_frozen = True
+        current_user.freeze_until = datetime.utcnow() + timedelta(days=7)
+        action_taken = "1 Week Freeze (Level 3)"
+    elif current_user.pan_level >= 4:
+        current_user.is_frozen = True
+        current_user.freeze_until = None # Permanent
+        action_taken = "Permanent Ban (Level 4)"
+        
+    penalty = Penalty(user_id=current_user.id, reason=reason, level=current_user.pan_level, details=details)
+    db.session.add(penalty)
+    db.session.commit()
+    
+    # Notify Admin via Telegram
+    msg = f"🛑 *SECURITY ALERT (PAN Level {current_user.pan_level})*\n"
+    msg += f"User: {current_user.full_name} ({current_user.code})\n"
+    msg += f"Reason: {reason}\n"
+    msg += f"Action: {action_taken}"
+    try:
+        send_telegram_notification(msg)
+    except:
+        pass
+    
+    return jsonify({"status": "reported", "pan_level": current_user.pan_level, "action": action_taken})
+
+@main.route('/api/secure_content/<string:content_type>/<int:content_id>')
+@login_required
+def get_secure_content(content_type, content_id):
+    file_path = None
+    original_filename = ""
+    
+    if content_type == 'lesson':
+        lesson = Lesson.query.get_or_404(content_id)
+        if lesson.pdf_filename:
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], lesson.pdf_filename)
+            original_filename = lesson.pdf_filename
+    elif content_type == 'post':
+        post = HomePost.query.get_or_404(content_id)
+        if post.pdf_filename:
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], post.pdf_filename)
+            original_filename = post.pdf_filename
+        elif post.image_filename:
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], post.image_filename)
+            original_filename = post.image_filename
+            
+    if not file_path or not os.path.exists(file_path):
+        return jsonify({"error": "File not found"}), 404
+        
+    with open(file_path, 'rb') as f:
+        file_data = f.read()
+        
+    # 1. Dynamic Watermarking
+    watermark_text = f"{current_user.full_name} | {current_user.code}"
+    try:
+        if original_filename.lower().endswith('.pdf'):
+            processed_data = add_watermark_to_pdf(file_data, watermark_text)
+        elif original_filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            processed_data = add_watermark_to_image(file_data, watermark_text)
+        else:
+            processed_data = file_data
+    except Exception as e:
+        # Fallback to original if watermarking fails
+        processed_data = file_data
+        
+    # 2. Per-User Encryption (AES-256)
+    if not current_user.enc_key:
+        current_user.enc_key = generate_user_key()
+        db.session.commit()
+        
+    encrypted_data = encrypt_data(processed_data, current_user.enc_key)
+    
+    # Return as octet-stream for the mobile app to handle
+    response = make_response(encrypted_data)
+    response.headers['Content-Type'] = 'application/octet-stream'
+    response.headers['X-File-Name'] = original_filename
+    return response
+
+@main.route('/admin/penalties')
+@login_required
+def admin_penalties():
+    if current_user.role != 'admin':
+        return redirect(url_for('main.dashboard'))
+    penalties = Penalty.query.order_by(Penalty.timestamp.desc()).all()
+    return render_template('admin_penalties.html', penalties=penalties)
 
 @main.route('/admin/exam/<int:exam_id>/results')
 @login_required
@@ -526,7 +678,8 @@ def admin_add_student():
             role = request.form.get('role', 'student')
             new_student = User(code=code, full_name=full_name, phone=phone, 
                                department=department, year=year, role=role,
-                               created_by_id=current_user.id)
+                               created_by_id=current_user.id,
+                               enc_key=generate_user_key())
             new_student.set_password(password)
             db.session.add(new_student)
             db.session.commit()
@@ -563,6 +716,14 @@ def admin_edit_student(user_id):
                 # Hierarchy fix: if promoted to admin and doesn't have a creator, set current admin as creator
                 if new_role == 'admin' and not student.created_by_id:
                     student.created_by_id = current_user.id
+        
+        # Update PAN and Freeze status (Phase 1 Security)
+        pan_level = request.form.get('pan_level')
+        if pan_level is not None:
+            student.pan_level = int(pan_level)
+            
+        is_frozen_val = request.form.get('is_frozen')
+        student.is_frozen = True if is_frozen_val == 'on' else False
         
         # Update password only if provided
         new_password = request.form.get('password')
@@ -984,7 +1145,8 @@ def register():
             gender = request.form.get('gender', 'male')
             new_student = User(code=code, full_name=full_name, phone=phone, 
                               department=department, year=year, role='student', 
-                              is_approved=False, gender=gender)
+                              is_approved=False, gender=gender,
+                              enc_key=generate_user_key())
             new_student.set_password(password)
             db.session.add(new_student)
             db.session.commit()

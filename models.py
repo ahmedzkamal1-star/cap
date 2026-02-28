@@ -55,11 +55,30 @@ class User(UserMixin, db.Model):
     post_likes = db.relationship('PostLike', backref='user', cascade="all, delete-orphan")
     post_views = db.relationship('PostView', backref='user', cascade="all, delete-orphan")
 
+    # Security & PAN System (Phase 1)
+    enc_key = db.Column(db.String(64), nullable=True) # Per-user AES key
+    pan_level = db.Column(db.Integer, default=0) # 0, 1, 2, 3, 4
+    is_frozen = db.Column(db.Boolean, default=False)
+    freeze_until = db.Column(db.DateTime, nullable=True)
+    device_id = db.Column(db.String(100), nullable=True) # Authorized Device ID
+    
+    penalties = db.relationship('Penalty', backref='user', cascade="all, delete-orphan")
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password, method='pbkdf2:sha256')
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class Penalty(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    reason = db.Column(db.String(200), nullable=False)
+    level = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    details = db.Column(db.Text) # e.g. "Screen recording detected on Android 12"
+    evidence_path = db.Column(db.String(255)) # Optional path to screenshot/log file sent by app
+
 
 class Friend(db.Model):
     id = db.Column(db.Integer, primary_key=True)

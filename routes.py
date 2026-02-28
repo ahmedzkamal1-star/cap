@@ -920,7 +920,7 @@ def admin_settings():
 
 @main.route('/admin/test-bot', methods=['POST'])
 @login_required
-def admin_test_bot():
+def admin_test_bot_legacy():
     if current_user.role != 'admin':
         return jsonify({'success': False, 'message': 'Unauthorized'})
     

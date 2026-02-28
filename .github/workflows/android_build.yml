@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev openjdk-17-jdk unzip zip libtinfo6 libtool pkg-config autoconf automake libltdl-dev libffi-dev libssl-dev python3-setuptools libjpeg-dev libfreetype6-dev python3-pip libsqlite3-dev
+        sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev openjdk-17-jdk unzip zip libtinfo5 libtool pkg-config autoconf automake libltdl-dev libffi-dev libssl-dev python3-setuptools libjpeg-dev libfreetype6-dev python3-pip libsqlite3-dev
         pip install --upgrade pip
         pip install buildozer cython==0.29.33
 

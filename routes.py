@@ -300,8 +300,7 @@ def report_violation():
         current_user.freeze_until = datetime.utcnow() + timedelta(days=7)
         action_taken = "1 Week Freeze (Level 3)"
     elif current_user.pan_level >= 4:
-        current_user.is_frozen = True
-        current_user.freeze_until = None # Permanent
+        current_user.is_frozen = True # Permanent ban handled by pan_level >= 4 check in login
         action_taken = "Permanent Ban (Level 4)"
         
     penalty = Penalty(user_id=current_user.id, reason=reason, level=current_user.pan_level, details=details)
@@ -320,17 +319,62 @@ def report_violation():
     
     return jsonify({"status": "reported", "pan_level": current_user.pan_level, "action": action_taken})
 
+@main.route('/api/courses', methods=['GET'])
+@login_required
+def api_get_courses():
+    if current_user.role != 'student':
+        return jsonify({"error": "Unauthorized"}), 403
+        
+    enrollments = Enrollment.query.filter_by(student_id=current_user.id).all()
+    courses_data = []
+    for en in enrollments:
+        course = Course.query.get(en.course_id)
+        if course:
+            courses_data.append({
+                "id": course.id,
+                "name": course.name,
+                "description": course.description,
+                "lessons_count": len(course.lessons)
+            })
+    return jsonify(courses_data)
+
+@main.route('/api/lessons/<int:course_id>', methods=['GET'])
+@login_required
+def api_get_lessons(course_id):
+    # Check if student is enrolled
+    enrollment = Enrollment.query.filter_by(student_id=current_user.id, course_id=course_id).first()
+    if not enrollment and current_user.role != 'admin':
+        return jsonify({"error": "Not enrolled in this course"}), 403
+        
+    course = Course.query.get_or_404(course_id)
+    lessons_data = []
+    for lesson in course.lessons:
+        lessons_data.append({
+            "id": lesson.id,
+            "title": lesson.title,
+            "content_type": "pdf" if lesson.pdf_filename else "text"
+        })
+    return jsonify(lessons_data)
+
 @main.route('/api/secure_content/<string:content_type>/<int:content_id>')
 @login_required
 def get_secure_content(content_type, content_id):
     file_path = None
     original_filename = ""
     
+    # Verify enrollment/access logic
     if content_type == 'lesson':
         lesson = Lesson.query.get_or_404(content_id)
-        if lesson.pdf_filename:
+        # Check if user is enrolled in the course this lesson belongs to
+        enrollment = Enrollment.query.filter_by(student_id=current_user.id, course_id=lesson.course_id).first()
+        if not enrollment and current_user.role != 'admin':
+            return jsonify({"error": "Access denied"}), 403
+            
+        if lesson.pdf_filename: 
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], lesson.pdf_filename)
             original_filename = lesson.pdf_filename
+        # Add support for other content if needed
+            
     elif content_type == 'post':
         post = HomePost.query.get_or_404(content_id)
         if post.pdf_filename:
@@ -356,7 +400,6 @@ def get_secure_content(content_type, content_id):
         else:
             processed_data = file_data
     except Exception as e:
-        # Fallback to original if watermarking fails
         processed_data = file_data
         
     # 2. Per-User Encryption (AES-256)
@@ -366,7 +409,6 @@ def get_secure_content(content_type, content_id):
         
     encrypted_data = encrypt_data(processed_data, current_user.enc_key)
     
-    # Return as octet-stream for the mobile app to handle
     response = make_response(encrypted_data)
     response.headers['Content-Type'] = 'application/octet-stream'
     response.headers['X-File-Name'] = original_filename

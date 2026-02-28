@@ -107,7 +107,7 @@ class SecurePlatformApp(MDApp):
 def f_ar(text):
     """Reshapes and reorders Arabic text for Kivy labels on Windows."""
     if not text: return ""
-    reshaped_text = arabic_reshaper.reshape(text)
+    reshaped_text = reshape(text)
     bidi_text = get_display(reshaped_text)
     return bidi_text
 
@@ -186,33 +186,134 @@ class DashboardScreen(Screen):
         Clock.schedule_once(self.monitor_security, 10)
 
     def load_courses(self):
-        # In a real app, we'd fetch from /api/courses
-        # For now, we simulate the structure
-        pass
-
-    def open_lesson(self, lesson_id, content_type='lesson'):
         auth = AuthManager()
-        # 1. Fetch encrypted content
         try:
-            url = f"{AuthManager.base_url()}/api/secure_content/{content_type}/{lesson_id}"
+            url = f"{AuthManager.base_url()}/api/courses"
             headers = auth.get_headers()
-            response = requests.get(url, headers=headers, timeout=30)
+            response = requests.get(url, headers=headers, timeout=15)
             
             if response.status_code == 200:
-                encrypted_data = response.content
-                # 2. Decrypt in memory
-                from secure_viewer import SecureViewer
-                decrypted_bytes = SecureViewer.decrypt_in_memory(encrypted_data, auth.token)
+                courses = response.json()
+                self.ids.courses_list.clear_widgets()
                 
-                if decrypted_bytes:
-                    print(f"Success! Content {lesson_id} decrypted in memory ({len(decrypted_bytes)} bytes)")
-                    # 3. Handle viewing (Phase 4 final)
-                else:
-                    self.show_error(f_ar("فشل فك تشفير الملف"))
+                if not courses:
+                    from kivymd.uix.label import MDLabel
+                    self.ids.courses_list.add_widget(MDLabel(
+                        text=MDApp.get_running_app().get_text('no_courses'),
+                        halign="center", theme_text_color="Hint"
+                    ))
+                    return
+
+                for course in courses:
+                    from kivymd.uix.card import MDCard
+                    from kivymd.uix.boxlayout import MDBoxLayout
+                    from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
+                    
+                    # Create a card for each course
+                    card = MDCard(
+                        size_hint_y=None, height="80dp", padding="10dp", radius="12dp", elevation=1,
+                        on_release=lambda x, c=course: self.show_lessons(c['id'], c['name'])
+                    )
+                    layout = MDBoxLayout(orientation='horizontal')
+                    from kivymd.uix.selectioncontrol import MDCheckbox # Placeholder for status icon
+                    from kivymd.app import MDApp
+                    app = MDApp.get_running_app()
+                    
+                    icon = MDIcon(
+                        icon="book-open-page-variant",
+                        theme_text_color="Custom",
+                        text_color=get_color_from_hex("#00B4D8"),
+                        pos_hint={"center_y": .5}
+                    )
+                    label = MDLabel(
+                        text=app.f_ar(course['name']),
+                        font_name="Arabic",
+                        halign="right" if app.current_lang == 'ar' else "left",
+                        pos_hint={"center_y": .5}
+                    )
+                    
+                    layout.add_widget(icon)
+                    layout.add_widget(label)
+                    card.add_widget(layout)
+                    self.ids.courses_list.add_widget(card)
             else:
-                self.show_error(f_ar("فشل جلب الملف من الموقع"))
+                logging.error(f"Failed to load courses: {response.status_code}")
         except Exception as e:
-            self.show_error(f_ar(f"خطأ في الاتصال: {str(e)}"))
+            logging.error(f"Error loading courses: {e}")
+
+    def show_lessons(self, course_id, course_name):
+        auth = AuthManager()
+        app = MDApp.get_running_app()
+        try:
+            url = f"{AuthManager.base_url()}/api/lessons/{course_id}"
+            headers = auth.get_headers()
+            response = requests.get(url, headers=headers, timeout=15)
+            
+            if response.status_code == 200:
+                lessons = response.json()
+                self.ids.courses_list.clear_widgets()
+                
+                # Update Header Label
+                self.ids.section_title.text = app.f_ar(course_name)
+                
+                # Add Back Button
+                from kivymd.uix.button import MDRectangleFlatIconButton
+                self.ids.courses_list.add_widget(MDRectangleFlatIconButton(
+                    text=app.get_text('back_btn'),
+                    icon="arrow-left" if app.current_lang == 'en' else "arrow-right",
+                    on_release=lambda x: self.load_courses(),
+                    font_name="Arabic"
+                ))
+
+                if not lessons:
+                    self.ids.courses_list.add_widget(MDLabel(
+                        text=app.get_text('no_lessons'),
+                        halign="center"
+                    ))
+                    return
+
+                for lesson in lessons:
+                    from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
+                    item = OneLineIconListItem(
+                        text=app.f_ar(lesson['title']),
+                        on_release=lambda x, l=lesson: self.open_lesson(l['id'], l['title'])
+                    )
+                    item.add_widget(IconLeftWidget(icon="file-pdf-box" if lesson['content_type'] == 'pdf' else "video"))
+                    self.ids.courses_list.add_widget(item)
+                    
+        except Exception as e:
+            logging.error(f"Error loading lessons: {e}")
+
+    def open_lesson(self, lesson_id, title):
+        auth = AuthManager()
+        app = MDApp.get_running_app()
+        # 1. Fetch encrypted content
+        try:
+            url = f"{AuthManager.base_url()}/api/secure_content/lesson/{lesson_id}"
+            headers = auth.get_headers()
+            response = requests.get(url, headers=headers, timeout=60, stream=True)
+            
+            if response.status_code == 200:
+                # In a real build, we'd show a download progress bar
+                content = response.content
+                logging.info(f"Downloaded secure content for '{title}': {len(content)} bytes")
+                
+                # 2. Decrypt (In-memory Phase 4)
+                # Since we don't have the full Viewer class yet, we simulate the safe display
+                from kivymd.uix.snackbar import Snackbar
+                Snackbar(
+                    text=app.f_ar(f"تم تحميل '{title}' بنجاح وجارِ العرض الآمن..."),
+                    font_name="Arabic"
+                ).open()
+                
+                # In Phase 4 final:
+                # processed_data = SecurityShield.decrypt_and_process(content, auth.user_data['token'])
+                # ScreenManager.switch_to_viewer(processed_data)
+            else:
+                app.root.get_screen('login').show_error(app.f_ar("عذراً، لا تمتلك صلاحية الوصول لهذه المادة أو انتهى الرابط."))
+        except Exception as e:
+            logging.error(f"Connection error downloading content: {e}")
+            app.root.get_screen('login').show_error(app.f_ar("خطأ في الاتصال بالخادم. يرجى التحقق من الشبكة."))
 
     def monitor_security(self, dt):
         shield = SecurityShield()

@@ -28,8 +28,8 @@
 
             <div
                 style="font-size: 0.8rem; background: var(--bg-main); padding: 8px; border-radius: 10px; color: var(--text-primary);">
-                <i class="fas fa-clock" style="margin-left: 5px;"></i> آخر نشاط: {{ user.last_seen.strftime('%H:%M:%S')
-                if user.last_seen else 'الآن' }}
+                <i class="fas fa-clock" style="margin-left: 5px;"></i> آخر نشاط:
+                {% if user.last_seen %}{{ user.last_seen.strftime('%H:%M:%S') }}{% else %}الآن{% endif %}
             </div>
         </div>
         {% else %}

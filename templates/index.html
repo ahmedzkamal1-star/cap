@@ -10,13 +10,14 @@
 
     {% if settings.show_schedule %}
     {% set display_sch = None %}
-    {% if latest_schedule %}
-    {% set display_sch = url_for('static', filename='uploads/' + latest_schedule.filename) if latest_schedule.filename
-    else None %}
+    {% if latest_schedule and latest_schedule.filename %}
+    {% set display_sch = url_for('static', filename='uploads/' + latest_schedule.filename) %}
     {% set sch_title = latest_schedule.title or 'الجدول الدراسي الجديد' %}
     {% elif settings.schedule_filename %}
     {% set display_sch = url_for('main.uploaded_file', filename=settings.schedule_filename) %}
     {% set sch_title = 'عرض الجدول الدراسي العام' %}
+    {% else %}
+    {% set display_sch = None %}
     {% endif %}
 
     {% if display_sch %}

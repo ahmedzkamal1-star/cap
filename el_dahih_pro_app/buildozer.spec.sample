@@ -1,0 +1,22 @@
+# --- buildozer.spec excerpt for Android Security ---
+# [app]
+# title = My Secure App
+# package.name = secureapp
+# package.domain = org.test
+# source.dir = .
+# source.include_exts = py,png,jpg,kv,atlas
+# version = 0.1
+# requirements = python3,kivy==2.3.0,kivymd==1.2.0,requests,cryptography,pyjnius,android
+
+# (list) Permissions
+# android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+
+# (int) Android API level to use
+# android.api = 31
+
+# (list) Android additionnal libraries for security
+# android.add_libs_armeabi_v7a = libcrypto.so, libssl.so
+# android.add_libs_arm64_v8a = libcrypto.so, libssl.so
+
+# (bool) Use FLAG_SECURE for screenshot prevention
+# android.meta_data = android.window.WindowManager.LayoutParams.FLAG_SECURE=1

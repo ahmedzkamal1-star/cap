@@ -122,6 +122,8 @@ class SystemSettings(db.Model):
     telegram_link = db.Column(db.String(500))
     whatsapp_link = db.Column(db.String(500))
     show_schedule = db.Column(db.Boolean, default=True)
+    telegram_bot_token = db.Column(db.String(255))
+    telegram_chat_id = db.Column(db.String(255))
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)

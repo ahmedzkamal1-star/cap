@@ -86,25 +86,75 @@
                 الصفحة الرئيسية كأزرار تواصل.</p>
         </div>
 
-        <!-- Security -->
-        <div class="card" style="border-right: 5px solid #ef4444;">
-            <h3 style="color: #ef4444; margin-bottom: 1.5rem;">🛡️ الأمان</h3>
-            <div class="form-field-v2" style="margin-bottom: 1.2rem;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700;">تغيير كلمة المرور</label>
-                <input type="password" name="admin_password" placeholder="اتركها فارغة لعدم التغيير"
-                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+        <!-- Telegram Bot Management (v49) -->
+        <div class="card" style="border-right: 5px solid #229ED9; background: #f0f9ff;">
+            <h3 style="color: #229ED9; margin-bottom: 1.5rem;"><i class="fab fa-telegram-plane"></i> إعدادات بوت
+                التنبيهات (Admin Notifications)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-field-v2">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700;">Bot API Token</label>
+                    <input type="text" name="telegram_bot_token" value="{{ settings.telegram_bot_token or '' }}"
+                        placeholder="8796498767:AAGNN..."
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+                </div>
+                <div class="form-field-v2">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700;">Chat ID / Channel
+                        Handle</label>
+                    <input type="text" name="telegram_chat_id" value="{{ settings.telegram_chat_id or '' }}"
+                        placeholder="@MyChannel or ID"
+                        style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+                </div>
             </div>
-            <div class="form-field-v2">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700;">كود الماستر (Master Key)</label>
-                <input type="text" name="master_key" value="{{ current_user.master_key }}" required
-                    style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+            <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 15px;">
+                <button type="button" onclick="testBot()" class="premium-btn"
+                    style="background: #229ED9; padding: 10px 20px; font-size: 0.9rem;">
+                    <i class="fas fa-paper-plane"></i> تجربة الربط
+                </button>
+                <div id="bot-test-status" style="font-size: 0.85rem; font-weight: 700;"></div>
             </div>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary);">
+                * ملحوظة: تأكد من إضافة البوت كمشرف في القناة/المجموعة قبل التجربة.
+            </p>
         </div>
 
-        <button type="submit" class="premium-btn" style="width: 100%; justify-content: center; padding: 1.2rem;">
-            <i class="fas fa-save" style="margin-left: 10px;"></i> حفظ الإعدادات
-        </button>
-    </form>
+        <script>
+            async function testBot() {
+                const statusDiv = document.getElementById('bot-test-status');
+                statusDiv.innerText = 'جاري التجربة...';
+                statusDiv.style.color = 'var(--text-secondary)';
+
+                try {
+                    const response = await fetch("{{ url_for('main.admin_test_bot') }}", { method: 'POST' });
+                    const result = await response.json();
+                    statusDiv.innerText = result.message;
+                    statusDiv.style.color = result.success ? '#10b981' : '#ef4444';
+                } catch (e) {
+                    statusDiv.innerText = 'خطأ في الاتصال بالسيرفر';
+                    statusDiv.style.color = '#ef4444';
+                }
+            }
+        </script>
+</div>
+
+<!-- Security -->
+<div class="card" style="border-right: 5px solid #ef4444;">
+    <h3 style="color: #ef4444; margin-bottom: 1.5rem;">🛡️ الأمان</h3>
+    <div class="form-field-v2" style="margin-bottom: 1.2rem;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 700;">تغيير كلمة المرور</label>
+        <input type="password" name="admin_password" placeholder="اتركها فارغة لعدم التغيير"
+            style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary);">
+    </div>
+    <div class="form-field-v2">
+        <label style="display: block; margin-bottom: 8px; font-weight: 700;">كود الماستر (Master Key)</label>
+        <input type="text" name="master_key" value="{{ current_user.master_key }}" required
+            style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-family: 'Outfit';">
+    </div>
+</div>
+
+<button type="submit" class="premium-btn" style="width: 100%; justify-content: center; padding: 1.2rem;">
+    <i class="fas fa-save" style="margin-left: 10px;"></i> حفظ الإعدادات
+</button>
+</form>
 </div>
 
 {% endblock %}

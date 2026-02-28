@@ -879,11 +879,13 @@ def admin_settings():
         settings.system_name = request.form.get('system_name')
         settings.contact_email = request.form.get('contact_email')
         settings.contact_phone = request.form.get('contact_phone')
-        settings.telegram_link = request.form.get('telegram_link', '').strip()
-        settings.whatsapp_link = request.form.get('whatsapp_link', '').strip()
+        settings.telegram_link = request.form.get('telegram_link')
+        settings.whatsapp_link = request.form.get('whatsapp_link')
         settings.allow_registration = 'allow_registration' in request.form
         settings.maintenance_mode = 'maintenance_mode' in request.form
         settings.show_schedule = 'show_schedule' in request.form
+        settings.telegram_bot_token = request.form.get('telegram_bot_token')
+        settings.telegram_chat_id = request.form.get('telegram_chat_id')
         
         # Security Updates for Admin
         new_pass = request.form.get('admin_password')
@@ -914,6 +916,20 @@ def admin_settings():
         
     unread_count = Message.query.filter_by(recipient_id=None, is_read=False).count()
     return render_template('admin_settings.html', settings=settings, unread_count=unread_count)
+
+@main.route('/admin/test-bot', methods=['POST'])
+@login_required
+def admin_test_bot():
+    if current_user.role != 'admin':
+        return jsonify({'success': False, 'message': 'Unauthorized'})
+    
+    from telegram_utils import send_telegram_notification
+    success = send_telegram_notification("<b>🔔 رسالة اختبار من منصة الدحيح</b>\nالربط يعمل بنجاح! ✅")
+    
+    if success:
+        return jsonify({'success': True, 'message': 'تم إرسال رسالة الاختبار بنجاح! تفقد التليجرام.'})
+    else:
+        return jsonify({'success': False, 'message': 'فشل الإرسال. تأكد من التوكن والـ Chat ID.'})
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():

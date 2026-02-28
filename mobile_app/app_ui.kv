@@ -1,0 +1,95 @@
+<LoginScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: "30dp"
+        spacing: "20dp"
+        md_bg_color: 1, 1, 1, 1
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            spacing: "10dp"
+            
+            # Logo Placeholder
+            MDIcon:
+                icon: "shield-lock"
+                font_size: "80sp"
+                pos_hint: {"center_x": .5}
+                theme_text_color: "Custom"
+                text_color: 0, .7, .85, 1
+
+            MDLabel:
+                text: "منصة الدحيح الآمنة"
+                halign: "center"
+                font_style: "H5"
+                bold: True
+                theme_text_color: "Primary"
+
+            MDLabel:
+                text: "سجل دخولك للوصول إلى المحتوى"
+                halign: "center"
+                font_style: "Caption"
+                theme_text_color: "Secondary"
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            spacing: "20dp"
+            adaptive_height: True
+
+            MDTextField:
+                id: user_code
+                hint_text: "الكود الجامعي"
+                mode: "round"
+                fill_color_normal: 0.95, 0.95, 0.95, 1
+                icon_right: "account-badge"
+                write_tab: False
+
+            MDTextField:
+                id: password
+                hint_text: "كلمة المرور"
+                mode: "round"
+                fill_color_normal: 0.95, 0.95, 0.95, 1
+                icon_right: "key"
+                password: True
+                write_tab: False
+
+        MDRelativeLayout:
+            adaptive_height: True
+            
+            MDRoundFlatButton:
+                text: "تسجيل الدخول"
+                font_size: "18sp"
+                pos_hint: {"center_x": .5}
+                size_hint_x: 1
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+                md_bg_color: 0, .7, .85, 1
+                on_release: root.do_login(user_code.text, password.text)
+
+        MDBoxLayout:
+            adaptive_height: True
+            MDLabel:
+                text: "جميع الحقوق محفوظة © 2026"
+                halign: "center"
+                font_style: "Caption"
+                theme_text_color: "Hint"
+
+<DashboardScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: 0.96, 0.97, 0.99, 1
+
+        MDTopAppBar:
+            title: "المواد الدراسية"
+            right_action_items: [["logout", lambda x: app.root.current == "login"]]
+            elevation: 2
+
+        MDScrollView:
+            MDList:
+                id: courses_list
+                # Courses will be injected here
+                TwoLineIconListItem:
+                    text: "رياضيات 1"
+                    secondary_text: "د. علي - 3 دروس"
+                    IconLeftWidget:
+                        icon: "book-open-page-variant"

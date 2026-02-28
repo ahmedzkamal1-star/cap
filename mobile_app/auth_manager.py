@@ -16,6 +16,10 @@ class AuthManager:
             cls._instance.device_id = "MOBILE_DEMO_01" # In production, get real hardware ID
         return cls._instance
 
+    @staticmethod
+    def base_url():
+        return BASE_URL
+
     def login(self, code, password):
         try:
             payload = {

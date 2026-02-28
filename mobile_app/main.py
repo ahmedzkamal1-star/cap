@@ -56,9 +56,39 @@ class DashboardScreen(Screen):
     def on_enter(self, *args):
         # Refresh courses list from API
         print(f"Logged in as: {AuthManager().user_data.get('full_name')}")
+        self.load_courses()
         
         # Continuous Security Monitoring
         Clock.schedule_once(self.monitor_security, 10)
+
+    def load_courses(self):
+        # In a real app, we'd fetch from /api/courses
+        # For now, we simulate the structure
+        pass
+
+    def open_lesson(self, lesson_id, content_type='lesson'):
+        auth = AuthManager()
+        # 1. Fetch encrypted content
+        try:
+            url = f"{AuthManager.base_url()}/api/secure_content/{content_type}/{lesson_id}"
+            headers = auth.get_headers()
+            response = requests.get(url, headers=headers, timeout=30)
+            
+            if response.status_code == 200:
+                encrypted_data = response.content
+                # 2. Decrypt in memory
+                from secure_viewer import SecureViewer
+                decrypted_bytes = SecureViewer.decrypt_in_memory(encrypted_data, auth.token)
+                
+                if decrypted_bytes:
+                    print(f"Success! Content {lesson_id} decrypted in memory ({len(decrypted_bytes)} bytes)")
+                    # 3. Handle viewing (Phase 4 final)
+                else:
+                    self.show_error("فشل فك تشفير الملف")
+            else:
+                self.show_error("فشل جلب الملف من الموقع")
+        except Exception as e:
+            self.show_error(f"خطأ في الاتصال: {str(e)}")
 
     def monitor_security(self, dt):
         shield = SecurityShield()

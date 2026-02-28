@@ -13,17 +13,26 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 import os
 
-# Register Arabic font globally on Windows
-# We override 'Roboto' because it's the default font for Kivy/KivyMD
-arial_path = 'C:\\Windows\\Fonts\\arial.ttf'
-LabelBase.register(name='Roboto', 
-                   fn_regular=arial_path,
-                   fn_bold='C:\\Windows\\Fonts\\arialbd.ttf',
-                   fn_italic='C:\\Windows\\Fonts\\ariali.ttf',
-                   fn_bolditalic='C:\\Windows\\Fonts\\arialbi.ttf')
+import platform
 
-# Fallback alias
-LabelBase.register(name='Arabic', fn_regular=arial_path)
+# Register Arabic font globally
+if platform.system() == 'Windows':
+    arial_path = 'C:\\Windows\\Fonts\\arial.ttf'
+    if os.path.exists(arial_path):
+        LabelBase.register(name='Roboto', 
+                           fn_regular=arial_path,
+                           fn_bold='C:\\Windows\\Fonts\\arialbd.ttf',
+                           fn_italic='C:\\Windows\\Fonts\\ariali.ttf',
+                           fn_bolditalic='C:\\Windows\\Fonts\\arialbi.ttf')
+        LabelBase.register(name='Arabic', fn_regular=arial_path)
+    else:
+        # Fallback if arial not found
+        print("Warning: Arial font not found on this Windows system.")
+else:
+    # On Android, Kivy uses the system fonts. 
+    # But if we need a specific Arabic font, we can bundle it or use system one
+    # For now, we rely on the reshapher + bidi to work on system default
+    pass
 
 def f_ar(text):
     """Reshapes and reorders Arabic text for Kivy labels on Windows."""
@@ -166,6 +175,7 @@ class SecurePlatformApp(MDApp):
     def build(self):
         # Activate Screenshot & Screen Recording Protection
         SecurityShield.enable_screenshot_protection()
+        print(f"DEBUG: Connecting to {AuthManager().base_url()}")
 
         self.theme_cls.primary_palette = "LightBlue"
         self.theme_cls.theme_style = "Light"

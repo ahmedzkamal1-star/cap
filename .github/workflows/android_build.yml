@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v4
@@ -23,12 +23,12 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev openjdk-17-jdk unzip zip libtool pkg-config autoconf automake libltdl-dev libffi-dev libssl-dev python3-setuptools libjpeg-dev libfreetype6-dev python3-pip libsqlite3-dev
-        # Direct download of libtinfo5 for compatibility with newer Ubuntu runners
+        sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev openjdk-17-jdk unzip zip libtool pkg-config autoconf automake libltdl-dev libffi-dev libssl-dev python3-setuptools libjpeg-dev libfreetype6-dev python3-pip libsqlite3-dev patch cmake
+        # Direct download of libtinfo5 (required for ndk/toolchains on older systems/apps)
         wget -q http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb || wget -q http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.2-0ubuntu2_amd64.deb
         sudo dpkg -i libtinfo5_*.deb
         pip install --upgrade pip
-        pip install buildozer cython==0.29.33
+        pip install buildozer "Cython>=3.0.10"
 
     - name: Build with Buildozer
       run: |

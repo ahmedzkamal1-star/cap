@@ -26,4 +26,4 @@ Thumbs.db
 .idea/
 
 # Zip files
-*.zip
+# *.zip
